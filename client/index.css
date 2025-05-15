@@ -1,0 +1,20 @@
+/* global styles */
+@import 'reset.css';
+@import "typography.css";
+
+/*.layout and view styling */
+@import '../server/layouts/base.css';
+@import '../server/views/index.css';
+
+/* component styling */
+
+/* @import '../server/components/project-card/project-card.css'; */
+@import '../server/components/contact-button/contact-button.css';
+
+
+
+:root{
+  --link-border-color: black;
+}
+
+

@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block head %}
+    <title>{{ title }}</title>
+  {% endblock %}
+
+  <title>De Man met de Hamer</title>
+  <link rel="icon" type="image/x-icon" href="./public/images/favicon.ico">
+  <link rel="stylesheet" href="/index.css">
+  <script src="/index.js" defer></script>
+  {% block styles %}{% endblock %}
+  {% block scripts %}{% endblock %}
+</head>
+
+<body>
+  <header>
+    <h1>De man met de hamer</h1>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+       <p>de man met de code productions</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #222;
+}
+
+/* Projects Grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Project Card */
+.project-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  /* width: 200px; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.portrait{
+  background-color: red;
+  color: white;
+  flex-direction: row;
+}
+
+.landscape{
+  background-color: blue;
+  color: white;
+}
+
+.square{
+  background-color: yellow ;
+  color: black;
+}
+
+
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Image Wrapper with Aspect Ratio */
+.project-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  /* background-color: #f0f0f0; */
+}
+
+.project-image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* Project Info */
+.project-info {
+  padding: 1.5rem;
+}
+
+.project-info h2 {
+  font-size: 2.2vw;
+  margin-bottom: 0.5rem;
+  /* color: #222; */
+}
+
+.project-category {
+  /* color: #666; */
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.project-details {
+  margin-top: 1rem;
+}
+
+.project-details p {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  /* color: #555; */
+}
+
+.project-details strong {
+  /* color: #333; */
+}
+
+/* For Sale Badge */
+.for-sale-badge {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+      padding: 1rem;
+  }
+  
+  h1 {
+      font-size: 2rem;
+  }
+  
+  .projects-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+  }
+}
+
+/* Alternative Grid Layout - Masonry-like */
+/*
+.projects-grid {
+  column-count: 3;
+  column-gap: 2rem;
+}
+
+.project-card {
+  break-inside: avoid;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+      column-count: 1;
+  }
+}
+*/
+
+/* Debug Info (optional) */
+.debug-info {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 1000;
+}
