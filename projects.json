@@ -1,0 +1,109 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "projectname": "Invoice Generator",
+      "category": "Game Programming",
+      "typeOfProject": "Home Project",
+      "typeOfProduct": "Website",
+      "projectFeaturedImage": "./resources/projects/InvoiceGenerator/featured-image.png",
+      "projectImages": [
+        "./resources/projects/InvoiceGenerator/featured-image.png",
+        "./resources/projects/InvoiceGenerator/field1-filled.png",
+        "./resources/projects/InvoiceGenerator/field1-preview.png",
+        "./resources/projects/InvoiceGenerator/field2-empty.png",
+        "./resources/projects/InvoiceGenerator/field2-excel-cells.png",
+        "./resources/projects/InvoiceGenerator/field2-excel.png",
+        "./resources/projects/InvoiceGenerator/field2-manual.png",
+        "./resources/projects/InvoiceGenerator/field2-sheetSelector.png",
+        "./resources/projects/InvoiceGenerator/Overview.png"
+      ],
+      "projectBodyText": "",
+      "projectLanguages": [ "Javascript", "CSS", "HTML"],
+      "projectDate": "March 2025"
+    },
+    {
+      "id": "2",
+      "projectname": "Eric's Styling Keyboard",
+      "category": "Web Programming",
+      "typeOfProject": "School Project",
+      "typeOfProduct": "Mobile Prototype",
+      "projectFeaturedImage": "./resources/projects/EricsWonderfulKeyboard/Featured-image.png",
+      "projectImages": [
+        "./resources/projects/EricsWonderfulKeyboard/chat-wk4-after.png",
+        "./resources/projects/EricsWonderfulKeyboard/Featured-image.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-chat-wk4-before.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk2-before-2.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk2-before.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk3-after.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk3-before-3.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk3-before.png",
+        "./resources/projects/EricsWonderfulKeyboard/Keyboard-Wk3.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk4-after-3.png",
+        "./resources/projects/EricsWonderfulKeyboard/keyboard-wk4-before-2.png",
+        "./resources/projects/EricsWonderfulKeyboard/Keyboard-wk4-before.png",
+        "./resources/projects/EricsWonderfulKeyboard/keys-wk4-after-2.png",
+        "./resources/projects/EricsWonderfulKeyboard/keys-wk4-after.png"
+      ],
+      "projectBodyText": "",
+      "projectLanguages": [ "Javascript", "CSS", "HTML"],
+      "projectDate": "March 2025"
+    },
+    {
+      "id": "3",
+      "projectname": "What's Poppin'",
+      "category": "Web Designing",
+      "typeOfProject": "School project",
+      "typeOfProduct": "Web App",
+      "projectFeaturedImage": "./resources/projects/WP/featured-image.png",
+      "projectImages": [
+        "./resources/projects/WP/datalist-options.png",
+        "./resources/projects/WP/dribble-design.png",
+        "./resources/projects/WP/event-detail-before.png",
+        "./resources/projects/WP/event-detail.png",
+        "./resources/projects/WP/event-vertical-list.png",
+        "./resources/projects/WP/events-with-distance.png",
+        "./resources/projects/WP/featured-image.png",
+        "./resources/projects/WP/form-input.png",
+        "./resources/projects/WP/loading-state.png",
+        "./resources/projects/WP/localstorage.png",
+        "./resources/projects/WP/logo-org.png",
+        "./resources/projects/WP/logo.png",
+        "./resources/projects/WP/map-nomarkers.png",
+        "./resources/projects/WP/markers-on-the-map.png",
+        "./resources/projects/WP/pop-up.png",
+        "./resources/projects/WP/stacked-markers.png"
+      ],
+      "projectBodyText": "",
+      "projectLanguages": [ "Javascript", "CSS", "HTML", "JSON"],
+      "projectDate": "March 2025"
+    },
+    {
+      "id": "4",
+      "projectname": "Hoistin' Hank's Crane Day",
+      "category": "Game Designing",
+      "typeOfProject": "School Project",
+      "typeOfProduct": "Website",
+      "projectFeaturedImage": "./resources/projects/HHCD/featured-image.png",
+      "projectImages": [
+        "./resources/projects/HHCD/box1.png",
+        "./resources/projects/HHCD/cabin.png",
+        "./resources/projects/HHCD/city.png",
+        "./resources/projects/HHCD/city2.png",
+        "./resources/projects/HHCD/CSS.png",
+        "./resources/projects/HHCD/Day.png",
+        "./resources/projects/HHCD/featured-image.png",
+        "./resources/projects/HHCD/Html.png",
+        "./resources/projects/HHCD/idee.JPG",
+        "./resources/projects/HHCD/joystick.png",
+        "./resources/projects/HHCD/Night.png",
+        "./resources/projects/HHCD/opdrachten.JPG",
+        "./resources/projects/HHCD/Realism.png",
+        "./resources/projects/HHCD/result-wk1.png"
+      ],
+      "projectBodyText": "",
+      "projectLanguages": [ "CSS", "HTML"],
+      "projectDate": "February 2025"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+.contact-link {
+    width: 40%;
+    padding: 0.5em 1em;
+    border: 2px solid var(--link-border-color);
+    border-radius: 25px;
+    background: none;
+  }
