@@ -1,0 +1,16 @@
+body {
+  font-family: system-ui, sans-serif;
+  font-weight: 400;
+}
+
+.h1 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.h2 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}

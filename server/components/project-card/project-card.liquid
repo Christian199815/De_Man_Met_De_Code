@@ -1,0 +1,22 @@
+
+{% comment %}
+    Usage:
+    {% render 'server/components/project-card.liquid', project: project_object %}
+{% endcomment %}
+
+<li class="project-card" 
+    data-category="{{ project.category }}" 
+    data-product-type="{{ project.typeOfProduct }}" 
+    data-project-type="{{ project.typeOfProject }}" 
+    data-date="{{ project.projectDate }}">
+    <a href="/project/{{ project.id }}" class="project-link">
+        <h3 class="project-name">{{ project.projectname }}</h3>
+        <div>
+            <p class="project-type">{{ project.typeOfProject }}</p>
+            <p class="product-type">{{ project.typeOfProduct }}</p>
+        </div>
+        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" class="project-image">
+        <p hidden class="project-date">{{ project.projectDate }}</p>
+        {% comment %} <p>View Project</p> {% endcomment %}
+    </a>
+</li>
