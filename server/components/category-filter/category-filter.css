@@ -1,0 +1,172 @@
+/* Category Filter Component Styles */
+
+/* Filter Container */
+.category-filter {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .category-filter h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  /* Filter Buttons */
+  .filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .filter-btn:hover {
+    background-color: #f0f0f0;
+    color: #222;
+  }
+  
+  .filter-btn.active {
+    background-color: #3490dc;
+    color: white;
+    border-color: #3490dc;
+  }
+  
+  /* Projects Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .projects-grid.filtering {
+    opacity: 0.6;
+  }
+  
+  /* Project Cards */
+  .project-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .project-image-wrapper img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .project-card:hover .project-image-wrapper img {
+    transform: scale(1.05);
+  }
+  
+  .project-info {
+    padding: 1.25rem;
+  }
+  
+  .project-info h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .project-category {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    background-color: #f0f0f0;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .project-details p {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Filter Stats */
+  .filter-stats {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  /* For Sale Badge */
+  .for-sale-badge {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Portrait/Landscape/Square specific styling */
+  .project-card.portrait .project-image-wrapper {
+    /* Specific styles for portrait images */
+  }
+  
+  .project-card.landscape .project-image-wrapper {
+    /* Specific styles for landscape images */
+  }
+  
+  .project-card.square .project-image-wrapper {
+    /* Specific styles for square images */
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .category-filter {
+      padding: 1rem;
+    }
+    
+    .filter-buttons {
+      justify-content: center;
+    }
+    
+    .projects-grid {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .filter-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }
