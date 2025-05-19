@@ -1,0 +1,99 @@
+/* Project Sorting Component Styles */
+
+/* Sorting Container */
+.project-sorting {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .project-sorting h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+  }
+  
+  /* Sort Buttons */
+  .sort-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .sort-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .sort-btn:hover {
+    background-color: #f0f0f0;
+    color: #222;
+    border-color: #ccc;
+  }
+  
+  .sort-btn.active {
+    background-color: #3490dc;
+    color: white;
+    border-color: #3490dc;
+  }
+  
+  /* Sort Icon */
+  .sort-icon {
+    margin-right: 0.5rem;
+    fill: currentColor;
+    transition: transform 0.2s ease;
+  }
+  
+  .sort-btn:hover .sort-icon {
+    transform: translateY(-1px);
+  }
+  
+  .sort-btn.active .sort-icon {
+    fill: white;
+  }
+  
+  /* Direction indicators */
+  .sort-btn[data-direction="asc"] .sort-icon {
+    transform: rotate(0deg);
+  }
+  
+  .sort-btn[data-direction="desc"] .sort-icon {
+    transform: rotate(180deg);
+  }
+  
+  /* Animation for reordering */
+  .projects-grid.reordering {
+    position: relative;
+  }
+  
+  .projects-grid.reordering .project-card {
+    transition: none !important;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .project-sorting {
+      padding: 0.75rem 1rem;
+    }
+    
+    .sort-buttons {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .sort-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+    }
+  }

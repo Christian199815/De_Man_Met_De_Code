@@ -4,7 +4,7 @@ import { Liquid } from 'liquidjs';
 import { log } from '../client/debug.js';
 import sirv from 'sirv';
 
-const _DebugBool = false ;
+const _DebugBool = false;
 const _fileName = "server";
 
 // Configuration
@@ -165,6 +165,16 @@ function transformPreprData(preprData) {
     };
 }
 
+// Helper function to shuffle an array
+function shuffleArray(array) {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
 // Load all project data
 async function loadAllProjectData() {
     try {
@@ -201,10 +211,27 @@ setupMiddleware();
 app.listen(3000, () => console.log('Server available on http://localhost:3000'));
 
 // API Routes for client-side access
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 app.get('/api/projects', async (req, res) => {
     const projects = await loadAllProjectData();
-    console.log('send');
-    res.send(projects);
+    
+    // If random order is requested via query param
+    if (req.query.random === 'true') {
+        const shuffledProjects = shuffleArray(projects);
+        res.setHeader('Content-Type', 'application/json');
+        console.log('Sending randomly ordered projects');
+        return res.send(JSON.stringify(shuffledProjects));
+    }
+    
+    console.log('Sending projects in original order');
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(projects));
 });
 
 app.get('/api/projects/:id', async (req, res) => {
@@ -212,19 +239,36 @@ app.get('/api/projects/:id', async (req, res) => {
     const project = projects.find(p => p.id === req.params.id);
     
     if (project) {
-        res.send(project);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(project));
     } else {
         res.status(404).send({ error: 'Project not found' });
     }
 });
 
-// HTML Routes
+// New Home route without project data
 app.get('/', async (req, res) => {
-  const projects = await loadAllProjectData();
+  log(_fileName, _DebugBool, 'Serving home page without project data');
+  console.log('Serving home page without project data');
   
   return res.send(renderTemplate('server/views/index.liquid', { 
-      title: 'Home',
-      projects: projects
+      title: 'Home'
+  }));
+});
+
+// Projects route with randomized projects (moved from previous home route)
+app.get('/projects', async (req, res) => {
+  const projects = await loadAllProjectData();
+  
+  // Shuffle the projects to get a random order each time
+  const randomizedProjects = shuffleArray(projects);
+  
+  log(_fileName, _DebugBool, `Serving ${randomizedProjects.length} projects in random order on /projects route`);
+  console.log(`Serving ${randomizedProjects.length} projects in random order on /projects route`);
+  
+  return res.send(renderTemplate('server/views/projects/projects.liquid', { 
+      title: 'Projects',
+      projects: randomizedProjects
   }));
 });
 
