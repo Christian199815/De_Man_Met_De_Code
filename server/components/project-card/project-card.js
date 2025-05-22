@@ -6,3 +6,10 @@ window.addEventListener("DOMContentLoaded", () => {
     card.style.transform = `rotate(${randomDeg}deg)`;
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".catagorie").forEach((cat) => {
+    const category = cat.textContent.trim().toLowerCase();
+    cat.classList.add(category);
+  });
+});
