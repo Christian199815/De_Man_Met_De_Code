@@ -1,3 +1,19 @@
 :root{
-    --link-border-color: black;
+  --link-border-color: black;
+  --color-red: #ff0000;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  
+  /* Could be the pallette you feel me
+  --color-red-50: #fff0f0;
+  --color-red-100: #ffdddd;
+  --color-red-200: #ffc0c0;
+  --color-red-300: #ff9494;
+  --color-red-400: #ff5757;
+  --color-red-500: #ff2323;
+  --color-red-600: #ff0000;
+  --color-red-700: #d70000;
+  --color-red-800: #b10303;
+  --color-red-900: #920a0a;
+  --color-red-950: #500000; */
   }
