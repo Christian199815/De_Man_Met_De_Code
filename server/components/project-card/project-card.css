@@ -1,67 +1,77 @@
 .project-card {
-    width: 35%;
-    display: flex;
-    flex-direction: column;
-    position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  font-family: Raleway, sans-serif;
+}
 
-    min-height: calc(100vw * 0.102 + 304px);
+.landscape-card,
+.portrait-card {
+  position: relative;
+  border-top: 8px solid black;
+  border-bottom: 8px solid black;
+  border-left: 8px solid black;
+  border-right: 8px solid black;
+}
 
-    box-shadow: 2px 8px 5px 2px rgba(179,166,166,0.1);
-    -webkit-box-shadow: 5px 8px 5px 6px rgba(179,166,166,0.27);
-    -moz-box-shadow: 5px 8px 5px 6px rgba(179,166,166,0.27);
+.landscape-card {
+  grid-row: span 1;
+  grid-column: span 2;
+  /* aspect-ratio: 16/9; */
+}
 
-    a {
-      display: flex;
-      flex-direction: column;
+.portrait-card {
+  grid-row: span 2;
+  grid-column: span 1;
+  /* aspect-ratio: 9/16; */
+}
 
-      img {
-        width: 100%;
-        height: 100%;
-        order: -1;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-      }
+.project-details {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  display: flex;
 
-      h3 {
-        font-size: 1em;
-        padding: .2em .5em;
-        margin-top: 0.2em;
-        text-decoration: none;
-        transform: text-decoration 2s ease;
-        font-weight: 500;
-      }
-
-      div {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1em;
-        padding: .2em .5em;
-
-      }
-
-      /* the hidden */
-      > p {
-        opacity: 0;
-        position: absolute;
-        font-size: 4em;
-        left: 0;
-        top: 0;
-        transition: opacity 2s ease;
-        text-align: center;
-        height: 87%;
-        width: 100%;
-        padding: .2em .5em;
-
-
-        background-color: rgb(120, 130, 139);
-      }
-    }
-
-    > a:has(:hover) p:nth-of-type(1) {
-      opacity: 0.6;
-    }
-
-    > a:has(:hover) h3 {
-      text-decoration: underline;
-    }
+  h2 {
+    color: white;
+    width: 100%;
+    margin: auto 0;
+    padding: 0 0 0 0.5em;
+    text-transform: uppercase;
+    font-size: clamp(1em, 3vw, 1.5em);
+    font-weight: 600;
   }
+}
+
+.catagorie {
+  position: absolute;
+  bottom: 40px;
+  right: 30px;
+  z-index: 2;
+  transition: transform 0.3s ease;
+
+  background-color: red;
+
+  padding: 0.5em;
+
+  p {
+    color: white;
+    text-transform: uppercase;
+    font-size: clamp(1em, 3vw, 1.5em);
+    font-weight: 600;
+  }
+}
+
+.project-image-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.project-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
