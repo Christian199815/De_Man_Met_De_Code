@@ -7,8 +7,8 @@
 .landscape-card,
 .portrait-card {
   position: relative;
-  border: 16px solid transparent;
-  border-image-source: url("/public/images/beam.png");
+  /* border: 16px solid transparent;
+  border-image-source: url("/public/images/beam.png"); */
 }
 
 .landscape-card {
