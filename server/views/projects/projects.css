@@ -1,219 +1,33 @@
-/* CSS for Patterned Grid Layout with Square Items Every 2 Elements */
 
-/* Main grid container */
-.dynamic-grid {
+.container {
+  height: 100dvh;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #222;
+}
+
+/* Projects Grid */
+.projects-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 2px;
-  grid-auto-flow: dense; /* This is key for filling gaps automatically */
-  grid-auto-rows: minmax(200px, auto); /* Allow rows to expand as needed */
+  grid-auto-flow: row dense;
   width: 100%;
-  background-color: rgba(230, 230, 240, 0.3);
-  padding: 2px;
-  min-height: auto; /* Remove any fixed height constraints */
-  height: auto; /* Let the grid grow naturally */
+  height: 200dvh;
 }
-
-/* Base grid item styling */
-.grid-item {
-  background-color: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  transition: transform 0.3s ease;
-  min-height: 200px; /* Ensure minimum height for all items */
-  display: flex;
-  flex-direction: column;
-}
-
-.grid-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-/* Different item types */
-.grid-item.landscape {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-.grid-item.portrait {
-  grid-column: span 1;
-  grid-row: span 2;
-  min-height: 400px; /* Taller minimum for portrait items */
-}
-
-.grid-item.square {
-  grid-column: span 1;
-  grid-row: span 1;
-  min-height: 200px;
-  background-color: #f0f0f0; /* Slightly different background to distinguish square items */
-  border: 1px solid #e0e0e0;
-  aspect-ratio: 1 / 1; /* Ensure square items stay square */
-}
-
-.grid-item.full-width-alt {
-  grid-column: 1 / -1;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  padding: 2rem;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  min-height: 150px;
-}
-
-/* Image wrapper */
-.project-image-wrapper {
-  width: 100%;
-  flex: 1; /* Take up available space */
-  position: relative;
-  overflow: hidden;
-  min-height: 150px; /* Minimum height for images */
-}
-
-.project-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.grid-item:hover .project-image-wrapper img {
-  transform: scale(1.05);
-}
-
-/* Square item specific styles */
-.grid-item.square .project-image-wrapper {
-  aspect-ratio: 1 / 1;
-  flex: none; /* Don't stretch, maintain aspect ratio */
-}
-
-/* Item content */
-.item-content {
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.95);
-  margin-top: auto; /* Push content to bottom if using flexbox */
-  transition: transform 0.3s ease;
-}
-
-/* Alternative: Overlay style for item content */
-.item-content.overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.9);
-  margin-top: 0;
-}
-
-.grid-item:hover .item-content {
-  transform: translateY(-2px);
-}
-
-.item-content h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: #333;
-  line-height: 1.3;
-}
-
-.project-category {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.9rem;
-  color: #666;
-  font-weight: 500;
-}
-
-.project-details {
-  margin-top: 0.5rem;
-}
-
-.project-details p {
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
-  color: #555;
-}
-
-.for-sale-badge {
-  display: inline-block;
-  background-color: #28a745;
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-/* Hide all pool items by default */
-.square-item-pool {
-  display: none;
-}
-
-.pool-item {
-  display: none;
-}
-
-/* Ensure filtered items are properly hidden */
-.grid-item.filtered-out,
-.grid-item.search-hidden {
-  display: none !important;
-}
-
-/* Make the square items visually distinct */
-.grid-item.square.additional-item {
-  animation: fadeIn 0.3s ease-out;
-  border-top: 2px solid #3490dc; /* Blue top border to distinguish them */
-}
-
-/* Add visual indicator for items placed in a pattern */
-.grid-item.square.additional-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 20px 20px 0;
-  border-color: transparent #3490dc transparent transparent; /* Blue corner triangle */
-  z-index: 2;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Ensure the container doesn't constrain the grid */
-.container {
-  width: 100%;
-  max-width: none; /* Remove any max-width constraints */
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .dynamic-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .dynamic-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/*   
+  .project-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   
-  .grid-item.portrait {
-    min-height: 300px; /* Reduce height on smaller screens */
-  }
-}
-
-@media (max-width: 600px) {
-  .dynamic-grid {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: column;
   }
   
   .grid-item.landscape {
@@ -223,11 +37,95 @@
   .grid-item.portrait {
     min-height: 250px;
   }
+
+  
+  .square{
+    background-color: yellow;
+    color: black;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .project-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .project-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .project-card:hover .project-image-wrapper img {
+    transform: scale(1.05);
+  }
+  
+  .project-info {
+    padding: 1.5rem;
+  }
+  
+  .project-info h2 {
+    font-size: 2.2vw;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-category {
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  .project-details {
+    margin-top: 1rem;
+  }
+  
+  .project-details p {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+  }
+  
+  .project-details strong {
+  }
+   */
+.for-sale-badge {
+  display: inline-block;
+  background-color: #4caf50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
 
-@media (max-width: 480px) {
-  .dynamic-grid {
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  /* .projects-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  } */
+}
+
+/* Alternative Grid Layout - Masonry-like */
+/*
+  .projects-grid {
+    column-count: 3;
+    column-gap: 2rem;
+
   }
   
   .grid-item.landscape,
@@ -238,4 +136,6 @@
   .grid-item {
     min-height: 200px;
   }
+
 }
+

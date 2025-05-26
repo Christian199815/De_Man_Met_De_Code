@@ -1,19 +1,20 @@
-import { App } from '@tinyhttp/app';
-import { logger } from '@tinyhttp/logger';
-import { Liquid } from 'liquidjs';
-import { log } from '../client/debug.js';
-import sirv from 'sirv';
+import { App } from "@tinyhttp/app";
+import { logger } from "@tinyhttp/logger";
+import { Liquid } from "liquidjs";
+import { log } from "../client/debug.js";
+import sirv from "sirv";
 
 const _DebugBool = false;
 const _fileName = "server";
 
 // Configuration
 const PREPR_CONFIG = {
-    apiUrl: 'https://graphql.prepr.io/ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c',
-    token: 'ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c'
+  apiUrl:
+    "https://graphql.prepr.io/ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
+  token: "ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
 };
 
-// GraphQL query to fetch projects from Prepr  
+// GraphQL query to fetch projects from Prepr
 const PROJECTS_QUERY = `
 query GetProjects {
     Projects {
@@ -56,56 +57,64 @@ query GetItems {
 
 
 const engine = new Liquid({
-  extname: '.liquid',
+  extname: ".liquid",
 });
 
 const app = new App();
 
 // GraphQL fetch from Prepr
 async function fetchFromPrepr(query, variables = {}) {
-    try {
-        log(_fileName, _DebugBool, '=== Starting Prepr GraphQL fetch ===');
-        log(_fileName, _DebugBool, 'URL:' + PREPR_CONFIG.apiUrl);
+  try {
+    log(_fileName, _DebugBool, "=== Starting Prepr GraphQL fetch ===");
+    log(_fileName, _DebugBool, "URL:" + PREPR_CONFIG.apiUrl);
 
-        const response = await fetch(PREPR_CONFIG.apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${PREPR_CONFIG.token}`,
-                'User-Agent': 'Node-Portfolio-App'
-            },
-            body: JSON.stringify({
-                query: query,
-                variables: variables
-            })
-        });
+    const response = await fetch(PREPR_CONFIG.apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${PREPR_CONFIG.token}`,
+        "User-Agent": "Node-Portfolio-App",
+      },
+      body: JSON.stringify({
+        query: query,
+        variables: variables,
+      }),
+    });
 
-        log(_fileName, _DebugBool, 'Response status:' + response.status);
-        
-        if (!response.ok) {
-            log(_fileName, _DebugBool, `HTTP error! status: ${response.status}`);
-            const text = await response.text();
-            log(_fileName, _DebugBool, 'Error response:' + text);
-            return null;
-        }
-        
-        const data = await response.json();
-        log(_fileName, _DebugBool, 'Raw response data:' + JSON.stringify(data, null, 2));
-        
-        if (data.errors) {
-            log(_fileName, _DebugBool, 'GraphQL errors:' + JSON.stringify(data.errors));
-            if (data.data) {
-                log(_fileName, _DebugBool,'Returning partial data despite errors');
-                return data.data;
-            }
-            return null;
-        }
-        
-        return data.data;
-    } catch (error) {
-        log(_fileName, _DebugBool, 'Error fetching from Prepr:' + error);
-        return null;
+    log(_fileName, _DebugBool, "Response status:" + response.status);
+
+    if (!response.ok) {
+      log(_fileName, _DebugBool, `HTTP error! status: ${response.status}`);
+      const text = await response.text();
+      log(_fileName, _DebugBool, "Error response:" + text);
+      return null;
     }
+
+    const data = await response.json();
+    log(
+      _fileName,
+      _DebugBool,
+      "Raw response data:" + JSON.stringify(data, null, 2)
+    );
+
+    if (data.errors) {
+      log(
+        _fileName,
+        _DebugBool,
+        "GraphQL errors:" + JSON.stringify(data.errors)
+      );
+      if (data.data) {
+        log(_fileName, _DebugBool, "Returning partial data despite errors");
+        return data.data;
+      }
+      return null;
+    }
+
+    return data.data;
+  } catch (error) {
+    log(_fileName, _DebugBool, "Error fetching from Prepr:" + error);
+    return null;
+  }
 }
 
 // Transform Prepr data from GraphQL
@@ -188,22 +197,38 @@ function transformPreprData(preprData) {
         projects: transformedProjects,
         categories: categories
     };
+  });
+
+  log(
+    _fileName,
+    _DebugBool,
+    `Transformed ${transformedProjects.length} projects from Prepr`
+  );
+  log(
+    _fileName,
+    _DebugBool,
+    "Transformed projects:" + JSON.stringify(transformedProjects, null, 2)
+  );
+  return {
+    projects: transformedProjects,
+  };
 }
 
 
 // Helper function to shuffle an array
 function shuffleArray(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
 }
 
 // Load all project data
 // Load all project data and items data
 async function loadAllProjectData() {
+
     try {
         // First fetch items data
         const itemsData = await fetchFromPrepr(ITEMS_QUERY);
@@ -241,31 +266,40 @@ async function loadAllProjectData() {
             categories: []
         };
     }
+
+    log(_fileName, _DebugBool, "No projects available from Prepr");
+    return [];
+  } catch (error) {
+    log(_fileName, _DebugBool, "Error loading project data: " + error);
+    return [];
+  }
 }
 
 
 // Setup middleware
 async function setupMiddleware() {
   app.use(logger());
-  
+
   // Serve static files
-  app.use('/resources', sirv('public/resources', { dev: true }));
-  app.use('/public', sirv('public', { dev: true }));
-  app.use('/', sirv('dist', { dev: true }));
+  app.use("/resources", sirv("public/resources", { dev: true }));
+  app.use("/public", sirv("public", { dev: true }));
+  app.use("/", sirv("dist", { dev: true }));
 }
 
 // Setup middleware
 setupMiddleware();
 
 // Start server
-app.listen(3000, () => console.log('Server available on http://localhost:3000'));
+app.listen(3000, () =>
+  console.log("Server available on http://localhost:3000")
+);
 
 // API Routes for client-side access
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
 });
 
 app.get('/api/projects', async (req, res) => {
@@ -293,16 +327,16 @@ app.get('/api/projects', async (req, res) => {
     }));
 });
 
-app.get('/api/projects/:id', async (req, res) => {
-    const projects = await loadAllProjectData();
-    const project = projects.find(p => p.id === req.params.id);
-    
-    if (project) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(project));
-    } else {
-        res.status(404).send({ error: 'Project not found' });
-    }
+app.get("/api/projects/:id", async (req, res) => {
+  const projects = await loadAllProjectData();
+  const project = projects.find((p) => p.id === req.params.id);
+
+  if (project) {
+    res.setHeader("Content-Type", "application/json");
+    res.send(JSON.stringify(project));
+  } else {
+    res.status(404).send({ error: "Project not found" });
+  }
 });
 
 app.get('/api/categories', async (req, res) => {
@@ -312,13 +346,15 @@ app.get('/api/categories', async (req, res) => {
 });
 
 // New Home route without project data
-app.get('/', async (req, res) => {
-  log(_fileName, _DebugBool, 'Serving home page without project data');
-  console.log('Serving home page without project data');
-  
-  return res.send(renderTemplate('server/views/index.liquid', { 
-      title: 'Home'
-  }));
+app.get("/", async (req, res) => {
+  log(_fileName, _DebugBool, "Serving home page without project data");
+  console.log("Serving home page without project data");
+
+  return res.send(
+    renderTemplate("server/views/index.liquid", {
+      title: "Home",
+    })
+  );
 });
 
 
@@ -360,6 +396,7 @@ app.get('/api/square-items', async (req, res) => {
 });
 
 // Projects route with randomized projects (moved from previous home route)
+
 app.get('/projects', async (req, res) => {
     try {
         const projectData = await loadAllProjectData();
