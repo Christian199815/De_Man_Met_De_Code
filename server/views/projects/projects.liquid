@@ -1,60 +1,88 @@
 {% layout "server/layouts/base.liquid" %}
 
-
-
 {% block content %}
 <div class="container">
   <h1>Projects</h1>
 
-  {% render '../../components/category-filter/category-filter.liquid' %}
+  {% render '../../components/category-filter/category-filter.liquid', 
+  categories: categories %}
   {% render '../../components/project-sorting/project-sorting.liquid' %}
   {% render '../../components/search-bar/search-bar.liquid' %}
 
-  <div class="projects-grid">
-      {% for project in projects %}
-      <div class="project-card {{ project.aspectRatioClass }}">
-          <div class="project-image-wrapper" 
-               style="aspect-ratio: {{ project.featuredImageWidth }} / {{ project.featuredImageHeight }}">
-              <img src="{{ project.projectFeaturedImage }}" 
-                   alt="{{ project.projectname }}"
-                   {% comment %} width="{{ project.featuredImageWidth }}" {% endcomment %}
-                   {% comment %} height="{{ project.featuredImageHeight }}" {% endcomment %}
-                   loading="lazy">
+  <div class="dynamic-grid" id="dynamicGrid">
+
+    {% for item in projects %}
+      {% comment %} Check if this is a project or a square item {% endcomment %}
+      {% if item.source == 'prepr' %}
+        {% comment %} This is a project item {% endcomment %}
+        <div class="grid-item project-item {{ item.aspectRatioClass }}" data-category="{{ item.category }}" data-type="project" data-id="{{ item.id }}">
+          <div class="project-image-wrapper" style="aspect-ratio: {{ item.featuredImageWidth }} / {{ item.featuredImageHeight }}">
+            <img src="{{ item.projectFeaturedImage }}" alt="{{ item.projectname }}" loading="lazy">
           </div>
-          
-          <div class="project-info">
-              <h2>{{ project.projectname }}</h2>
-              
-              {% if project.category %}
-              <p class="project-category">{{ project.category }}</p>
+          <div class="item-content">
+            <h3>{{ item.projectname }}</h3>
+            {% if item.category %}
+              <p class="project-category">{{ item.category }}</p>
+            {% endif %}
+            
+            <div class="project-details">
+              {% assign months_dutch = "Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December" | split: "," %}
+              {% assign month_number = item.projectDate | date: "%m" | minus: 1 %}
+              {% assign dutch_month = months_dutch[month_number] %}
+
+              {% if item.productionName and item.productionName != "" and item.productionName != nil %}
+                <p><strong>Productie: </strong> {{ item.productionName }}</p>
               {% endif %}
-              
-              <div class="project-details">
-                {% assign months_dutch = "Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December" | split: "," %}
-                {% assign month_number = project.projectDate | date: "%m" | minus: 1 %}
-                {% assign dutch_month = months_dutch[month_number] %}
-
-
-                  {% if project.productionName and project.productionName != "" and project.productionName != nil %}
-                  <p><strong>Productie: </strong> {{ project.productionName }}</p>
-                  {% endif %}
-                  
-                  {% if project.photographerName and project.photographerName != "" and project.photographerName != nil%}
-                  <p><strong>Fotograaf: </strong> {{ project.photographerName }}</p>
-                  {% endif %}
-                  
-                  {% if project.projectDate %}
-                  <p><strong>Datum: </strong>{{ project.projectDate | date: "%e" }} {{ dutch_month }} {{ project.projectDate | date: "%Y" }}</p>
-                  {% endif %}
-                  
-                  {% if project.forSale %}
-                  <span class="for-sale-badge">Te koop</span>
-                  {% endif %}
-              </div>
+            
+              {% if item.photographerName and item.photographerName != "" and item.photographerName != nil %}
+                <p><strong>Fotograaf: </strong> {{ item.photographerName }}</p>
+              {% endif %}
+            
+              {% if item.projectDate %}
+                <p><strong>Datum: </strong>{{ item.projectDate | date: "%e" }} {{ dutch_month }} {{ item.projectDate | date: "%Y" }}</p>
+              {% endif %}
+            
+              {% if item.forSale %}
+                <span class="for-sale-badge">Te koop</span>
+              {% endif %}
+            </div>
           </div>
-      </div>
-      {% endfor %}
+        </div>
+      
+      {% elsif item.type == 'square' or item.source == 'square-item' %}
+        {% comment %} This is a square item {% endcomment %}
+        <div class="grid-item square-item square" data-category="{{ item.category }}" data-type="square" data-id="{{ item.id }}">
+          <div class="project-image-wrapper square-aspect">
+            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+          </div>
+          <div class="item-content">
+            <h3>{{ item.title }}</h3>
+            {% if item.category %}
+              <p class="project-category">{{ item.category }}</p>
+            {% endif %}
+          </div>
+        </div>
+      
+      {% else %}
+        {% comment %} Handle other item types if they exist {% endcomment %}
+        <div class="grid-item generic-item" data-category="{{ item.category | default: 'uncategorized' }}" data-type="generic" data-id="{{ item.id }}">
+          <div class="project-image-wrapper">
+            {% if item.image %}
+              <img src="{{ item.image }}" alt="{{ item.title | default: item.projectname }}" loading="lazy">
+            {% elsif item.projectFeaturedImage %}
+              <img src="{{ item.projectFeaturedImage }}" alt="{{ item.projectname }}" loading="lazy">
+            {% endif %}
+          </div>
+          <div class="item-content">
+            <h3>{{ item.title | default: item.projectname }}</h3>
+            {% if item.category %}
+              <p class="project-category">{{ item.category }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
   </div>
-</div>
+</div>   
 
 {% endblock %}
