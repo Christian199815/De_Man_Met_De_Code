@@ -4,8 +4,7 @@
  * This system efficiently manages project items in the grid layout
  * using an object pooling pattern to improve performance and memory usage.
  * 
- * It integrates with the dynamic grid layout system and supports proper
- * handling of square, portrait, and landscape items.
+ * No HTML/CSS generation in JavaScript - relies on templates and CSS classes only.
  */
 
 class ProjectItemPool {
@@ -19,7 +18,7 @@ class ProjectItemPool {
       endpoint: options.endpoint || '/api/projects',
       useRandomOrder: options.useRandomOrder || true,
       onItemCreated: options.onItemCreated || null,
-      dataFromServer: options.dataFromServer || null, // Can be pre-populated from Liquid
+      dataFromServer: options.dataFromServer || null,
       debug: options.debug || false
     };
 
@@ -59,21 +58,23 @@ class ProjectItemPool {
     
     this.log('Initializing object pool');
     
+    // Check if we have template and container
+    if (!this.template) {
+      this.log('Error: No template found with selector', this.config.templateSelector);
+      return;
+    }
+    
+    if (!this.container) {
+      this.log('Error: No container found with selector', this.config.containerSelector);
+      return;
+    }
+    
     // Create the initial pool
     for (let i = 0; i < this.config.initialPoolSize; i++) {
       this.pool.push(this.createItem());
     }
     
-    // Check if we have template and container
-    if (!this.template) {
-      this.log('Warning: No template found with selector', this.config.templateSelector);
-    }
-    
-    if (!this.container) {
-      this.log('Warning: No container found with selector', this.config.containerSelector);
-    }
-    
-    // Check if we have pre-populated data from Liquid
+    // Check if we have pre-populated data from server
     if (this.config.dataFromServer && Array.isArray(this.config.dataFromServer)) {
       this.log('Using pre-populated data from server', this.config.dataFromServer.length, 'items');
       this.dataCache = this.config.dataFromServer;
@@ -86,53 +87,25 @@ class ProjectItemPool {
     this.isInitialized = true;
   }
   
-  // Create a new item for the pool
+  // Create a new item for the pool (relies on HTML template)
   createItem() {
-    let element;
-    
-    // If we have a template, clone it
-    if (this.template) {
-      element = this.template.content.cloneNode(true).firstElementChild;
-    } else {
-      // Otherwise create a basic project card structure
-      element = document.createElement('div');
-      element.className = 'project-card';
-      
-      const imageWrapper = document.createElement('div');
-      imageWrapper.className = 'project-image-wrapper';
-      
-      const img = document.createElement('img');
-      img.alt = '';
-      imageWrapper.appendChild(img);
-      
-      const infoDiv = document.createElement('div');
-      infoDiv.className = 'project-info';
-      
-      const title = document.createElement('h3');
-      const category = document.createElement('span');
-      category.className = 'project-category';
-      const production = document.createElement('div');
-      production.className = 'project-production';
-      const date = document.createElement('div');
-      date.className = 'project-date';
-      
-      infoDiv.appendChild(title);
-      infoDiv.appendChild(category);
-      infoDiv.appendChild(production);
-      infoDiv.appendChild(date);
-      
-      element.appendChild(imageWrapper);
-      element.appendChild(infoDiv);
+    if (!this.template) {
+      this.log('Error: Cannot create item without template');
+      return null;
     }
     
-    // Element is not in use yet
+    // Clone the template
+    const element = this.template.content.cloneNode(true).firstElementChild;
+    
+    // Add pooled state classes
     element.classList.add('pooled');
+    element.setAttribute('data-pooled', 'true');
+    
+    // Hide initially
     element.style.display = 'none';
     
-    // If we have a container, append the element
-    if (this.container) {
-      this.container.appendChild(element);
-    }
+    // Append to container
+    this.container.appendChild(element);
     
     // Call onItemCreated callback if provided
     if (typeof this.config.onItemCreated === 'function') {
@@ -154,6 +127,7 @@ class ProjectItemPool {
     if (availableItem) {
       availableItem.inUse = true;
       availableItem.element.classList.remove('pooled');
+      availableItem.element.removeAttribute('data-pooled');
       availableItem.element.style.display = '';
       this.activeItems.push(availableItem);
       return availableItem;
@@ -167,8 +141,11 @@ class ProjectItemPool {
     
     // Create a new item and add to pool
     const newItem = this.createItem();
+    if (!newItem) return null;
+    
     newItem.inUse = true;
     newItem.element.classList.remove('pooled');
+    newItem.element.removeAttribute('data-pooled');
     newItem.element.style.display = '';
     this.pool.push(newItem);
     this.activeItems.push(newItem);
@@ -184,7 +161,12 @@ class ProjectItemPool {
     itemObj.inUse = false;
     itemObj.data = null;
     itemObj.element.classList.add('pooled');
+    itemObj.element.setAttribute('data-pooled', 'true');
     itemObj.element.style.display = 'none';
+    
+    // Clear aspect ratio classes and data
+    itemObj.element.classList.remove('portrait', 'landscape', 'square');
+    itemObj.element.removeAttribute('data-aspect-ratio');
     
     // Remove from active items
     const index = this.activeItems.indexOf(itemObj);
@@ -209,71 +191,83 @@ class ProjectItemPool {
     const element = itemObj.element;
     itemObj.data = projectData;
     
-    // Update element with project data
+    // Update image
     const img = element.querySelector('img');
-    if (img) {
-      img.src = projectData.projectFeaturedImage || '';
+    if (img && projectData.projectFeaturedImage) {
+      img.src = projectData.projectFeaturedImage;
       img.alt = projectData.projectname || '';
       
       // Handle image load event for aspect ratio detection
       img.onload = () => {
-        // Calculate aspect ratio
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-        const ratio = width / height;
-        
-        // Remove existing aspect ratio classes
-        element.classList.remove('portrait', 'landscape', 'square');
-        
-        // Apply the appropriate class based on aspect ratio
-        if (Math.abs(ratio - 1) < 0.05) {
-          element.dataset.aspectRatio = 'square';
-          element.classList.add('square');
-        } else if (ratio < 0.9) {
-          element.dataset.aspectRatio = 'portrait';
-          element.classList.add('portrait');
-        } else {
-          element.dataset.aspectRatio = 'landscape';
-          element.classList.add('landscape');
-        }
-        
-        // Notify that layout may need to be updated
-        this.refreshLayout();
+        this.detectAndApplyAspectRatio(element, img);
+      };
+      
+      // Handle error case
+      img.onerror = () => {
+        this.log('Failed to load image:', projectData.projectFeaturedImage);
+        element.classList.add('image-error');
       };
     }
     
-    // Update text content
-    const title = element.querySelector('h3');
-    if (title) {
-      title.textContent = projectData.projectname || '';
-    }
+    // Update text content using data attributes or direct assignment
+    this.updateTextContent(element, '.project-title, h2, h3', projectData.projectname);
+    this.updateTextContent(element, '.project-category', projectData.category);
+    this.updateTextContent(element, '.project-production', projectData.productionName);
+    this.updateTextContent(element, '.project-date', projectData.projectDate);
     
-    const category = element.querySelector('.project-category');
-    if (category) {
-      category.textContent = projectData.category || '';
-    }
+    // Set data attributes for filtering and identification
+    element.setAttribute('data-id', projectData.id || '');
+    element.setAttribute('data-category', projectData.category || '');
+    element.setAttribute('data-slug', projectData.slug || '');
     
-    const production = element.querySelector('.project-production');
-    if (production) {
-      production.textContent = projectData.productionName || '';
-    }
-    
-    const date = element.querySelector('.project-date');
-    if (date) {
-      date.textContent = projectData.projectDate || '';
-    }
-    
-    // Set data attributes for filtering
-    element.dataset.id = projectData.id || '';
-    element.dataset.category = projectData.category || '';
-    element.dataset.slug = projectData.slug || '';
-    
-    // For sale badge if applicable
+    // Handle for-sale status with CSS class
     if (projectData.forSale) {
       element.classList.add('for-sale');
     } else {
       element.classList.remove('for-sale');
     }
+    
+    // Apply category-specific classes
+    if (projectData.category) {
+      element.classList.add(`category-${projectData.category.toLowerCase()}`);
+    }
+  }
+  
+  // Helper method to update text content
+  updateTextContent(element, selector, content) {
+    const targetElement = element.querySelector(selector);
+    if (targetElement && content) {
+      targetElement.textContent = content;
+    }
+  }
+  
+  // Detect and apply aspect ratio classes
+  detectAndApplyAspectRatio(element, img) {
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
+    
+    if (width === 0 || height === 0) return;
+    
+    const ratio = width / height;
+    
+    // Remove existing aspect ratio classes
+    element.classList.remove('portrait', 'landscape', 'square');
+    
+    // Apply the appropriate class based on aspect ratio
+    let aspectRatio;
+    if (Math.abs(ratio - 1) < 0.05) {
+      aspectRatio = 'square';
+    } else if (ratio < 0.9) {
+      aspectRatio = 'portrait';
+    } else {
+      aspectRatio = 'landscape';
+    }
+    
+    element.classList.add(aspectRatio);
+    element.setAttribute('data-aspect-ratio', aspectRatio);
+    
+    // Notify that layout may need to be updated
+    this.refreshLayout();
   }
   
   // Load project data from server
@@ -301,23 +295,22 @@ class ProjectItemPool {
       
     } catch (error) {
       this.log('Error loading data:', error);
-      // Show error message to user
-      if (this.container) {
-        this.container.innerHTML = `<div class="error-message">
-          <p>Error loading projects. Please try again later.</p>
-          <button class="retry-button">Retry</button>
-        </div>`;
-        
-        // Add retry button handler
-        const retryButton = this.container.querySelector('.retry-button');
-        if (retryButton) {
-          retryButton.addEventListener('click', () => {
-            this.container.innerHTML = '<div class="loading">Loading projects...</div>';
-            this.loadData();
-          });
-        }
-      }
+      this.showErrorMessage(error.message);
     }
+  }
+  
+  // Show error message (relies on CSS for styling)
+  showErrorMessage(message) {
+    if (!this.container) return;
+    
+    this.container.classList.add('error-state');
+    this.container.setAttribute('data-error-message', message);
+    
+    // Dispatch error event for external handling
+    const errorEvent = new CustomEvent('poolError', {
+      detail: { message, pool: this }
+    });
+    this.container.dispatchEvent(errorEvent);
   }
   
   // Render project items
@@ -328,6 +321,10 @@ class ProjectItemPool {
     
     // Release all current items
     this.releaseAll();
+    
+    // Remove error state
+    this.container.classList.remove('error-state');
+    this.container.removeAttribute('data-error-message');
     
     // Create and update items for each project
     projectsData.forEach(projectData => {
@@ -344,7 +341,7 @@ class ProjectItemPool {
   // Get items by aspect ratio
   getItemsByAspectRatio(ratio) {
     return this.activeItems.filter(item => {
-      return item.element.dataset.aspectRatio === ratio;
+      return item.element.getAttribute('data-aspect-ratio') === ratio;
     });
   }
   
@@ -359,7 +356,8 @@ class ProjectItemPool {
     } else {
       // Show only items matching the category
       this.activeItems.forEach(item => {
-        if (item.data && item.data.category === category) {
+        const itemCategory = item.element.getAttribute('data-category');
+        if (itemCategory === category) {
           item.element.classList.remove('filtered-out');
           item.element.classList.add('filtered-in');
         } else {
@@ -373,72 +371,83 @@ class ProjectItemPool {
     setTimeout(this.refreshLayout, 400); // Allow animation to play
   }
   
+  // Search functionality
+  searchItems(query) {
+    if (!query || query.trim() === '') {
+      // Show all items
+      this.activeItems.forEach(item => {
+        item.element.classList.remove('search-hidden');
+      });
+    } else {
+      const searchTerm = query.toLowerCase().trim();
+      
+      this.activeItems.forEach(item => {
+        const data = item.data;
+        const searchableText = [
+          data.projectname,
+          data.category,
+          data.productionName,
+          data.projectDate
+        ].filter(Boolean).join(' ').toLowerCase();
+        
+        if (searchableText.includes(searchTerm)) {
+          item.element.classList.remove('search-hidden');
+        } else {
+          item.element.classList.add('search-hidden');
+        }
+      });
+    }
+    
+    this.refreshLayout();
+  }
+  
   // Refresh layout (to be connected with the dynamic grid layout)
   refreshLayout() {
     // Dispatch a custom event for the layout system to catch
     const event = new CustomEvent('itemsUpdated', {
-      detail: { items: this.activeItems.map(item => item.element) }
+      detail: { 
+        items: this.activeItems.map(item => item.element),
+        pool: this
+      }
     });
     this.container.dispatchEvent(event);
     
-    // If window has a layoutGrid function (from dynamic-grid-layout.js), call it
+    // If window has a layoutGrid function, call it
     if (window.layoutGrid) {
       window.layoutGrid();
     }
+  }
+  
+  // Get statistics
+  getStats() {
+    return {
+      totalPoolSize: this.pool.length,
+      activeItems: this.activeItems.length,
+      availableItems: this.pool.filter(item => !item.inUse).length,
+      aspectRatios: {
+        square: this.getItemsByAspectRatio('square').length,
+        landscape: this.getItemsByAspectRatio('landscape').length,
+        portrait: this.getItemsByAspectRatio('portrait').length
+      }
+    };
   }
 }
-
-// Create a global instance of the pool
-document.addEventListener('DOMContentLoaded', () => {
-  // Check if data was pre-populated via Liquid template
-  let serverData = null;
-  
-  // Look for the data in a script tag (common pattern for passing server data to client)
-  const dataScript = document.getElementById('projects-data');
-  if (dataScript) {
-    try {
-      serverData = JSON.parse(dataScript.textContent);
-    } catch (e) {
-      console.error('Error parsing projects data from script tag:', e);
-    }
-  }
-  
-  // Create the item pool with appropriate configuration
-  window.projectItemPool = new ProjectItemPool({
-    initialPoolSize: 20,
-    maxPoolSize: 200,
-    templateSelector: '#project-item-template',
-    containerSelector: '.projects-grid',
-    endpoint: '/api/projects',
-    useRandomOrder: true,
-    dataFromServer: serverData,
-    debug: true // Set to false in production
-  });
-  
-  // Connect to dynamic grid layout system
-  document.querySelector('.projects-grid')?.addEventListener('itemsUpdated', (event) => {
-    // If window has a layoutGrid function (from dynamic-grid-layout.js), call it
-    if (window.layoutGrid) {
-      window.layoutGrid();
-    }
-  });
-});
-
-// Add this to the end of your existing projects.js file
 
 /**
  * Grid Layout Optimizer - Fills empty spaces in the grid
  * Works with the existing ProjectItemPool system
+ * No HTML/CSS generation - relies on CSS classes and data attributes
  */
 class GridLayoutOptimizer {
   constructor(poolInstance) {
     this.pool = poolInstance;
     this.container = poolInstance.container;
     this.isOptimizing = false;
+    this.resizeTimeout = null;
     
     // Bind methods
     this.optimizeLayout = this.optimizeLayout.bind(this);
-    this.fillEmptySpaces = this.fillEmptySpaces.bind(this);
+    this.applySmartSizing = this.applySmartSizing.bind(this);
     this.getGridInfo = this.getGridInfo.bind(this);
     
     this.init();
@@ -449,7 +458,6 @@ class GridLayoutOptimizer {
     
     // Listen for layout updates from the pool
     this.container.addEventListener('itemsUpdated', () => {
-      // Delay optimization to allow for animations/transitions
       setTimeout(this.optimizeLayout, 300);
     });
     
@@ -490,11 +498,6 @@ class GridLayoutOptimizer {
       // Apply smart sizing to reduce gaps
       this.applySmartSizing(visibleItems, columns);
       
-      // Fill any remaining empty spaces
-      setTimeout(() => {
-        this.fillEmptySpaces(columns);
-      }, 100);
-      
     } catch (error) {
       console.error('Error optimizing layout:', error);
     } finally {
@@ -506,162 +509,89 @@ class GridLayoutOptimizer {
     items.forEach((item, index) => {
       const element = item.element;
       
-      // Reset any previous modifications
+      // Reset any previous grid modifications
       element.style.gridColumn = '';
       element.style.gridRow = '';
       
-      // Apply smart sizing based on content and position
-      const aspectRatio = element.dataset.aspectRatio;
+      // Remove any existing span classes
+      element.classList.remove('span-2', 'span-3', 'row-span-2');
+      
+      // Apply smart sizing based on content and position using CSS classes
+      const aspectRatio = element.getAttribute('data-aspect-ratio');
       const hasLongContent = this.hasLongContent(element);
       
-      // Strategy 1: Make some landscape items wider to fill gaps
+      // Strategy 1: Make some landscape items wider
       if (aspectRatio === 'landscape' && columns >= 4) {
         if (index % 3 === 0) {
-          element.style.gridColumn = 'span 3';
+          element.classList.add('span-3');
         } else {
-          element.style.gridColumn = 'span 2';
+          element.classList.add('span-2');
         }
       }
-      
       // Strategy 2: Make portrait items taller
       else if (aspectRatio === 'portrait') {
-        element.style.gridRow = 'span 2';
+        element.classList.add('row-span-2');
       }
-      
       // Strategy 3: Vary square items
-      else if (aspectRatio === 'square' || element.classList.contains('square')) {
+      else if (aspectRatio === 'square') {
         if (index % 7 === 0 && columns >= 6) {
-          element.style.gridColumn = 'span 2';
+          element.classList.add('span-2');
         }
         if (index % 11 === 0) {
-          element.style.gridRow = 'span 2';
+          element.classList.add('row-span-2');
         }
       }
       
       // Strategy 4: Items with long content get more space
       if (hasLongContent && columns >= 4) {
-        element.style.gridColumn = 'span 2';
+        element.classList.add('span-2');
       }
     });
   }
   
   hasLongContent(element) {
-    const title = element.querySelector('h3');
-    const details = element.querySelectorAll('.project-details p');
+    const title = element.querySelector('h2, h3, .project-title');
+    const category = element.querySelector('.project-category');
     
     const longTitle = title && title.textContent.length > 25;
-    const manyDetails = details.length > 2;
+    const longCategory = category && category.textContent.length > 15;
     
-    return longTitle || manyDetails;
-  }
-  
-  fillEmptySpaces(columns) {
-    // Calculate if we need filler items
-    const containerRect = this.container.getBoundingClientRect();
-    const visibleItems = Array.from(this.container.querySelectorAll('.grid-item:not(.filtered-out):not(.search-hidden):not(.filler-item)'));
-    
-    if (visibleItems.length === 0) return;
-    
-    const lastItem = visibleItems[visibleItems.length - 1];
-    const lastItemRect = lastItem.getBoundingClientRect();
-    
-    // Check for significant empty space
-    const remainingSpace = containerRect.bottom - lastItemRect.bottom;
-    
-    if (remainingSpace > 150) {
-      this.createFillerItems(Math.min(3, Math.floor(remainingSpace / 100)));
-    }
-  }
-  
-  createFillerItems(count) {
-    this.pool.log(`Creating ${count} filler items`);
-    
-    for (let i = 0; i < count; i++) {
-      const fillerElement = document.createElement('div');
-      fillerElement.className = 'grid-item filler-item square';
-      fillerElement.innerHTML = `
-        <div class="project-image-wrapper">
-          <div class="filler-pattern"></div>
-        </div>
-        <div class="item-content">
-          <h3>Coming Soon</h3>
-          <p class="project-category">Updates</p>
-        </div>
-      `;
-      
-      // Style the filler
-      const hue = Math.floor(Math.random() * 360);
-      fillerElement.style.background = `linear-gradient(135deg, hsl(${hue}, 20%, 95%), hsl(${hue}, 15%, 90%))`;
-      fillerElement.style.border = '1px dashed rgba(0,0,0,0.1)';
-      fillerElement.style.opacity = '0.7';
-      
-      // Add pattern to the filler
-      const pattern = fillerElement.querySelector('.filler-pattern');
-      pattern.style.background = `
-        repeating-linear-gradient(
-          45deg,
-          transparent,
-          transparent 10px,
-          rgba(0,0,0,0.05) 10px,
-          rgba(0,0,0,0.05) 20px
-        )
-      `;
-      pattern.style.height = '100%';
-      pattern.style.width = '100%';
-      
-      this.container.appendChild(fillerElement);
-    }
-  }
-  
-  // Clean up filler items (useful when filtering)
-  removeFillerItems() {
-    const fillers = this.container.querySelectorAll('.filler-item');
-    fillers.forEach(filler => filler.remove());
+    return longTitle || longCategory;
   }
   
   // Method to be called when items are filtered
   onItemsFiltered() {
-    this.removeFillerItems();
     setTimeout(this.optimizeLayout, 400);
   }
 }
 
-// Extend the ProjectItemPool to include the optimizer
-// Add this method to the ProjectItemPool class (or modify the existing refreshLayout method)
-ProjectItemPool.prototype.initializeOptimizer = function() {
-  this.optimizer = new GridLayoutOptimizer(this);
-};
-
-// Enhance the existing refreshLayout method
-const originalRefreshLayout = ProjectItemPool.prototype.refreshLayout;
-ProjectItemPool.prototype.refreshLayout = function() {
-  // Call the original method
-  originalRefreshLayout.call(this);
-  
-  // Also trigger optimization if we have an optimizer
-  if (this.optimizer) {
-    this.optimizer.optimizeLayout();
-  }
-};
-
-// Enhance the filterByCategory method to work with optimizer
-const originalFilterByCategory = ProjectItemPool.prototype.filterByCategory;
-ProjectItemPool.prototype.filterByCategory = function(category) {
-  // Call the original method
-  originalFilterByCategory.call(this, category);
-  
-  // Optimize layout after filtering
-  if (this.optimizer) {
-    this.optimizer.onItemsFiltered();
-  }
-};
-
-// Update the DOMContentLoaded event listener in your existing code
+// Create a global instance when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Your existing code...
+  // Check if data was pre-populated via script tag
+  let serverData = null;
+  const dataScript = document.getElementById('projects-data');
+  if (dataScript) {
+    try {
+      serverData = JSON.parse(dataScript.textContent);
+    } catch (e) {
+      console.error('Error parsing projects data from script tag:', e);
+    }
+  }
   
-  // After creating the projectItemPool, initialize the optimizer
+  // Create the item pool
+  window.projectItemPool = new ProjectItemPool({
+    initialPoolSize: 20,
+    maxPoolSize: 200,
+    templateSelector: '#project-item-template',
+    containerSelector: '.projects-grid',
+    endpoint: '/api/projects',
+    useRandomOrder: true,
+    dataFromServer: serverData,
+    debug: true // Set to false in production
+  });
+  
+  // Initialize the optimizer
   if (window.projectItemPool) {
-    window.projectItemPool.initializeOptimizer();
+    window.gridOptimizer = new GridLayoutOptimizer(window.projectItemPool);
   }
 });

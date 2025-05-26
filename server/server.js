@@ -145,7 +145,7 @@ function transformPreprData(preprData) {
             uniqueCategories.add(category);
         }
         
-        // Rest of your transformation code...
+        // Rest of transformation code...
         let fullContent = [];
         if (Array.isArray(project.full_content)) {
             fullContent = project.full_content.map(content => ({
@@ -163,9 +163,9 @@ function transformPreprData(preprData) {
         if (width > 0 && height > 0) {
             const aspectRatio = width / height;
             if (aspectRatio > 1) {
-                aspectRatioClass = 'landscape';
+                aspectRatioClass = 'landscape-card';
             } else if (aspectRatio < 1) {
-                aspectRatioClass = 'portrait';
+                aspectRatioClass = 'portrait-card';
             }
         }
         
@@ -197,21 +197,6 @@ function transformPreprData(preprData) {
         projects: transformedProjects,
         categories: categories
     };
-  });
-
-  log(
-    _fileName,
-    _DebugBool,
-    `Transformed ${transformedProjects.length} projects from Prepr`
-  );
-  log(
-    _fileName,
-    _DebugBool,
-    "Transformed projects:" + JSON.stringify(transformedProjects, null, 2)
-  );
-  return {
-    projects: transformedProjects,
-  };
 }
 
 
@@ -267,12 +252,6 @@ async function loadAllProjectData() {
         };
     }
 
-    log(_fileName, _DebugBool, "No projects available from Prepr");
-    return [];
-  } catch (error) {
-    log(_fileName, _DebugBool, "Error loading project data: " + error);
-    return [];
-  }
 }
 
 

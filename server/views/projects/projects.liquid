@@ -10,13 +10,13 @@
   {% render '../../components/search-bar/search-bar.liquid' %}
 
 
-  <div class="dynamic-grid" id="dynamicGrid">
+  <div class="projects-grid" id="dynamicGrid">
 
     {% for item in projects %}
       {% comment %} Check if this is a project or a square item {% endcomment %}
       {% if item.source == 'prepr' %}
         {% comment %} This is a project item {% endcomment %}
-        <div class="grid-item project-item {{ item.aspectRatioClass }}" data-category="{{ item.category }}" data-type="project" data-id="{{ item.id }}">
+        {% comment %} <div class="grid-item project-item {{ item.aspectRatioClass }}" data-category="{{ item.category }}" data-type="project" data-id="{{ item.id }}">
           <div class="project-image-wrapper" style="aspect-ratio: {{ item.featuredImageWidth }} / {{ item.featuredImageHeight }}">
             <img src="{{ item.projectFeaturedImage }}" alt="{{ item.projectname }}" loading="lazy">
           </div>
@@ -48,24 +48,16 @@
               {% endif %}
             </div>
           </div>
-        </div>
+        </div> {% endcomment %}
+
+        {%  render '../../components/project-card/project-card.liquid', project: item %} 
       
       {% elsif item.type == 'square' or item.source == 'square-item' %}
-        {% comment %} This is a square item {% endcomment %}
-        <div class="grid-item square-item square" data-category="{{ item.category }}" data-type="square" data-id="{{ item.id }}">
-          <div class="project-image-wrapper square-aspect">
-            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
-          </div>
-          <div class="item-content">
-            <h3>{{ item.title }}</h3>
-            {% if item.category %}
-              <p class="project-category">{{ item.category }}</p>
-            {% endif %}
-          </div>
-        </div>
+       
+        {% render '../../components/project-item/project-item.liquid', item: item %}
+       
       
-      {% else %}
-        {% comment %} Handle other item types if they exist {% endcomment %}
+      {% comment %} {% else %}
         <div class="grid-item generic-item" data-category="{{ item.category | default: 'uncategorized' }}" data-type="generic" data-id="{{ item.id }}">
           <div class="project-image-wrapper">
             {% if item.image %}
@@ -80,11 +72,14 @@
               <p class="project-category">{{ item.category }}</p>
             {% endif %}
           </div>
-        </div>
+        </div> {% endcomment %}
       {% endif %}
     {% endfor %}
   </div>
 </div>   
+
+
+
 
 
 {% endblock %}

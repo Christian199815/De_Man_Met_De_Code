@@ -1,4 +1,4 @@
-.project-card {
+/* .project-card {
   display: flex;
   flex-wrap: wrap;
   font-family: Raleway, sans-serif;
@@ -7,21 +7,24 @@
 .landscape-card,
 .portrait-card {
   position: relative;
-  /* border: 16px solid transparent;
-  border-image-source: url("/public/images/beam.png"); */
+
 }
 
 .landscape-card {
   grid-row: span 1;
   grid-column: span 2;
-  /* aspect-ratio: 16/9; */
 }
 
 .portrait-card {
   grid-row: span 2;
   grid-column: span 1;
-  /* aspect-ratio: 9/16; */
 }
+
+.square{
+  grid-row: span 1;
+  grid-column: span 1;
+}
+
 
 .project-details {
   position: absolute;
@@ -86,4 +89,4 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
-}
+} */
