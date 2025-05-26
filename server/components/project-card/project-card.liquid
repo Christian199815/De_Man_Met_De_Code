@@ -1,9 +1,8 @@
 {% block project-card %}
+
 <div class="project-card {{ project.aspectRatioClass }}">
     <div class="project-image-wrapper">
-        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" {% comment %}
-            width="{{ project.featuredImageWidth }}" {% endcomment %} {% comment %}
-            height="{{ project.featuredImageHeight }}" {% endcomment %} loading="lazy">
+        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" loading="lazy">
     </div>
 
     <div class="project-info">
@@ -43,3 +42,5 @@
 </div>
 
 {% endblock %}
+
+

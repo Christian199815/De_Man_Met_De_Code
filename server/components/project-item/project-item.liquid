@@ -1,0 +1,11 @@
+ <div class="grid-item square-item square" data-category="{{ item.category }}" data-type="square" data-id="{{ item.id }}">
+          <div class="project-image-wrapper square-aspect">
+            <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
+          </div>
+          <div class="item-content">
+            <h3>{{ item.title }}</h3>
+            {% if item.category %}
+              <p class="project-category">{{ item.category }}</p>
+            {% endif %}
+          </div>
+</div>
