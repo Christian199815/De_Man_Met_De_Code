@@ -1,3 +1,4 @@
+
 .container {
   height: 100dvh;
 }
@@ -29,28 +30,19 @@ h1 {
     flex-direction: column;
   }
   
-  .portrait{
-    background-color: red;
-    color: white;
-    flex-direction: row;
+  .grid-item.landscape {
     grid-column: span 2;
-    grid-row: span 1;
-  
   }
   
-  .landscape{
-    background-color: blue;
-    color: white;
-    grid-column: span 1;
-    grid-row: span 1;
+  .grid-item.portrait {
+    min-height: 250px;
   }
+
   
   .square{
     background-color: yellow;
     color: black;
   }
-  
-  
   
   .project-card:hover {
     transform: translateY(-5px);
@@ -133,30 +125,17 @@ h1 {
   .projects-grid {
     column-count: 3;
     column-gap: 2rem;
-  }
-  
-  .project-card {
-    break-inside: avoid;
-    margin-bottom: 2rem;
-  }
-  
-  @media (max-width: 768px) {
-    .projects-grid {
-        column-count: 1;
-    }
-  }
-  */
 
-/* Debug Info (optional) */
-.debug-info {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-family: monospace;
-  font-size: 12px;
-  z-index: 1000;
+  }
+  
+  .grid-item.landscape,
+  .grid-item.portrait {
+    grid-column: span 1;
+  }
+  
+  .grid-item {
+    min-height: 200px;
+  }
+
 }
+

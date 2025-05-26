@@ -1,4 +1,4 @@
-/* Category Filter Component Styles */
+/* Enhanced Category Filter Component Styles */
 
 /* Filter Container */
 .category-filter {
@@ -44,9 +44,10 @@
   border-color: #3490dc;
 }
 
+
 @media (max-width: 480px) {
   .filter-btn {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
   }
-}
+
