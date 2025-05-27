@@ -38,7 +38,7 @@
 }
 
 .scroller[data-speed="fast"] {
-  --_animation-duration: 25s;
+  --_animation-duration: 30s;
 }
 
 @keyframes scroll {
@@ -49,7 +49,8 @@
 
 .scroller__inner h1 {
   font-family: Saloon;
-  font-size: clamp(10em, 20vw, 15em);
+  font-size: clamp(5em, 20vw, 14em);
+  word-spacing: -0.5ch;
   color: #c79c35;
   -webkit-text-stroke: 4px #554318;
   text-transform: uppercase;
