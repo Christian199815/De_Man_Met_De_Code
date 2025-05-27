@@ -7,12 +7,12 @@ console.log("Hello, world!");
 // import '../server/views/projects/projects.js';
 
 // Components
-import '../server/components/category-filter/category-filter.js';
-import '../server/components/project-sorting/project-sorting.js';
-import '../server/components/search-bar/search-bar.js';
-import '../server/components/full-width-card/full-width-card.js';
-import '../server/components/project-card/project-card.js';
-
+import "../server/components/category-filter/category-filter.js";
+import "../server/components/project-sorting/project-sorting.js";
+import "../server/components/search-bar/search-bar.js";
+import "../server/components/full-width-card/full-width-card.js";
+import "../server/components/project-card/project-card.js";
+import "../server/components/break-glass/break-glass.js";
 
 const _DebugBool = true;
 const _fileName = "server";
