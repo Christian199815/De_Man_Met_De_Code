@@ -14,7 +14,7 @@
 
 .scroller__inner {
   display: flex;
-  gap: 10rem;
+  gap: 1rem;
 }
 
 .scroller[data-animated="true"] {
@@ -38,7 +38,7 @@
 }
 
 .scroller[data-speed="fast"] {
-  --_animation-duration: 30s;
+  --_animation-duration: 10s;
 }
 
 @keyframes scroll {
