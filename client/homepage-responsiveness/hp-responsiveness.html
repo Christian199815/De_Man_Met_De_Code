@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="hp-responsiveness.css">
+    <title>HP-responsive</title>
+</head>
+
+<body>
+
+
+    <div class="frame">
+        <img class="bottom-left" src="/public/images/images-responsiveness/frame-bottom-left.png">
+        <img class="top-left" src="/public/images/images-responsiveness/frame-top-left.png">
+        <div class="repeating-wall-left"></div>
+
+        <div class="repeating-cage"></div>
+        <div class="repeating-floor">
+            <div class="prop-container">
+                <img class="prop-shadows" src="/public/images/images-responsiveness/prop-shadows.png">
+                <img class="props" src="/public/images/images-responsiveness/props.png">
+                <h2>Bekijk <span class="break"></span>Projecten</h2>
+            </div>
+        </div>
+        <div class="repeating-roof">
+        </div>
+
+        <div class="repeating-wall-right"></div>
+        <img class="bottom-right" src="/public/images/images-responsiveness/frame-bottom-right.png">
+        <img class="top-right" src="/public/images/images-responsiveness/frame-top-right.png">
+    </div>
+
+    <script src="hp-responsiveness.js"></script>
+
+    <svg class="visually-hidden" width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="border-text" filterUnits="userSpaceOnUse">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="DILATED" />
+
+                <feFlood flood-color="white" />
+                <feComposite in="OUTLINE-COLOR" in2="DILATED" operator="in" result="COLORED-OUTLINE" />
+
+                <feMerge>
+                    <feMergeNode in="COLORED-OUTLINE" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
+</body>
+
+</html>
