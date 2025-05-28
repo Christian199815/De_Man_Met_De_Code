@@ -198,30 +198,3 @@
       height: 14px;
     }
   }
-
-
-
-  .highlight-match {
-    background-color: yellow;
-    font-weight: bold;
-  }
-  
-  /* Make sure search-hidden items are actually hidden */
-  .grid-item.search-hidden {
-    display: none !important;
-  }
-  
-  /* Ensure search-match items are visible */
-  .grid-item.search-match {
-    display: block !important;
-  }
-  
-  /* Adding transition for smooth hiding/showing */
-  .grid-item {
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Optional: Highlight matched items */
-  .grid-item.search-match {
-    box-shadow: 0 0 10px rgba(0,150,255,0.5);
-  }
