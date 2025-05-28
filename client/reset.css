@@ -3,17 +3,6 @@
    License: none (public domain)
 */
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  hanging-punctuation: first last;
-  color-scheme: light dark; /* optional */
-}
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -34,24 +23,17 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
-
+/* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
 body {
   line-height: 1;
-  text-rendering: optimizeSpeed;
 }
-
-ol:not([role="list"]), ul:not([role="list"]) {
-  list-style-type: none;
+ol, ul {
+  list-style: none;
 }
-
-a:not([role="inline-link"]) {
-  text-decoration: none;
-}
-
 blockquote, q {
   quotes: none;
 }
@@ -63,23 +45,4 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  :has(:target) {
-      scroll-behavior: smooth;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

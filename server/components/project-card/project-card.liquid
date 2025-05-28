@@ -1,45 +1,22 @@
-{% block project-card %}
-<div class="project-card {{ project.aspectRatioClass }}">
-    <div class="project-image-wrapper">
-        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" {% comment %}
-            width="{{ project.featuredImageWidth }}" {% endcomment %} {% comment %}
-            height="{{ project.featuredImageHeight }}" {% endcomment %} loading="lazy">
-    </div>
 
-    <div class="project-info">
-        <div class="project-details">
-            <div class='project-details'>
-                <h2>{{ project.projectname }}</h2>
-            </div>
+{% comment %}
+    Usage:
+    {% render 'server/components/project-card.liquid', project: project_object %}
+{% endcomment %}
 
-            <div class='catagorie'>
-                <p>{{ project.category }}</p>
-            </div>
+<li class="project-card" 
+    data-category="{{ project.category }}" 
+    data-product-type="{{ project.typeOfProduct }}" 
+    data-project-type="{{ project.typeOfProject }}" 
+    data-date="{{ project.projectDate }}">
+    <a href="/project/{{ project.id }}" class="project-link">
+        <h3 class="project-name">{{ project.projectname }}</h3>
+        <div>
+            <p class="project-type">{{ project.typeOfProject }}</p>
+            <p class="product-type">{{ project.typeOfProduct }}</p>
         </div>
-
-        {% comment %} <div class="hover-details">
-            {% assign months_dutch =
-            "Januari,Februari,Maart,April,Mei,Juni,Juli,Augustus,September,Oktober,November,December" | split: ","
-            %}
-            {% assign month_number = project.projectDate | date: "%m" | minus: 1 %}
-            {% assign dutch_month = months_dutch[month_number] %}
-
-
-            {% if project.productionName and project.productionName != "" and project.productionName != nil %}
-            <p><strong>Productie: </strong> {{ project.productionName }}</p>
-            {% endif %}
-
-            {% if project.projectDate %}
-            <p><strong>Datum: </strong>{{ project.projectDate | date: "%e" }} {{ dutch_month }} {{
-                project.projectDate |
-                date: "%Y" }}</p>
-            {% endif %}
-
-            {% if project.forSale %}
-            <span class="for-sale-badge">Te koop</span>
-            {% endif %}
-        </div> {% endcomment %}
-    </div>
-</div>
-
-{% endblock %}
+        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" class="project-image">
+        <p hidden class="project-date">{{ project.projectDate }}</p>
+        {% comment %} <p>View Project</p> {% endcomment %}
+    </a>
+</li>
