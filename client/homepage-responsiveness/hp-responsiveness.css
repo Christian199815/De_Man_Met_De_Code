@@ -329,7 +329,7 @@ body {
 
 .frame .prop-container .prop-shadows {
     position: absolute;
-    top: 92%;
+    top: 89%;
     translate: -32.5% -50%;
     height: 160px;
 }
@@ -356,11 +356,3 @@ body {
     white-space: nowrap;
     width: 1px;
 }
-
-
-input {
-    position: absolute;
-    bottom: 50%;
-    left: 50%;
-    translate: -50% -50%;
-  }
