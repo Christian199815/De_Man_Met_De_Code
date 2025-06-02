@@ -1,0 +1,405 @@
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LATER WEH HALEN ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    hanging-punctuation: first last;
+    color-scheme: light dark;
+    /* optional */
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+    text-rendering: optimizeSpeed;
+}
+
+ol:not([role="list"]),
+ul:not([role="list"]) {
+    list-style-type: none;
+}
+
+a:not([role="inline-link"]) {
+    text-decoration: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+img {
+    display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :has(:target) {
+        scroll-behavior: smooth;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LATER WEH HALEN ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+
+
+
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* UTILITY CLASSES */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.break {
+    display: block;
+}
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* SET UP */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+body {
+    overflow: hidden;
+}
+
+.frame {
+    position: relative;
+    height: 100dvh;
+    width: 100vw;
+    background-color: black;
+
+    perspective: 40em;
+    perspective-origin: var(--value) center;
+    transform-style: preserve-3d;
+}
+
+.frame * {
+    transform-style: preserve-3d;
+}
+
+.frame>* {
+    position: absolute;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* FRAME PIECES */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+/* TOP LEFT */
+.frame .top-left {
+    top: 0;
+    left: 0;
+    z-index: 10;
+    height: 370px;
+}
+
+/* BOTTOM LEFT */
+.frame .bottom-left {
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    height: 230px;
+}
+
+/* LEFT WALL */
+.frame .repeating-wall-left {
+    top: 0;
+    left: 0;
+    z-index: 9;
+    background-image: url(/public/images/images-responsiveness/repeating-wall-left.png);
+    background-repeat: repeat-y;
+    background-size: 155px;
+    height: 100%;
+    width: 155px;
+}
+
+/* TOP RIGHT */
+.frame .top-right {
+    top: 0;
+    right: 0;
+    z-index: 10;
+    height: 355px;
+}
+
+/* BOTTOM RIGHT */
+.frame .bottom-right {
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+    height: 240px;
+}
+
+/* RIGHT WALL */
+.frame .repeating-wall-right {
+    top: 0;
+    right: 0;
+    z-index: 9;
+    background-image: url(/public/images/images-responsiveness/repeating-wall-right.png);
+    background-repeat: repeat-y;
+    background-size: 155px;
+    height: 100%;
+    width: 155px;
+}
+
+/* CAGE */
+.frame .repeating-cage {
+    top: 80px;
+    left: 0;
+    z-index: 5;
+    height: 300px;
+    width: 100%;
+    background-image: url(/public/images/images-responsiveness/repeating-cage.png);
+    background-repeat: repeat-x;
+    background-position: -20% 0;
+    background-size: 1150px;
+}
+
+/* ROOF */
+.frame .repeating-roof {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-image: url(/public/images/images-responsiveness/repeating-roof.png);
+    background-repeat: repeat-x;
+    background-position: 20% 0;
+    width: 100%;
+    height: 105px;
+}
+
+/* AUDIENCE */
+.frame .audience {
+    min-width: 100vw;
+    height: 80%;
+    bottom: 50px;
+    left: 0;
+}
+
+.frame .audience img {
+    height: 90%;
+    margin-inline: auto;
+}
+
+/* FLOOR */
+.frame .repeating-floor {
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-image: url(/public/images/images-responsiveness/repeating-floor.png);
+    background-repeat: repeat;
+    width: 100%;
+    height: 80px;
+}
+
+/* PROPS */
+.frame .prop-container {
+    position: absolute;
+    bottom: 10px;
+    right: 22%;
+    height: 400px;
+    z-index: 100;
+}
+
+.frame .prop-container h2 {
+    position: absolute;
+    top: 100px;
+    left: -50px;
+    font-family: system-ui;
+    color: white;
+    font-weight: 800;
+    text-align: right;
+    white-space: nowrap;
+    font-size: 3rem;
+    opacity: 0;
+    scale: 0.6;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 4px 10px #000);
+    pointer-events: none;
+}
+
+.frame .prop-container:hover h2 {
+    top: 20px;
+    opacity: 1;
+    scale: 1;
+    left: -180px;
+}
+
+.frame .prop-container .props {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    height: 400px;
+}
+
+.frame .prop-container .props:hover {
+    filter: url("#border-text");
+}
+
+.frame .prop-container .prop-shadows {
+    position: absolute;
+    top: 89%;
+    translate: -32.5% -50%;
+    height: 160px;
+}
+
+
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LAYER DEPTH */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.layer-1 {
+    translate: 0 0 16px;
+}
+
+.layer-2 {
+    translate: 0 0 12px;
+}
+
+.layer-3 {
+    translate: 0 0 5px;
+}
