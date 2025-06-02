@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const cards = document.querySelectorAll(".catagory");
+  const cards = document.querySelectorAll(".category");
 
   cards.forEach((card) => {
     const randomDeg = Math.floor(Math.random() * 30) - 10;
@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".catagory").forEach((cat) => {
+  document.querySelectorAll(".category").forEach((cat) => {
     const category = cat.textContent.trim().toLowerCase();
     cat.classList.add(category);
   });

@@ -1041,7 +1041,7 @@ h1 {
 }
 
 /* Category Badge */
-.catagorie {
+.category {
   position: absolute;
   bottom: 50px;
   right: 30px;
@@ -1051,7 +1051,7 @@ h1 {
   padding: 0.5em;
 }
 
-.catagorie p {
+.category p {
   color: white;
   text-transform: uppercase;
   font-size: clamp(1em, 3vw, 1.3em);
@@ -1059,23 +1059,23 @@ h1 {
 }
 
 /* Category Colors */
-.catagorie.decor,
-.category-decor .catagorie {
+.category.decor,
+.category-decor .category {
   background-color: blue;
 }
 
-.catagorie.props,
-.category-props .catagorie {
+.category.props,
+.category-props .category {
   background-color: red;
 }
 
-.catagorie.interieur,
-.category-interieur .catagorie {
+.category.interieur,
+.category-interieur .category {
   background-color: green;
 }
 
-.catagorie.nieuws,
-.category-nieuws .catagorie {
+.category.nieuws,
+.category-nieuws .category {
   background-color: gold;
 }
 
@@ -1989,7 +1989,7 @@ h1 {
   /* Re-enable pointer events for text */
   pointer-events: auto;
 }
-
+/* 
 .catagorie {
   position: absolute;
   bottom: 60px;
@@ -1997,7 +1997,6 @@ h1 {
   z-index: 3;
   border: 3px solid black;
   padding: 0.5em;
-  /* Don't affect card height */
   pointer-events: none;
 }
 
@@ -2008,4 +2007,4 @@ h1 {
   font-weight: 600;
   margin: 0;
   pointer-events: auto;
-}
+} */
