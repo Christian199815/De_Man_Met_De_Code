@@ -1,227 +1,616 @@
-/* Search Bar Component Styles - With Semantic Improvements */
+/* ====================================
+   PROJECT SEARCH WITH TRANSITIONS
+   ==================================== */
 
-/* Accessibility helper */
+/* Search states - NO TEXT HIGHLIGHTING */
+.search-hidden {
+  display: none !important;
+}
+
+.search-match {
+  animation: searchMatchFadeIn 0.3s ease-in-out;
+}
+
+@keyframes searchMatchFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ====================================
+   FILTERING TRANSITIONS
+   ==================================== */
+
+/* Grid filtering state */
+.projects-grid.filtering-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Individual card filtering transitions */
+.project-card {
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease !important;
+}
+
+/* Fade out animation during filtering */
+.project-card.filtering-fade-out {
+  opacity: 0.3 !important;
+  transform: scale(0.95) !important;
+  filter: blur(1px) !important;
+}
+
+/* Fade in animation after filtering */
+.project-card.filtering-fade-in {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: none !important;
+  animation: filterFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes filterFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.9);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateY(5px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Staggered animation for multiple cards */
+.project-card.filtering-fade-in:nth-child(1) { animation-delay: 0ms; }
+.project-card.filtering-fade-in:nth-child(2) { animation-delay: 50ms; }
+.project-card.filtering-fade-in:nth-child(3) { animation-delay: 100ms; }
+.project-card.filtering-fade-in:nth-child(4) { animation-delay: 150ms; }
+.project-card.filtering-fade-in:nth-child(5) { animation-delay: 200ms; }
+.project-card.filtering-fade-in:nth-child(n+6) { animation-delay: 250ms; }
+
+/* ====================================
+   SEARCH COMPONENT LAYOUT
+   ==================================== */
+
+.search-component {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: Raleway, sans-serif;
+  transition: all 0.3s ease;
+}
+
+/* Active searching state */
+.search-component.searching {
+  background-color: #f0f8ff;
+  box-shadow: 0 2px 8px rgba(52, 144, 220, 0.15);
+  transform: translateY(-1px);
+}
+
+.search-form {
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 500px;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.search-container.searching {
+  transform: scale(1.02);
+}
+
+/* ====================================
+   SEARCH INPUT WITH LOADING STATES
+   ==================================== */
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #666;
+  pointer-events: none;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* Loading animation for search icon */
+.search-input.loading + .search-icon {
+  animation: searchPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes searchPulse {
+  0%, 100% { 
+    opacity: 0.6; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1);
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 45px 12px 45px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: Raleway, sans-serif;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3490dc;
+  box-shadow: 0 0 0 3px rgba(52, 144, 220, 0.1);
+}
+
+.search-input.loading {
+  border-color: #3490dc;
+  background: linear-gradient(90deg, #fff 0%, #f8f9ff 50%, #fff 100%);
+  background-size: 200% 100%;
+  animation: searchInputShimmer 2s ease-in-out infinite;
+}
+
+@keyframes searchInputShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.search-input::placeholder {
+  color: #999;
+  font-style: italic;
+  transition: opacity 0.3s ease;
+}
+
+.search-input.loading::placeholder {
+  opacity: 0.7;
+}
+
+/* ====================================
+   CLEAR BUTTON WITH TRANSITIONS
+   ==================================== */
+
+.clear-search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #666;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  z-index: 2;
+}
+
+.clear-search-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+  transform: scale(1.1);
+}
+
+.clear-search-btn:active {
+  transform: scale(0.95);
+}
+
+/* ====================================
+   RESULTS INFO WITH ANIMATIONS
+   ==================================== */
+
+.search-results-info {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  min-height: 1.2em;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  border-left: 4px solid #3490dc;
+  transition: all 0.3s ease;
+}
+
+.search-results-info:empty {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Updating animation */
+.search-results-info.updating {
+  opacity: 0.6;
+  transform: scale(0.98);
+}
+
+/* No results state */
+.search-results-info.no-results {
+  border-left-color: #e74c3c;
+  background-color: rgba(231, 76, 60, 0.05);
+  color: #c0392b;
+  animation: noResultsShake 0.5s ease-in-out;
+}
+
+@keyframes noResultsShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Results found animation */
+.search-results-info:not(.no-results):not(:empty) {
+  animation: resultsFound 0.4s ease-out;
+}
+
+@keyframes resultsFound {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ====================================
+   ACCESSIBILITY
+   ==================================== */
+
 .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-  }
-  
-  /* Search Component */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indicators with transitions */
+.search-input:focus,
+.clear-search-btn:focus {
+  outline: 2px solid #3490dc;
+  outline-offset: 2px;
+  transition: outline 0.2s ease;
+}
+
+/* ====================================
+   GRID INTEGRATION EFFECTS
+   ==================================== */
+
+/* Grid during active filtering */
+#dynamicGrid.filtering-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Subtle grid effects during search */
+#dynamicGrid.filtering-active .break-glass-card,
+#dynamicGrid.filtering-active .full-width-component {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+/* Category filter integration */
+.category-filter + .search-component {
+  margin-top: 0;
+  border-top: 1px solid #ddd;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.category-filter.active + .search-component {
+  border-top-color: #3490dc;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+@media (max-width: 768px) {
   .search-component {
-    margin-bottom: 2rem;
-    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
   }
   
-  /* Search Form */
-  .search-form {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 1rem;
-  }
-  
-  /* Search Container */
   .search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
+    max-width: 100%;
   }
   
-  /* Search Icon */
-  .search-icon {
-    position: absolute;
-    left: 12px;
-    color: #666;
-    pointer-events: none;
-    transition: color 0.2s ease;
-  }
-  
-  /* Search Input */
   .search-input {
-    width: 100%;
-    padding: 12px 40px 12px 40px;
-    border: 2px solid #ddd;
-    border-radius: 50px;
-    font-size: 1rem;
-    color: #333;
-    background-color: #fff;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    font-size: 0.9rem;
+    padding: 10px 40px 10px 40px;
+  }
+  
+  .search-icon {
+    left: 10px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  .clear-search-btn {
+    right: 6px;
+    padding: 6px;
+  }
+  
+  .search-results-info {
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+  }
+  
+  /* Reduce animation intensity on mobile */
+  .project-card.filtering-fade-in {
+    animation: filterFadeInMobile 0.3s ease-out forwards;
+  }
+  
+  @keyframes filterFadeInMobile {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .search-component {
+    padding: 0.75rem;
+  }
+  
+  .search-input {
+    font-size: 0.85rem;
+    padding: 8px 35px 8px 35px;
+  }
+  
+  .search-icon {
+    left: 8px;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .clear-search-btn {
+    right: 4px;
+    padding: 4px;
+  }
+  
+  .clear-search-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+  
+  /* Disable complex animations on very small screens */
+  .search-component.searching {
+    transform: none;
+  }
+  
+  .search-container.searching {
+    transform: scale(1.01);
+  }
+}
+
+/* ====================================
+   PERFORMANCE OPTIMIZATIONS
+   ==================================== */
+
+/* Use transform3d for better performance */
+.project-card.filtering-fade-out {
+  transform: scale3d(0.95, 0.95, 1) !important;
+}
+
+.project-card.filtering-fade-in {
+  transform: scale3d(1, 1, 1) !important;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .search-component,
+  .search-container,
+  .search-input,
+  .clear-search-btn,
+  .search-results-info {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .project-card.filtering-fade-out {
+    opacity: 0.5 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  
+  .project-card.filtering-fade-in {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  
+  .search-input.loading {
+    animation: none !important;
+    background: white !important;
+  }
+  
+  .search-icon {
+    animation: none !important;
+  }
+}
+
+/* ====================================
+   DARK MODE SUPPORT
+   ==================================== */
+
+@media (prefers-color-scheme: dark) {
+  .search-component {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+  }
+  
+  .search-component.searching {
+    background-color: #1a2332;
+  }
+  
+  .search-input {
+    background-color: #333;
+    border-color: #555;
+    color: #e0e0e0;
+  }
+  
+  .search-input.loading {
+    background: linear-gradient(90deg, #333 0%, #3a3a4a 50%, #333 100%);
+    border-color: #4a9eff;
+  }
+  
+  .search-input::placeholder {
+    color: #aaa;
   }
   
   .search-input:focus {
-    outline: none;
-    border-color: #3490dc;
-    box-shadow: 0 2px 8px rgba(52, 144, 220, 0.2);
+    border-color: #4a9eff;
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
   }
   
-  .search-input:focus + .search-icon {
-    color: #3490dc;
-  }
-  
-  /* High-contrast focus styles for accessibility */
-  .search-input:focus-visible {
-    outline: 2px solid #3490dc;
-    outline-offset: 2px;
-  }
-  
-  /* Clear Search Button */
+  .search-icon,
   .clear-search-btn {
-    position: absolute;
-    right: 12px;
-    background: none;
-    border: none;
-    color: #999;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    color: #aaa;
   }
   
   .clear-search-btn:hover {
-    color: #555;
-    background-color: #f0f0f0;
+    background-color: #444;
+    color: #e0e0e0;
   }
   
-  .clear-search-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #3490dc;
-  }
-  
-  .search-input:not(:placeholder-shown) ~ .clear-search-btn {
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  /* Search Results Info */
   .search-results-info {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-    height: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: #ccc;
+    border-left-color: #4a9eff;
   }
   
-  /* Highlight match styling */
-  .highlight-match {
-    background-color: rgba(52, 144, 220, 0.2);
-    padding: 0 2px;
-    border-radius: 2px;
+  .search-results-info.no-results {
+    border-left-color: #ff6b6b;
+    background-color: rgba(255, 107, 107, 0.1);
+    color: #ff9999;
   }
-  
-  /* Project card animations for search */
-  .project-card {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ====================================
+   ADVANCED FILTERING EFFECTS
+   ==================================== */
+
+/* Ripple effect when starting search */
+.search-container.searching::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(52, 144, 220, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: searchRipple 0.6s ease-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes searchRipple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
   }
-  
-  .project-card.search-hidden {
+  100% {
+    width: 200px;
+    height: 200px;
     opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
   }
-  
-  .project-card.search-match {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(52, 144, 220, 0.1);
-    z-index: 1;
-  }
-  
-  /* No Results Message */
-  .no-results-message {
-    width: 100%;
-    text-align: center;
-    padding: 3rem 0;
-    color: #666;
-    font-size: 1.1rem;
-  }
-  
-  /* Reduced Motion Support */
-  @media (prefers-reduced-motion: reduce) {
-    .search-input,
-    .clear-search-btn,
-    .project-card {
-      transition: none !important;
-    }
-  }
-  
-  /* High Contrast Mode Support */
-  @media (forced-colors: active) {
-    .search-input:focus {
-      outline: 2px solid CanvasText;
-    }
-    
-    .highlight-match {
-      border: 1px solid CanvasText;
-    }
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .search-form {
-      max-width: 100%;
-    }
-    
-    .search-input {
-      font-size: 0.9rem;
-      padding: 10px 38px 10px 38px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .search-input {
-      font-size: 0.85rem;
-      padding: 8px 36px 8px 36px;
-    }
-    
-    .search-icon {
-      width: 16px;
-      height: 16px;
-      left: 10px;
-    }
-    
-    .clear-search-btn svg {
-      width: 14px;
-      height: 14px;
-    }
-  }
+}
 
+/* Progress bar effect during filtering */
+.search-component.searching::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3490dc, #667eea);
+  animation: searchProgress 1s ease-in-out infinite;
+  border-radius: 0 0 8px 8px;
+}
 
+@keyframes searchProgress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
 
-  .highlight-match {
-    background-color: yellow;
-    font-weight: bold;
-  }
-  
-  /* Make sure search-hidden items are actually hidden */
-  .grid-item.search-hidden {
-    display: none !important;
-  }
-  
-  /* Ensure search-match items are visible */
-  .grid-item.search-match {
-    display: block !important;
-  }
-  
-  /* Adding transition for smooth hiding/showing */
-  .grid-item {
-    transition: opacity 0.3s ease;
-  }
-  
-  /* Optional: Highlight matched items */
-  .grid-item.search-match {
-    box-shadow: 0 0 10px rgba(0,150,255,0.5);
-  }
+/* Subtle grid pulse during filtering */
+#dynamicGrid.filtering-active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(52, 144, 220, 0.02), 
+    rgba(52, 144, 220, 0.05), 
+    rgba(52, 144, 220, 0.02)
+  );
+  animation: gridPulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* Enhanced card hover effects during search */
+.search-match:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  z-index: 10;
+}
+
+/* Subtle glow for matched cards */
+.search-match {
+  box-shadow: 0 0 0 1px rgba(52, 144, 220, 0.2);
+}
+
+/* Loading skeleton effect for cards being filtered */
+.project-card.filtering-fade-out {
+  background: linear-gradient(90deg, 
+    rgba(0, 0, 0, 0.1) 25%, 
+    rgba(0, 0, 0, 0.05) 50%, 
+    rgba(0, 0, 0, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: cardSkeleton 1.5s ease-in-out infinite;
+}
+
+@keyframes cardSkeleton {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
