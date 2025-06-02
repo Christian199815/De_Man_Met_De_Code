@@ -7,48 +7,492 @@
   background-color: #f8f8f8;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-family: Raleway, sans-serif;
 }
 
 .category-filter h2 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
   color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
 /* Filter Buttons */
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
+.radio-group {
+  position: relative;
+}
+
+/* Hide the actual radio input */
+.filter-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Style the label as a button */
 .filter-btn {
-  padding: 0.5rem 1rem;
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
   font-size: 0.9rem;
+  font-weight: 600;
   color: #555;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
 }
 
 .filter-btn:hover {
   background-color: #f0f0f0;
   color: #222;
+  border-color: #bbb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.filter-btn:hover::before {
+  left: 100%;
+}
+
+/* Active state when radio is checked */
+.filter-radio:checked + .filter-btn,
 .filter-btn.active {
   background-color: #3490dc;
   color: white;
   border-color: #3490dc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 144, 220, 0.4);
 }
 
+.filter-radio:checked + .filter-btn:hover,
+.filter-btn.active:hover {
+  background-color: #2779bd;
+  border-color: #2779bd;
+}
+
+/* Visible count styling */
+.visible-count {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  padding: 0.5rem;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 4px;
+  border-left: 4px solid #3490dc;
+}
+
+/* Debug info styling */
+.category-debug {
+  font-size: 0.8em !important;
+  color: #666 !important;
+  margin-top: 1rem !important;
+  padding: 0.5rem;
+  background-color: rgba(255,255,255,0.7);
+  border-radius: 4px;
+  border: 1px dashed #ccc;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .category-filter {
+    padding: 1rem;
+  }
+  
+  .filter-buttons {
+    gap: 0.5rem;
+  }
+  
+  .filter-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .category-filter h2 {
+    font-size: 1.1rem;
+  }
+}
 
 @media (max-width: 480px) {
   .filter-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
   }
+  
+  .filter-buttons {
+    gap: 0.4rem;
+  }
+}
 
+/* Animation for filter changes */
+.filtering {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.filtered-out {
+  opacity: 0 !important;
+  transform: scale(0.8) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+  pointer-events: none !important;
+}
+
+.filtered-in {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+
+/* ====================================
+   CATEGORY BADGE STYLING FIX
+   Ensures category badges always display correctly
+   ==================================== */
+
+/* Base Category Badge Styling - Always Applied */
+.catagorie,
+.project-card .catagorie,
+[class*="catagorie"] {
+  position: absolute !important;
+  bottom: 50px !important;
+  right: 30px !important;
+  z-index: 3 !important;
+  border: 4px solid black !important;
+  padding: 0.5em !important;
+  transition: transform 0.3s ease !important;
+  /* Ensure visibility */
+  display: block !important;
+  opacity: 1 !important;
+  /* Prevent text selection */
+  user-select: none !important;
+  /* Ensure it's on top */
+  pointer-events: auto !important;
+}
+
+/* Category Badge Text */
+.catagorie p,
+.project-card .catagorie p,
+[class*="catagorie"] p {
+  color: white !important;
+  text-transform: uppercase !important;
+  font-size: clamp(0.8em, 2.5vw, 1.1em) !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.2 !important;
+  font-family: Raleway, sans-serif !important;
+  /* Ensure readability */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5) !important;
+}
+
+/* Category Colors - Multiple selectors to ensure they work */
+.catagorie.decor,
+.project-card .catagorie.decor,
+.decor .catagorie,
+.project-card.category-decor .catagorie,
+[data-category="decor"] .catagorie {
+  background-color: blue !important;
+}
+
+.catagorie.props,
+.project-card .catagorie.props,
+.props .catagorie,
+.project-card.category-props .catagorie,
+[data-category="props"] .catagorie {
+  background-color: red !important;
+}
+
+.catagorie.interieur,
+.project-card .catagorie.interieur,
+.interieur .catagorie,
+.project-card.category-interieur .catagorie,
+[data-category="interieur"] .catagorie {
+  background-color: green !important;
+}
+
+.catagorie.nieuws,
+.project-card .catagorie.nieuws,
+.nieuws .catagorie,
+.project-card.category-nieuws .catagorie,
+[data-category="nieuws"] .catagorie {
+  background-color: gold !important;
+}
+
+/* Fallback colors for any missed categories */
+.catagorie:not(.decor):not(.props):not(.interieur):not(.nieuws) {
+  background-color: #666 !important;
+}
+
+/* Hover Effects */
+.project-card:hover .catagorie {
+  transform: scale(1.05) !important;
+}
+
+/* ====================================
+   PROJECT CARD ASPECT RATIO STYLING
+   Ensures aspect ratios are preserved
+   ==================================== */
+
+/* Landscape Cards */
+.landscape-card,
+.landscape,
+.project-card[data-aspect-ratio="landscape"],
+.project-card.landscape-card,
+.project-card.landscape {
+  grid-row: span 1 !important;
+  grid-column: span 2 !important;
+  height: 300px !important;
+  min-height: 300px !important;
+}
+
+/* Portrait Cards */
+.portrait-card,
+.portrait,
+.project-card[data-aspect-ratio="portrait"],
+.project-card.portrait-card,
+.project-card.portrait {
+  grid-row: span 2 !important;
+  grid-column: span 1 !important;
+  min-height: 600px !important;
+  height: auto !important;
+}
+
+/* Square Cards */
+.square,
+.project-card[data-aspect-ratio="square"],
+.project-card.square {
+  grid-row: span 1 !important;
+  grid-column: span 1 !important;
+  height: 300px !important;
+  min-height: 300px !important;
+}
+
+/* ====================================
+   PROJECT DETAILS OVERLAY
+   Ensures project titles display correctly
+   ==================================== */
+
+.project-details,
+.project-card .project-details {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8)) !important;
+  padding: 1rem !important;
+  box-sizing: border-box !important;
+  pointer-events: none !important;
+}
+
+.project-details h2,
+.project-card .project-details h2 {
+  color: white !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+  font-size: clamp(1em, 3vw, 1.5em) !important;
+  font-weight: 600 !important;
+  font-family: Raleway, sans-serif !important;
+  pointer-events: auto !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7) !important;
+  line-height: 1.2 !important;
+}
+
+/* ====================================
+   IMAGE WRAPPER STYLING
+   Ensures images display correctly
+   ==================================== */
+
+.project-image-wrapper,
+.project-card .project-image-wrapper {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+.project-image-wrapper img,
+.project-card .project-image-wrapper img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.3s ease !important;
+  background-color: #333 !important;
+}
+
+/* ====================================
+   FILTER STATES
+   Ensures filtered cards maintain styling
+   ==================================== */
+
+.filtered-out {
+  display: none !important;
+}
+
+.filtered-in {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: none !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure filtering doesn't break aspect ratios */
+.filtered-in.landscape-card,
+.filtered-in.landscape {
+  grid-column: span 2 !important;
+  height: 300px !important;
+}
+
+.filtered-in.portrait-card,
+.filtered-in.portrait {
+  grid-row: span 2 !important;
+  min-height: 600px !important;
+}
+
+.filtered-in.square {
+  height: 300px !important;
+}
+
+/* ====================================
+   RESPONSIVE ADJUSTMENTS
+   ==================================== */
+
+@media (max-width: 1200px) {
+  .catagorie {
+    bottom: 40px !important;
+    right: 20px !important;
+  }
+  
+  .catagorie p {
+    font-size: clamp(0.7em, 2vw, 1em) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .catagorie {
+    bottom: 30px !important;
+    right: 15px !important;
+    padding: 0.4em !important;
+    border-width: 3px !important;
+  }
+  
+  .catagorie p {
+    font-size: clamp(0.6em, 1.8vw, 0.9em) !important;
+  }
+  
+  .project-details {
+    padding: 0.75rem !important;
+  }
+  
+  .project-details h2 {
+    font-size: clamp(0.9em, 2.5vw, 1.2em) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .catagorie {
+    bottom: 20px !important;
+    right: 10px !important;
+    padding: 0.3em !important;
+    border-width: 2px !important;
+  }
+  
+  .catagorie p {
+    font-size: clamp(0.5em, 1.5vw, 0.8em) !important;
+  }
+  
+  .project-details {
+    padding: 0.5rem !important;
+  }
+  
+  .project-details h2 {
+    font-size: clamp(0.8em, 2vw, 1em) !important;
+  }
+}
+
+/* ====================================
+   ANIMATION FIXES
+   Ensures animations don't break styling
+   ==================================== */
+
+.project-card {
+  animation: fadeInUp 0.6s ease forwards !important;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure animations don't interfere with grid positioning */
+.project-card.landscape-card {
+  animation: fadeInUp 0.6s ease forwards !important;
+  grid-column: span 2 !important;
+}
+
+.project-card.portrait-card {
+  animation: fadeInUp 0.6s ease forwards !important;
+  grid-row: span 2 !important;
+}
+
+/* ====================================
+   DEBUGGING HELPERS
+   ==================================== */
+
+/* Add temporary borders to debug layout issues */
+.debug-categories .catagorie {
+  border: 3px solid lime !important;
+}
+
+.debug-categories .project-details {
+  border: 2px solid yellow !important;
+}
+
+.debug-categories .project-image-wrapper {
+  border: 1px solid red !important;
+}
+
+/* Force visibility for debugging */
+.force-visible {
+  display: flex !important;
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: none !important;
+  pointer-events: auto !important;
 }

@@ -1,257 +1,490 @@
 /**
- * Search Bar Component for Projects
- * Handles searching through project grid items
+ * Search Bar Component with Filtering Transitions
+ * Integrates with CleanGridPool system
  */
-document.addEventListener('DOMContentLoaded', function() {
-  // Wait a bit to ensure DOM is fully loaded
-  setTimeout(initSearch, 300);
-});
 
-function initSearch() {
-  console.log('Initializing search component...');
-  
-  // DOM elements
-  const searchInput = document.getElementById('projectSearch');
-  const clearSearchBtn = document.getElementById('clearSearch');
-  const searchResultsInfo = document.getElementById('searchResultsInfo');
-  const dynamicGrid = document.getElementById('dynamicGrid');
-  
-  // Exit if required elements are not found
-  if (!searchInput || !clearSearchBtn || !searchResultsInfo || !dynamicGrid) {
-    console.error('Required elements for search not found');
-    console.log('Will retry in 500ms...');
-    setTimeout(initSearch, 500);
-    return;
-  }
-  
-  // Constants
-  const minSearchLength = 3;
-  
-  // Grid items
-  const gridItems = Array.from(dynamicGrid.querySelectorAll('.grid-item'));
-  const totalItems = gridItems.length;
-  
-  // Cache project data for faster searching
-  const itemsData = gridItems.map(item => {
-    const titleElement = item.querySelector('h3');
-    const categoryElement = item.querySelector('.project-category');
-    const detailsElement = item.querySelector('.project-details');
+class ProjectSearchManager {
+  constructor() {
+    this.searchInput = null;
+    this.clearSearchBtn = null;
+    this.searchResultsInfo = null;
+    this.dynamicGrid = null;
+    this.minSearchLength = 2;
+    this.currentSearchTerm = '';
+    this.isInitialized = false;
+    this.isFiltering = false;
     
-    return {
-      element: item,
-      title: titleElement ? titleElement.textContent.trim() : '',
-      originalTitle: titleElement ? titleElement.innerHTML : '',
-      category: categoryElement ? categoryElement.textContent.trim() : item.getAttribute('data-category') || '',
-      details: detailsElement ? detailsElement.textContent.trim() : ''
+    this.init();
+  }
+
+  init() {
+    console.log('🔍 Initializing Project Search Manager...');
+    
+    // Wait for DOM and grid to be ready
+    const initAttempt = () => {
+      this.searchInput = document.getElementById('projectSearch');
+      this.clearSearchBtn = document.getElementById('clearSearch');
+      this.searchResultsInfo = document.getElementById('searchResultsInfo');
+      this.dynamicGrid = document.getElementById('dynamicGrid');
+      
+      if (!this.searchInput || !this.clearSearchBtn || !this.searchResultsInfo || !this.dynamicGrid) {
+        console.log('⏳ Search elements not ready, retrying...');
+        setTimeout(initAttempt, 500);
+        return;
+      }
+      
+      this.setupEventListeners();
+      this.setupGlobalInterface();
+      this.isInitialized = true;
+      
+      console.log('✅ Project Search Manager initialized successfully');
     };
-  });
-  
-  // Set up global ProjectSearch object
-  window.ProjectSearch = {
-    performSearch: performSearch,
-    resetSearch: resetSearch,
-    searchFor: (term) => {
-      searchInput.value = term;
-      if (term.length >= minSearchLength) {
-        performSearch(term.toLowerCase());
-        toggleClearButton(term);
-      }
-    }
-  };
-  
-  // Listen for input events on search input
-  searchInput.addEventListener('input', debounce(() => {
-    const searchTerm = searchInput.value.trim().toLowerCase();
     
-    // Only search if term is at least minSearchLength characters or empty
-    if (searchTerm.length >= minSearchLength || searchTerm === '') {
-      performSearch(searchTerm);
-    } else if (searchTerm.length > 0) {
-      searchResultsInfo.textContent = `Typ minimaal ${minSearchLength} tekens om te zoeken`;
-      resetSearch();
-    } else {
-      searchResultsInfo.textContent = '';
-      resetSearch();
-    }
-    
-    // Show/hide clear button
-    toggleClearButton(searchTerm);
-  }, 300));
-  
-  // Also handle the keydown event for Enter key
-  searchInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent form submission
-      const searchTerm = searchInput.value.trim().toLowerCase();
-      if (searchTerm.length >= minSearchLength) {
-        performSearch(searchTerm);
-      }
-    }
-  });
-  
-  // Clear button click handler
-  clearSearchBtn.addEventListener('click', () => {
-    console.log('Clear search button clicked');
-    searchInput.value = '';
-    searchResultsInfo.textContent = '';
-    resetSearch();
-    toggleClearButton('');
-    searchInput.focus();
-  });
-  
-  // Initialize clear button state
-  toggleClearButton('');
-  
-  console.log('Search component initialized successfully');
-  
-  /**
-   * Toggle clear button visibility
-   */
-  function toggleClearButton(term) {
-    if (term && term.length > 0) {
-      clearSearchBtn.style.opacity = '1';
-      clearSearchBtn.style.visibility = 'visible';
-    } else {
-      clearSearchBtn.style.opacity = '0';
-      clearSearchBtn.style.visibility = 'hidden';
-    }
+    // Start initialization after a short delay
+    setTimeout(initAttempt, 300);
   }
-  
-  /**
-   * Perform search and update UI
-   */
-  function performSearch(searchTerm) {
-    console.log(`Performing search for: "${searchTerm}"`);
-    
-    // If empty search term, reset everything
-    if (!searchTerm) {
-      resetSearch();
-      searchResultsInfo.textContent = '';
-      return;
-    }
-    
-    let matchCount = 0;
-    let visibleCount = 0;
-    
-    // Current active category filter
-    const currentCategory = window.CategoryFilter ? window.CategoryFilter.currentCategory : 'all';
-    
-    // Search each item
-    itemsData.forEach(item => {
-      const titleLower = item.title.toLowerCase();
-      const categoryLower = item.category.toLowerCase();
-      const detailsLower = item.details.toLowerCase();
-      
-      // Check if the item passes the category filter
-      const passesFilter = (currentCategory === 'all' || item.element.getAttribute('data-category') === currentCategory);
-      
-      // Check if it matches the search term
-      const isMatch = titleLower.includes(searchTerm) || 
-                      categoryLower.includes(searchTerm) || 
-                      detailsLower.includes(searchTerm);
-      
-      // Update visibility based on filter and search
-      if (passesFilter) {
-        visibleCount++;
-        
-        if (isMatch) {
-          item.element.classList.remove('search-hidden');
-          item.element.classList.add('search-match');
-          // Make sure the element is visible
-          item.element.style.display = '';
-          matchCount++;
-          
-          // Highlight matching text in title
-          const titleEl = item.element.querySelector('h3');
-          if (titleEl) {
-            titleEl.innerHTML = highlightMatches(item.title, searchTerm);
-          }
-        } else {
-          // Make sure to hide non-matching items
-          item.element.classList.add('search-hidden');
-          item.element.classList.remove('search-match');
-          // Use direct style to ensure hiding
-          item.element.style.display = 'none';
+
+  setupEventListeners() {
+    // Search input with debounce
+    this.searchInput.addEventListener('input', this.debounce(() => {
+      const searchTerm = this.searchInput.value.trim().toLowerCase();
+      this.handleSearchInput(searchTerm);
+    }, 300));
+
+    // Enter key handling
+    this.searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const searchTerm = this.searchInput.value.trim().toLowerCase();
+        if (searchTerm.length >= this.minSearchLength) {
+          this.performSearch(searchTerm);
         }
       }
     });
-    
-    // Update results info
-    updateResultsInfo(matchCount, visibleCount);
-    
-    // Re-apply sorting if needed
-    if (window.ProjectSort && typeof window.ProjectSort.performSort === 'function') {
-      setTimeout(() => {
-        window.ProjectSort.performSort();
-      }, 150);
-    }
+
+    // Clear button
+    this.clearSearchBtn.addEventListener('click', () => {
+      this.clearSearch();
+    });
   }
-  
-  /**
-   * Reset search to original state
-   */
-  function resetSearch() {
-    console.log('Resetting search');
+
+  setupGlobalInterface() {
+    // Create global interface for external access
+    window.ProjectSearch = {
+      performSearch: (term) => this.performSearch(term),
+      resetSearch: () => this.resetSearch(),
+      clearSearch: () => this.clearSearch(),
+      searchFor: (term) => {
+        this.searchInput.value = term;
+        this.handleSearchInput(term.toLowerCase());
+      },
+      isSearchActive: () => this.currentSearchTerm.length > 0
+    };
+  }
+
+  handleSearchInput(searchTerm) {
+    this.currentSearchTerm = searchTerm;
     
-    // Reset card classes
-    itemsData.forEach(item => {
-      item.element.classList.remove('search-hidden', 'search-match');
-      // Make sure to reset display style
-      item.element.style.display = '';
+    if (searchTerm.length >= this.minSearchLength || searchTerm === '') {
+      this.performSearch(searchTerm);
+    } else if (searchTerm.length > 0) {
+      this.searchResultsInfo.textContent = `Typ minimaal ${this.minSearchLength} tekens om te zoeken`;
+    } else {
+      this.searchResultsInfo.textContent = '';
+      this.resetSearch();
+    }
+    
+    this.toggleClearButton(searchTerm);
+  }
+
+  async performSearch(searchTerm) {
+    console.log(`🔍 Performing search for: "${searchTerm}"`);
+    
+    if (!searchTerm) {
+      this.resetSearch();
+      this.searchResultsInfo.textContent = '';
+      return;
+    }
+
+    // Start filtering transition
+    this.startFilteringTransition();
+
+    // Get all current project cards from the grid
+    const projectCards = this.dynamicGrid.querySelectorAll('.project-card');
+    let matchCount = 0;
+    let totalCards = projectCards.length;
+    
+    // Get current category filter state
+    const currentCategory = window.CategoryFilter ? window.CategoryFilter.currentCategory : 'all';
+    
+    // Phase 1: Fade out all cards
+    projectCards.forEach(card => {
+      card.classList.add('filtering-fade-out');
+    });
+
+    // Wait for fade out to complete
+    await this.delay(200);
+
+    // Phase 2: Process each card
+    projectCards.forEach(card => {
+      const cardData = this.extractCardData(card);
+      const passesSearch = this.matchesSearchTerm(cardData, searchTerm);
+      const passesFilter = this.passesCategoryFilter(card, currentCategory);
       
-      // Reset title to original state
-      const titleEl = item.element.querySelector('h3');
-      if (titleEl) {
-        titleEl.innerHTML = item.originalTitle;
+      // Show card only if it passes both search and filter
+      const shouldShow = passesSearch && passesFilter;
+      
+      if (shouldShow) {
+        this.showCard(card);
+        matchCount++;
+      } else {
+        this.hideCard(card);
       }
     });
-    
-    // Re-apply sorting
-    if (window.ProjectSort && typeof window.ProjectSort.performSort === 'function') {
+
+    // Phase 3: Fade in visible cards with staggered animation
+    const visibleCards = Array.from(projectCards).filter(card => !card.classList.contains('search-hidden'));
+    visibleCards.forEach((card, index) => {
       setTimeout(() => {
-        window.ProjectSort.performSort();
-      }, 150);
+        card.classList.add('filtering-fade-in');
+        card.classList.remove('filtering-fade-out');
+      }, index * 50); // Stagger by 50ms
+    });
+
+    // Keep non-project items visible
+    this.keepNonProjectItemsVisible();
+    
+    // Update results info
+    this.updateResultsInfo(matchCount, totalCards, searchTerm);
+    
+    // End filtering transition
+    setTimeout(() => {
+      this.endFilteringTransition();
+    }, 400 + (visibleCards.length * 50));
+    
+    // Preserve styles after search
+    setTimeout(() => {
+      if (window.cleanGridPool) {
+        window.cleanGridPool.fixAllCardStyles();
+      }
+    }, 500);
+  }
+
+  startFilteringTransition() {
+    this.isFiltering = true;
+    
+    // Add filtering classes to components
+    this.dynamicGrid.classList.add('filtering-active');
+    this.searchInput.parentElement.classList.add('searching');
+    
+    // Show loading indicator in search
+    this.searchInput.classList.add('loading');
+    
+    // Dim the grid slightly
+    this.dynamicGrid.style.opacity = '0.8';
+    this.dynamicGrid.style.transform = 'scale(0.98)';
+  }
+
+  endFilteringTransition() {
+    this.isFiltering = false;
+    
+    // Remove filtering classes
+    this.dynamicGrid.classList.remove('filtering-active');
+    this.searchInput.parentElement.classList.remove('searching');
+    this.searchInput.classList.remove('loading');
+    
+    // Restore grid appearance
+    this.dynamicGrid.style.opacity = '1';
+    this.dynamicGrid.style.transform = 'scale(1)';
+    
+    // Clean up transition classes
+    const allCards = this.dynamicGrid.querySelectorAll('.project-card');
+    allCards.forEach(card => {
+      card.classList.remove('filtering-fade-out', 'filtering-fade-in');
+    });
+  }
+
+  extractCardData(card) {
+    // Extract searchable data from project card
+    const titleElement = card.querySelector('.project-details h2') || card.querySelector('h3') || card.querySelector('h2');
+    const categoryElement = card.querySelector('.catagorie p');
+    const productionElement = card.querySelector('.project-production') || card.querySelector('.production-name');
+    const photographerElement = card.querySelector('.photographer-name');
+    
+    return {
+      title: titleElement ? titleElement.textContent.trim() : '',
+      category: categoryElement ? categoryElement.textContent.trim() : '',
+      production: productionElement ? productionElement.textContent.trim() : '',
+      photographer: photographerElement ? photographerElement.textContent.trim() : '',
+      // Get any data attributes that might contain searchable content
+      dataTitle: card.getAttribute('data-title') || '',
+      dataProduction: card.getAttribute('data-production') || '',
+      dataCategory: card.getAttribute('data-category') || ''
+    };
+  }
+
+  matchesSearchTerm(cardData, searchTerm) {
+    const searchFields = [
+      cardData.title.toLowerCase(),
+      cardData.category.toLowerCase(),
+      cardData.production.toLowerCase(),
+      cardData.photographer.toLowerCase(),
+      cardData.dataTitle.toLowerCase(),
+      cardData.dataProduction.toLowerCase(),
+      cardData.dataCategory.toLowerCase()
+    ];
+    
+    return searchFields.some(field => field.includes(searchTerm));
+  }
+
+  passesCategoryFilter(card, currentCategory) {
+    if (currentCategory === 'all') return true;
+    
+    const categoryElement = card.querySelector('.catagorie p');
+    const cardCategory = categoryElement ? 
+      categoryElement.textContent.trim().toUpperCase() : 
+      (card.getAttribute('data-category') || '').toUpperCase();
+    
+    return cardCategory === currentCategory.toUpperCase();
+  }
+
+  showCard(card) {
+    // Remove search-related hiding classes
+    card.classList.remove('search-hidden', 'filtered-out');
+    card.classList.add('search-match', 'filtered-in');
+    
+    // Ensure card is visible
+    card.style.display = '';
+    card.style.opacity = '1';
+    card.style.transform = 'scale(1)';
+    card.style.filter = 'none';
+    card.style.pointerEvents = 'auto';
+  }
+
+  hideCard(card) {
+    // Hide the card with transition
+    card.classList.add('search-hidden', 'filtered-out');
+    card.classList.remove('search-match', 'filtered-in');
+    
+    // Use transition to hide
+    card.style.opacity = '0';
+    card.style.transform = 'scale(0.8)';
+    card.style.filter = 'blur(2px)';
+    
+    // Actually hide after transition
+    setTimeout(() => {
+      card.style.display = 'none';
+    }, 300);
+  }
+
+  keepNonProjectItemsVisible() {
+    // Always keep break glass cards and full-width components visible
+    const nonProjectItems = this.dynamicGrid.querySelectorAll('.break-glass-card, .full-width-component, [data-type="custom"], [data-type="full-width"]');
+    nonProjectItems.forEach(item => {
+      item.style.display = '';
+      item.style.opacity = '1';
+      item.style.transform = 'scale(1)';
+      item.style.filter = 'none';
+      item.style.pointerEvents = 'auto';
+      item.classList.remove('search-hidden', 'filtered-out');
+    });
+  }
+
+  async resetSearch() {
+    console.log('🔄 Resetting search');
+    
+    this.currentSearchTerm = '';
+    
+    // Start reset transition
+    this.startFilteringTransition();
+    
+    // Reset all project cards with transition
+    const projectCards = this.dynamicGrid.querySelectorAll('.project-card');
+    
+    // Phase 1: Fade out hidden cards
+    const hiddenCards = Array.from(projectCards).filter(card => card.classList.contains('search-hidden'));
+    hiddenCards.forEach(card => {
+      card.classList.remove('search-hidden', 'search-match', 'filtered-out');
+      card.classList.add('filtered-in');
+      card.style.display = '';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.8)';
+      card.style.filter = 'blur(2px)';
+    });
+    
+    await this.delay(100);
+    
+    // Phase 2: Fade in all cards with stagger
+    projectCards.forEach((card, index) => {
+      setTimeout(() => {
+        card.style.opacity = '1';
+        card.style.transform = 'scale(1)';
+        card.style.filter = 'none';
+        card.style.pointerEvents = 'auto';
+        card.classList.add('filtering-fade-in');
+      }, index * 30);
+    });
+
+    // Re-apply category filter if active
+    if (window.CategoryFilter && window.CategoryFilter.currentCategory !== 'all') {
+      setTimeout(() => {
+        window.CategoryFilter.filterProjects(window.CategoryFilter.currentCategory);
+      }, 50);
     }
+    
+    // End transition
+    setTimeout(() => {
+      this.endFilteringTransition();
+      
+      // Preserve styles after reset
+      if (window.cleanGridPool) {
+        window.cleanGridPool.fixAllCardStyles();
+      }
+    }, 400 + (projectCards.length * 30));
   }
-  
-  /**
-   * Highlight matching text
-   */
-  function highlightMatches(text, searchTerm) {
-    const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi');
-    return text.replace(regex, '<span class="highlight-match">$1</span>');
+
+  clearSearch() {
+    console.log('🧹 Clearing search');
+    this.searchInput.value = '';
+    this.searchResultsInfo.textContent = '';
+    this.resetSearch();
+    this.toggleClearButton('');
+    this.searchInput.focus();
   }
-  
-  /**
-   * Update results information
-   */
-  function updateResultsInfo(matchCount, totalVisible) {
-    if (matchCount === 0) {
-      searchResultsInfo.textContent = `Geen projecten gevonden`;
-    } else if (matchCount === totalVisible && matchCount === totalItems) {
-      searchResultsInfo.textContent = `Alle ${totalItems} projecten worden getoond`;
+
+  updateResultsInfo(matchCount, totalCards, searchTerm) {
+    // Add a subtle pulse animation to the results info
+    this.searchResultsInfo.classList.add('updating');
+    
+    setTimeout(() => {
+      if (matchCount === 0) {
+        this.searchResultsInfo.textContent = `Geen projecten gevonden voor "${searchTerm}"`;
+        this.searchResultsInfo.classList.add('no-results');
+      } else if (matchCount === totalCards) {
+        this.searchResultsInfo.textContent = `Alle ${totalCards} projecten komen overeen`;
+        this.searchResultsInfo.classList.remove('no-results');
+      } else {
+        this.searchResultsInfo.textContent = `${matchCount} van ${totalCards} projecten gevonden`;
+        this.searchResultsInfo.classList.remove('no-results');
+      }
+      
+      this.searchResultsInfo.classList.remove('updating');
+    }, 200);
+  }
+
+  toggleClearButton(term) {
+    if (term && term.length > 0) {
+      this.clearSearchBtn.style.opacity = '1';
+      this.clearSearchBtn.style.visibility = 'visible';
+      this.clearSearchBtn.style.transform = 'scale(1)';
     } else {
-      searchResultsInfo.textContent = `${matchCount} van ${totalVisible} zichtbare projecten gevonden`;
+      this.clearSearchBtn.style.opacity = '0';
+      this.clearSearchBtn.style.visibility = 'hidden';
+      this.clearSearchBtn.style.transform = 'scale(0.8)';
     }
   }
-  
-  /**
-   * Helper to escape special RegExp characters
-   */
-  function escapeRegExp(string) {
+
+  escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  debounce(func, delay) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Public method to refresh search when grid changes
+  refreshSearch() {
+    if (this.currentSearchTerm) {
+      console.log('🔄 Refreshing search after grid change');
+      this.performSearch(this.currentSearchTerm);
+    }
   }
 }
 
-/**
- * Debounce helper function
- */
-function debounce(func, delay) {
-  let timeout;
-  return function() {
-    const context = this;
-    const args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), delay);
+// Enhanced Category Filter Integration
+if (window.CategoryFilter) {
+  const originalFilterProjects = window.CategoryFilter.filterProjects;
+  
+  window.CategoryFilter.filterProjects = function(selectedCategory) {
+    console.log('🔍 Enhanced filter with search integration:', selectedCategory);
+    
+    // If search is active, perform combined search and filter
+    if (window.ProjectSearch && window.ProjectSearch.isSearchActive()) {
+      const currentSearchTerm = window.projectSearchManager ? window.projectSearchManager.currentSearchTerm : '';
+      
+      // Update category first
+      this.currentCategory = selectedCategory;
+      this.updateButtonStates(selectedCategory);
+      
+      // Then perform search with new category
+      if (currentSearchTerm) {
+        window.ProjectSearch.performSearch(currentSearchTerm);
+      } else {
+        // Just apply category filter
+        originalFilterProjects.call(this, selectedCategory);
+      }
+    } else {
+      // No active search, use original filter
+      originalFilterProjects.call(this, selectedCategory);
+    }
+    
+    return this.getVisibleCount();
+  };
+  
+  // Add helper method to get visible count
+  window.CategoryFilter.getVisibleCount = function() {
+    const dynamicGrid = document.getElementById('dynamicGrid');
+    if (!dynamicGrid) return 0;
+    
+    const visibleCards = dynamicGrid.querySelectorAll('.project-card:not(.search-hidden):not(.filtered-out)');
+    return visibleCards.length;
   };
 }
+
+// Enhanced Grid Pool Integration
+if (window.cleanGridPool) {
+  const originalRenderGrid = window.cleanGridPool.renderGrid;
+  
+  window.cleanGridPool.renderGrid = function() {
+    console.log('🎨 Enhanced render with search integration...');
+    
+    // Store current search state
+    const wasSearchActive = window.ProjectSearch && window.ProjectSearch.isSearchActive();
+    const currentSearchTerm = window.projectSearchManager ? window.projectSearchManager.currentSearchTerm : '';
+    
+    // Call original render
+    originalRenderGrid.call(this);
+    
+    // Restore search after rendering
+    setTimeout(() => {
+      if (wasSearchActive && currentSearchTerm && window.ProjectSearch) {
+        console.log('🔄 Restoring search after grid render');
+        window.ProjectSearch.performSearch(currentSearchTerm);
+      } else if (window.projectSearchManager) {
+        window.projectSearchManager.refreshSearch();
+      }
+    }, 150);
+  };
+}
+
+// Initialize search manager when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait for other systems to initialize first
+  setTimeout(() => {
+    window.projectSearchManager = new ProjectSearchManager();
+  }, 1000);
+});
+
+console.log('🔍 Enhanced Project Search System with Transitions loaded');
+console.log('Available commands:');
+console.log('- window.ProjectSearch.searchFor("term")');
+console.log('- window.ProjectSearch.resetSearch()');
+console.log('- window.ProjectSearch.clearSearch()');

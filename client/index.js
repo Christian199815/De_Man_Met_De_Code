@@ -4,7 +4,7 @@ import { log } from "./debug.js";
 console.log("Hello, world!");
 
 // Views
-// import '../server/views/projects/projects.js';
+import '../server/views/projects/projects.js';
 
 // Components
 import '../server/components/category-filter/category-filter.js';
