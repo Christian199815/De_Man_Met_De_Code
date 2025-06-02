@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'Franchise';
-  src: url('/fonts/franchise_bold.ttf') format('truetype');
+  src: url('client/fonts/franchise_bold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -34,16 +34,43 @@ p{
   line-height: 1.5;
 }
 
-a, button {
-  text-decoration: none;
-  padding: 1rem;
-  background-color:var(--color-red); 
-  color: var(--color-black);
-  font-weight: 600;
+button {
+  --button-background-color:#41871B;
+  --button-border-color:#18310A;
+  --button-text-color:#000000;
+  --font-size: 2rem;
+  position: relative;
+  background: none;
+  padding: var(--font-size) calc( var(--font-size) * 2);
+  font-size: var(--font-size);
+  font-family: 'franchise', 'impact';
+  font-weight:900;
   border: none;
+  transition: all 150ms ease;
+  color: var(--button-text-color);
+  background-color: var(--button-background-color);
+  mask: radial-gradient(.5rem at 1rem 1rem, #0000 98%, #000) -1rem -1rem;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--button-border-color);
   
-  &:hover {
-  background-color: darkred;
-  color:white;
-  transition: 150ms linear}
+  mask:
+/*   curve edge lines of the border  */
+  radial-gradient(var(--font-size) at var(--font-size) var(--font-size),#000 calc( 98% - var(--font-size) ),#000 99%, #0000) calc( var(--font-size) * -1) calc( var(--font-size) * -1),
+/*   vertical lines of the border  */
+  linear-gradient(#000 var(--font-size) ,#0000 0) 50% calc( var(--font-size) / 2 * -1) repeat-y,
+/*   horizontal lines of the border  */
+  linear-gradient(90deg ,#000 var(--font-size),#0000 0) calc( var(--font-size) / 2 * -1) 50% repeat-x;
+}
+
+button:hover{
+  --button-background-color:#18310A;
+  transform: scale(1.05) rotate(1deg);
 }
