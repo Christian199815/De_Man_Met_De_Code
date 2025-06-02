@@ -8,6 +8,9 @@ document.addEventListener('mousemove', (e) => {
   const containerCenterX = containerRect.left + containerRect.width / 2;
   const containerCenterY = containerRect.top + containerRect.height / 2;
 
+
+// midduh van de div bepaluh
+
   eyes.forEach(eye => {
     const eyeRect = eye.parentElement.getBoundingClientRect();
     const eyeCenterX = eyeRect.left + eyeRect.width / 2;
@@ -26,8 +29,8 @@ document.addEventListener('mousemove', (e) => {
 });
 
 
-const playButton = document.getElementById("playSoundButton");
-const audio = document.getElementById("myAudio");
+const playButton = document.getElementById("enterSite");
+const audio = document.getElementById("peterAudio");
 const bottomHead = document.querySelector(".bottomhead");
 let mouthInterval;
 
