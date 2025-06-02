@@ -174,9 +174,31 @@ img {
 
 
 
-:root {
-    --value: calc(var(--unitless-value) * 1%);
+
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* UTILITY CLASSES */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+.break {
+    display: block;
 }
+
+.visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* SET UP */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 body {
     overflow: hidden;
@@ -201,6 +223,12 @@ body {
     position: absolute;
 }
 
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* FRAME PIECES */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+/* TOP LEFT */
 .frame .top-left {
     top: 0;
     left: 0;
@@ -208,6 +236,7 @@ body {
     height: 370px;
 }
 
+/* BOTTOM LEFT */
 .frame .bottom-left {
     bottom: 0;
     left: 0;
@@ -215,6 +244,7 @@ body {
     height: 230px;
 }
 
+/* LEFT WALL */
 .frame .repeating-wall-left {
     top: 0;
     left: 0;
@@ -226,6 +256,7 @@ body {
     width: 155px;
 }
 
+/* TOP RIGHT */
 .frame .top-right {
     top: 0;
     right: 0;
@@ -233,6 +264,7 @@ body {
     height: 355px;
 }
 
+/* BOTTOM RIGHT */
 .frame .bottom-right {
     bottom: 0;
     right: 0;
@@ -240,6 +272,7 @@ body {
     height: 240px;
 }
 
+/* RIGHT WALL */
 .frame .repeating-wall-right {
     top: 0;
     right: 0;
@@ -251,6 +284,7 @@ body {
     width: 155px;
 }
 
+/* CAGE */
 .frame .repeating-cage {
     top: 80px;
     left: 0;
@@ -263,20 +297,35 @@ body {
     background-size: 1150px;
 }
 
+/* ROOF */
 .frame .repeating-roof {
     top: 0;
     left: 0;
     z-index: 1;
     background-image: url(/public/images/images-responsiveness/repeating-roof.png);
-    background-repeat: repeat;
+    background-repeat: repeat-x;
+    background-position: 20% 0;
     width: 100%;
     height: 105px;
 }
 
+/* AUDIENCE */
+.frame .audience {
+    min-width: 100vw;
+    height: 80%;
+    bottom: 50px;
+    left: 0;
+}
+
+.frame .audience img {
+    height: 90%;
+    margin-inline: auto;
+}
+
+/* FLOOR */
 .frame .repeating-floor {
     bottom: 0;
-    left: 50%;
-    translate: -50%;
+    left: 0;
     z-index: 1;
     background-image: url(/public/images/images-responsiveness/repeating-floor.png);
     background-repeat: repeat;
@@ -284,6 +333,7 @@ body {
     height: 80px;
 }
 
+/* PROPS */
 .frame .prop-container {
     position: absolute;
     bottom: 10px;
@@ -306,6 +356,7 @@ body {
     scale: 0.6;
     transition: all 0.3s ease;
     filter: drop-shadow(0 4px 10px #000);
+    pointer-events: none;
 }
 
 .frame .prop-container:hover h2 {
@@ -334,25 +385,21 @@ body {
     height: 160px;
 }
 
+
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LAYER DEPTH */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
 .layer-1 {
-    translate: 0 0 20px;
+    translate: 0 0 16px;
 }
 
 .layer-2 {
-    translate: 0 0 10px;
+    translate: 0 0 12px;
 }
 
-
-.break {
-    display: block;
-}
-
-.visually-hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+.layer-3 {
+    translate: 0 0 5px;
 }
