@@ -841,7 +841,7 @@ class PageLoader {
   }
 }
 
-// Clean Category Filter (No CSS)
+// Enhanced Category Filter with Multiple Selector Support and Better Debug
 window.CategoryFilter = {
   isInitialized: false,
   currentCategory: 'all',
@@ -856,9 +856,18 @@ window.CategoryFilter = {
     const projectCards = dynamicGrid.querySelectorAll('.project-card');
     let visibleCount = 0;
     
-    projectCards.forEach((card) => {
+    projectCards.forEach((card, index) => {
       const cardCategory = this.getCardCategory(card);
       const shouldShow = selectedCategory === 'all' || cardCategory === selectedCategory.toUpperCase();
+      
+      // Debug logging for troubleshooting
+      if (index < 5) { // Only log first 5 for debugging
+        console.log(`Card ${index}:`, {
+          category: cardCategory,
+          shouldShow: shouldShow,
+          selectedCategory: selectedCategory
+        });
+      }
       
       if (shouldShow) {
         card.style.display = '';
@@ -872,6 +881,7 @@ window.CategoryFilter = {
       }
     });
     
+    // Keep non-project items visible
     const nonProjectItems = dynamicGrid.querySelectorAll('.break-glass-card, .full-width-component, [data-type="custom"], [data-type="full-width"]');
     nonProjectItems.forEach(item => {
       item.style.display = '';
@@ -882,11 +892,14 @@ window.CategoryFilter = {
   },
   
   getCardCategory: function(card) {
-    const categoryElement = card.querySelector('.catagorie p');
-    if (categoryElement) {
-      return categoryElement.textContent.trim().toUpperCase();
+    // Look for category in .category p element
+    const categoryElement = card.querySelector('.category p');
+    if (categoryElement && categoryElement.textContent.trim()) {
+      const categoryText = categoryElement.textContent.trim().toUpperCase();
+      return categoryText;
     }
     
+    // Fallback to data attribute
     const dataCategory = card.getAttribute('data-category');
     if (dataCategory) {
       return dataCategory.toUpperCase();
@@ -915,7 +928,37 @@ window.CategoryFilter = {
     });
   },
   
+  // Debug method to inspect category structure
+  debugCategoryStructure: function() {
+    const dynamicGrid = document.getElementById('dynamicGrid');
+    if (!dynamicGrid) return;
+    
+    const projectCards = dynamicGrid.querySelectorAll('.project-card');
+    console.group('🐛 Category Structure Debug');
+    
+    projectCards.forEach((card, index) => {
+      if (index < 10) { // Only check first 10 cards
+        const categoryDiv = card.querySelector('.category');
+        const categoryP = card.querySelector('.category p');
+        const dataCategory = card.getAttribute('data-category');
+        
+        console.log(`Card ${index}:`, {
+          hasCategoryDiv: !!categoryDiv,
+          hasCategoryP: !!categoryP,
+          categoryPText: categoryP ? categoryP.textContent.trim() : 'none',
+          dataCategory: dataCategory || 'none',
+          foundCategory: this.getCardCategory(card)
+        });
+      }
+    });
+    
+    console.groupEnd();
+  },
+  
   init: function() {
+    console.log('🎯 Initializing Category Filter...');
+    
+    // Delayed initialization to ensure DOM is ready
     setTimeout(() => {
       const radioInputs = document.querySelectorAll('.filter-radio');
       
@@ -943,11 +986,17 @@ window.CategoryFilter = {
         });
       });
       
+      // Initial filter and setup
       this.filterProjects('all');
       this.updateButtonStates('all');
       this.isInitialized = true;
       
       console.log('✅ Category filter initialized');
+      
+      // Debug the structure once initialized
+      console.log('🔍 Running category structure debug...');
+      this.debugCategoryStructure();
+      
     }, 2000);
   }
 };
