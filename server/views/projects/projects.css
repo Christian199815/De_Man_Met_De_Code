@@ -20,9 +20,11 @@ h1 {
   grid-template-columns: repeat(5, 1fr);
   grid-auto-flow: row dense;
   width: 100%;
+
   min-height: 50vh;
   height: auto;
   gap: .6em;
+
   background-color: black;
   padding-bottom: 2rem;
 }
@@ -130,6 +132,7 @@ body.page-loaded .container {
 }
 
 /* Aspect Ratio Classes */
+
 .landscape-card, 
 .landscape,
 .project-card[data-aspect-ratio="landscape"] {
@@ -143,7 +146,7 @@ body.page-loaded .container {
   grid-row: span 2 !important;
   grid-column: span 1 !important;
   height: auto;
-}
+
 
 .square,
 .project-card[data-aspect-ratio="square"] {
@@ -186,7 +189,7 @@ body.page-loaded .container {
 }
 
 /* Category Badge */
-.catagorie {
+.catagory {
   position: absolute;
   bottom: 50px;
   right: 30px;
@@ -196,7 +199,7 @@ body.page-loaded .container {
   padding: 0.5em;
 }
 
-.catagorie p {
+.catagory p {
   color: white;
   text-transform: uppercase;
   font-size: clamp(1em, 3vw, 1.3em);
@@ -204,23 +207,23 @@ body.page-loaded .container {
 }
 
 /* Category Colors */
-.catagorie.decor,
-.category-decor .catagorie {
+.catagory.decor,
+.catagory-decor .catagory {
   background-color: blue;
 }
 
-.catagorie.props,
-.category-props .catagorie {
+.catagory.props,
+.category-props .catagory {
   background-color: red;
 }
 
-.catagorie.interieur,
-.category-interieur .catagorie {
+.catagory.interieur,
+.category-interior .catagory {
   background-color: green;
 }
 
-.catagorie.nieuws,
-.category-nieuws .catagorie {
+.catagory.news,
+.category-news .catagory {
   background-color: gold;
 }
 
@@ -238,6 +241,11 @@ body.page-loaded .container {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+}
+
+
+.square {
+  position: relative;
 }
 
 /* For Sale Badge */
@@ -642,10 +650,12 @@ body.page-loaded .container {
   box-shadow: 0 4px 12px rgba(52, 144, 220, 0.4);
 }
 
+
 .filter-radio:checked + .filter-btn:hover,
 .filter-btn.active:hover {
   background-color: #2779bd;
   border-color: #2779bd;
+
 }
 
 .visible-count {
@@ -1697,11 +1707,12 @@ h1 {
   .projects-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .span-2,
   .span-3 {
     grid-column: span 1 !important;
   }
+
 
   .break-glass-card {
     min-height: 120px;
@@ -2009,3 +2020,4 @@ h1 {
   margin: 0;
   pointer-events: auto;
 }
+

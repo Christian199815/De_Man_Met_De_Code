@@ -45,7 +45,7 @@
   }
 }
 
-.catagorie {
+.catagory {
   position: absolute;
   bottom: 50px;
   right: 30px;
@@ -62,19 +62,19 @@
   }
 }
 
-.catagorie.decor {
+.catagory.decor {
   background-color: blue;
 }
 
-.catagorie.props {
+.catagory.props {
   background-color: red;
 }
 
-.catagorie.interieur {
+.catagory.interior {
   background-color: green;
 }
 
-.catagorie.nieuws {
+.catagory.news {
   background-color: gold;
 }
 
