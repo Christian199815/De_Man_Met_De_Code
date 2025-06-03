@@ -5,19 +5,32 @@ import { MotionPathPlugin } from "https://cdn.jsdelivr.net/npm/gsap@3.12.2/Motio
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const submarine = document.querySelector(".submarine");
+const submarineContainer = document.querySelector(".submarine-container");
 const bubbleContainer = document.querySelector(".bubble-container");
-
 let lastScrollY = window.scrollY;
 let isFlipped = true;
 
-// GSAP timeline for motion path animation
-gsap.to(".submarine", {
+const triggerElement = document.querySelector("#dynamicGrid");
+const triggerHeight = triggerElement.offsetHeight;
+
+// Main animation timeline
+const tl = gsap.timeline({
   scrollTrigger: {
-    trigger: "body",
-    start: "top top",
-    end: "bottom bottom",
-    scrub: true,
+    trigger: "#dynamicGrid",
+    start: "top center",
+    end: `+=${triggerHeight * 2}`,
+    scrub: 1,
+    markers: true,
+    onToggle: (self) => {
+      gsap.to(submarineContainer, {
+        opacity: self.isActive ? 1 : 0,
+        duration: 0.3,
+      });
+    },
   },
+});
+
+tl.to(submarineContainer, {
   motionPath: {
     path: "#wavePath",
     align: "#wavePath",
@@ -25,6 +38,7 @@ gsap.to(".submarine", {
     autoRotate: true,
   },
   ease: "none",
+  duration: 1,
 });
 
 window.addEventListener("scroll", () => {
@@ -33,47 +47,70 @@ window.addEventListener("scroll", () => {
 
   if (scrollingUp !== isFlipped) {
     isFlipped = scrollingUp;
-
     gsap.set(submarine, {
-      scaleX: isFlipped ? 1 : -1,
-      scaleY: isFlipped ? -1 : -1,
+      scaleX: isFlipped ? -1 : 1,
+      scaleY: -1,
     });
   }
 
-  if (Math.abs(currentScrollY - lastScrollY) > 5) {
+  if (
+    Math.abs(currentScrollY - lastScrollY) > 5 &&
+    parseFloat(getComputedStyle(submarineContainer).opacity) > 0
+  ) {
     createBubbleAtTail();
-    lastScrollY = currentScrollY;
   }
+
+  lastScrollY = currentScrollY;
 });
 
-// Bubble creation function
 function createBubbleAtTail() {
-  if (!submarine || !bubbleContainer) return;
+  console.log("createBubbleAtTail called");
 
-  const rect = submarine.getBoundingClientRect();
+  if (!submarine || !bubbleContainer) {
+    console.log("Missing elements:", {
+      submarine: !!submarine,
+      bubbleContainer: !!bubbleContainer,
+    });
+    return;
+  }
+
+  const rect = submarineContainer.getBoundingClientRect();
+  console.log("Submarine rect:", rect);
 
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
 
   // Random bubble size
-  const size = 50 * Math.random() + 25;
+  const size = Math.random() * 25 + 15;
   bubble.style.width = `${size}px`;
   bubble.style.height = `${size}px`;
 
   // Position at the submarine's tail
-  const offsetX = rect.left + rect.width * 0.85;
-  const offsetY = rect.top + rect.height * 0.5;
+  const offsetX = rect.left + rect.width * (isFlipped ? 0.15 : 0.85);
+  const offsetY = rect.top + rect.height * 0.6;
+
+  console.log("Bubble position:", { offsetX, offsetY, isFlipped });
+
   bubble.style.left = `${offsetX}px`;
   bubble.style.top = `${offsetY}px`;
 
-  // Set direction of animation via CSS variable
-  bubble.style.setProperty(
-    "--bubble-move",
-    isFlipped ? "translate(200px, -200px)" : "translate(-200px, -200px)"
-  );
+  // Set direction of animation
+  const moveDirection = isFlipped
+    ? "translate(-200px, -200px)"
+    : "translate(200px, -200px)";
+  bubble.style.setProperty("--bubble-move", moveDirection);
+
+  // Add some visual debugging
+  bubble.style.backgroundColor = "rgba(173, 216, 230, 0.9)"; // More visible
 
   bubbleContainer.appendChild(bubble);
+  console.log("Bubble added to container");
 
   // Remove bubble after animation
-  setTimeout(() => bubble.remove(), 2000);
+  setTimeout(() => {
+    if (bubble.parentNode) {
+      bubble.remove();
+      console.log("Bubble removed");
+    }
+  }, 2000);
 }
