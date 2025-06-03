@@ -5,21 +5,32 @@
     <div class="radio-group">
       <input type="radio" id="category-all" name="category-filter" value="all" class="filter-radio" checked>
       <label for="category-all" class="filter-btn" data-category="all">
-        All
+        Alle Projecten
       </label>
     </div>
     
     {% for category in categories %}
       <div class="radio-group">
-        <input type="radio" id="category-{{ category | handleize }}" name="category-filter" value="{{ category }}" class="filter-radio">
-        <label for="category-{{ category | handleize }}" class="filter-btn" data-category="{{ category }}">
+        <input type="radio" id="category-{{ category | handleize }}" name="category-filter" value="{{ category | upcase }}" class="filter-radio">
+        <label for="category-{{ category | handleize }}" class="filter-btn" data-category="{{ category | upcase }}">
           {{ category }}
         </label>
       </div>
     {% endfor %}
   </div>
   
-  {% if projects.size > 0 %}
-    <div id="visibleCount" class="visible-count">{{ projects.size }} projecten zichtbaar</div>
+  <div id="visibleCount" class="visible-count">
+    {% if allData.projects.size > 0 %}
+      {{ allData.projects.size }} projecten zichtbaar (alle categorieën)
+    {% else %}
+      0 projecten zichtbaar
+    {% endif %}
+  </div>
+  
+  {% comment %} Debug info for development {% endcomment %}
+  {% if categories.size > 0 %}
+    <div class="category-debug" style="font-size: 0.8em; color: #666; margin-top: 1rem;">
+      <strong>Available categories:</strong> {{ categories | join: ', ' }}
+    </div>
   {% endif %}
 </div>
