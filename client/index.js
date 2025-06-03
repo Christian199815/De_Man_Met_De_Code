@@ -1,5 +1,5 @@
-import './index.css';
-import { log } from './debug.js';
+import "./index.css";
+import { log } from "./debug.js";
 
 console.log("Hello, world!");
 
@@ -13,7 +13,8 @@ import "../server/components/search-bar/search-bar.js";
 import "../server/components/full-width-card/full-width-card.js";
 import "../server/components/project-card/project-card.js";
 import "../server/components/text-slider/text-slider.js";
-import '../server/components/break-glass/break-glass.js';
+import "../server/components/break-glass/break-glass.js";
+import "../server/components/submarine/submarine.js";
 
 const _DebugBool = true;
 const _fileName = "server";
