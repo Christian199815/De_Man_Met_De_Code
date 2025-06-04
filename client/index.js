@@ -13,7 +13,7 @@ console.log("Hello, world!");
 import '../server/components/full-width-card/full-width-card.js';
 import '../server/components/project-card/project-card.js';
 import '../server/views/index.js';
-
+import '../server/components/preloader/preload.js';
 
 const _DebugBool = true;
 const _fileName = "server";
