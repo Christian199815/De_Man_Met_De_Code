@@ -1,6 +1,20 @@
-<div class="break-glass-container">
-    <div class="sign" id="sign">Don't break</div>
+<div class="break-glass-card" data-type="custom" data-component="break-glass" data-id="break-glass-{{ forloop.index | default: 1 }}">
+  <div class="break-glass-container">
+    <div class="sign" data-break-glass-sign>Don't Break</div>
+  </div>
+  <audio data-break-glass-audio src="/public/audio/Break-glass.wav" preload="auto"></audio>
 </div>
 
-<div class="broken-glass" id="brokenGlass"></div>
-<audio id="glassSound" src="/public/audio/Break-glass.wav" preload="auto"></audio>
+{% comment %} Fullscreen overlay for body-level glass breaking {% endcomment %}
+<div class="broken-glass-fullscreen" data-break-glass-overlay data-break-glass-id="break-glass-{{ forloop.index | default: 1 }}"></div>{% comment %} Break Glass Custom Card Component {% endcomment %}
+
+<div class="break-glass-card" data-type="custom" data-id="break-glass-{{ forloop.index | default: 1 }}" data-component="break-glass">
+  <div class="break-glass-container">
+    <div class="sign" data-break-glass-sign>Don't Break</div>
+  </div>
+  
+  <audio data-break-glass-audio src="/public/audio/Break-glass.wav" preload="auto"></audio>
+</div>
+
+{% comment %} Full-screen broken glass overlay - placed outside card for body-level positioning {% endcomment %}
+<div class="broken-glass-fullscreen" data-break-glass-overlay data-break-glass-id="break-glass-{{ forloop.index | default: 1 }}"></div>

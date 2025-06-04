@@ -1,5 +1,5 @@
 /**
- * Clean Object Pool System - JavaScript Only (Reverted + Page Loader)
+ * Clean Object Pool System - JavaScript Only (Cleaned for Modular Components)
  */
 
 class CleanGridPool {
@@ -41,8 +41,8 @@ class CleanGridPool {
   this.loadFromDOM();
   this.createProperRowLayout();
   this.renderGrid();
-  this.createControls(); // This now sets up hidden controls
-  this.initializeCustomComponents();
+  this.createControls();
+  this.initializeCustomComponents(); // This now works with modular components
   this.fixAspectRatioSpanning();
   
   console.log('✅ Clean Grid Pool initialized');
@@ -54,8 +54,41 @@ class CleanGridPool {
 
     const projectCards = this.container.querySelectorAll('.project-card');
     const squares = this.container.querySelectorAll('.square, [data-type="square"]');
-    const customItems = this.container.querySelectorAll('.break-glass-card, [data-type="custom"]');
+    
+    // UPDATED: Better selector for break glass components (includes data-component attribute)
+    const customItems = this.container.querySelectorAll('.break-glass-card, [data-type="custom"], [data-component="break-glass"]');
     const fullWidthItems = this.container.querySelectorAll('.full-width-component, [data-type="full-width"]');
+
+    console.log('🔍 Found in DOM:', {
+      projectCards: projectCards.length,
+      squares: squares.length,
+      customItems: customItems.length,
+      fullWidthItems: fullWidthItems.length
+    });
+
+    // Debug: Log break glass cards specifically
+    if (customItems.length > 0) {
+      console.log('🎯 Break glass cards found:', Array.from(customItems).map(item => ({
+        element: item,
+        classes: Array.from(item.classList),
+        dataType: item.getAttribute('data-type'),
+        dataComponent: item.getAttribute('data-component'),
+        dataId: item.getAttribute('data-id'),
+        hasSign: !!item.querySelector('[data-break-glass-sign], #sign, .sign')
+      })));
+    } else {
+      console.warn('⚠️ No break glass components found in DOM!');
+      
+      // Additional debug: check if break glass exists anywhere in the page
+      const allBreakGlass = document.querySelectorAll('.break-glass-card, [data-component="break-glass"]');
+      console.log('🔍 Break glass anywhere in document:', allBreakGlass.length);
+      if (allBreakGlass.length > 0) {
+        console.log('📍 Found break glass outside grid:', Array.from(allBreakGlass).map(item => ({
+          element: item,
+          parent: item.parentElement ? item.parentElement.tagName + '.' + Array.from(item.parentElement.classList).join('.') : 'no parent'
+        })));
+      }
+    }
 
     // Convert to pool format
     projectCards.forEach((element, index) => {
@@ -77,6 +110,13 @@ class CleanGridPool {
     });
 
     customItems.forEach((element, index) => {
+      console.log(`📦 Adding custom item ${index} to pool:`, {
+        element: element,
+        classes: Array.from(element.classList),
+        type: 'custom',
+        hasBreakGlassSign: !!element.querySelector('[data-break-glass-sign], #sign, .sign')
+      });
+      
       this.pools.custom.push({
         element: element.cloneNode(true),
         type: 'custom',
@@ -94,12 +134,21 @@ class CleanGridPool {
       });
     });
 
-    console.log('📊 Loaded items:', {
+    console.log('📊 Loaded items into pools:', {
       projects: this.pools.projects.length,
       squares: this.pools.squares.length,
       custom: this.pools.custom.length,
       fullWidth: this.pools.fullWidth.length
     });
+
+    // IMPORTANT: If we still have no custom items but break glass exists elsewhere, warn about it
+    if (this.pools.custom.length === 0) {
+      const breakGlassOutsideGrid = document.querySelectorAll('.break-glass-card, [data-component="break-glass"]');
+      if (breakGlassOutsideGrid.length > 0) {
+        console.error('❌ Found break glass components outside the grid! They need to be inside #dynamicGrid to be included in the grid system.');
+        console.log('💡 Break glass components found outside grid:', breakGlassOutsideGrid);
+      }
+    }
   }
 
   getItemSpans(element) {
@@ -317,7 +366,22 @@ class CleanGridPool {
   }
 
   createControls() {
-  if (!this.controls) return;
+  // Create controls container if it doesn't exist
+  if (!this.controls) {
+    const controlsContainer = document.createElement('div');
+    controlsContainer.className = 'grid-controls';
+    controlsContainer.style.display = 'none'; // Hidden by default
+    
+    // Insert before the grid
+    const container = document.querySelector('.container');
+    const grid = document.getElementById('dynamicGrid');
+    if (container && grid) {
+      container.insertBefore(controlsContainer, grid);
+      this.controls = controlsContainer;
+    } else {
+      return; // Can't create controls without proper container
+    }
+  }
 
   const totalItems = this.pools.mixed.length;
   const regularItemsCount = this.pools.projects.length + this.pools.squares.length + this.pools.custom.length;
@@ -349,6 +413,7 @@ class CleanGridPool {
       <div class="control-group">
         <button id="shuffle-btn" class="control-button">Shuffle</button>
         <button id="debug-btn" class="control-button">Debug</button>
+        <button id="debug-break-glass-btn" class="control-button">Debug Break Glass</button>
       </div>
       
       <div class="items-info">
@@ -451,7 +516,6 @@ class CleanGridPool {
          target.isContentEditable;
   }
 
-
   attachControlEvents() {
   const showCountSelect = document.getElementById('show-count');
   if (showCountSelect) {
@@ -495,6 +559,18 @@ class CleanGridPool {
   if (debugBtn) {
     debugBtn.addEventListener('click', () => this.showDebugInfo());
   }
+
+  // NEW: Debug break glass button
+  const debugBreakGlassBtn = document.getElementById('debug-break-glass-btn');
+  if (debugBreakGlassBtn) {
+    debugBreakGlassBtn.addEventListener('click', () => {
+      if (window.debugBreakGlass) {
+        window.debugBreakGlass();
+      } else {
+        console.log('❌ Break glass debug function not available');
+      }
+    });
+  }
   }
 
   updateControlsDisplay() {
@@ -505,46 +581,25 @@ class CleanGridPool {
     if (totalSpan) totalSpan.textContent = this.pools.mixed.length;
   }
   
-
+  // UPDATED: Modular custom components initialization
   initializeCustomComponents() {
     console.log('🎯 Initializing custom components...');
-    this.initializeBreakGlass();
+    
+    // Keep existing full-width components initialization
     this.initializeFullWidthComponents();
+    
+    // Dispatch event for modular components to reinitialize themselves
+    document.dispatchEvent(new CustomEvent('gridRerendered', {
+      detail: { gridInstance: this }
+    }));
+    
+    // Small delay to allow modular components to initialize
+    setTimeout(() => {
+      console.log('✅ Custom components initialization complete');
+    }, 150);
   }
 
-  initializeBreakGlass() {
-    const signs = this.container.querySelectorAll('.break-glass-card .sign');
-    console.log('🎯 Initializing break glass for', signs.length, 'items');
-
-    signs.forEach((sign) => {
-      const newSign = sign.cloneNode(true);
-      sign.parentNode.replaceChild(newSign, sign);
-
-      newSign.addEventListener('click', function() {
-        console.log('💥 Break glass clicked!');
-
-        const card = this.closest('.break-glass-card');
-        const brokenGlass = card.querySelector('.broken-glass');
-        const glassSound = card.querySelector('#glassSound');
-
-        this.classList.add('shake');
-
-        if (glassSound) {
-          glassSound.currentTime = 0;
-          glassSound.play().catch(e => console.log('Audio play failed:', e));
-        }
-
-        if (brokenGlass) {
-          brokenGlass.classList.add('active');
-        }
-
-        setTimeout(() => this.classList.remove('shake'), 400);
-        setTimeout(() => {
-          if (brokenGlass) brokenGlass.classList.remove('active');
-        }, 3000);
-      });
-    });
-  }
+  // REMOVED: Old hardcoded initializeBreakGlass method - now handled by modular break-glass.js
 
   initializeFullWidthComponents() {
     const fullWidthItems = this.container.querySelectorAll('.full-width-component, [data-type="full-width"]');
@@ -659,9 +714,17 @@ class CleanGridPool {
   console.log('Row Distribution:', this.getRowDistribution());
   console.groupEnd();
   }
+
+  // NEW: Optional method to manually trigger modular component reinitialization
+  reinitializeModularComponents() {
+    console.log('🔄 Manually reinitializing modular components...');
+    document.dispatchEvent(new CustomEvent('gridRerendered', {
+      detail: { gridInstance: this }
+    }));
+  }
 }
 
-// Page Loader System for Height Adjustment
+// Page Loader System - UNCHANGED
 class PageLoader {
   constructor() {
     this.isLoading = true;
@@ -669,7 +732,6 @@ class PageLoader {
     this.totalImages = 0;
     this.loadingElement = null;
     
-    // Check if we should initialize based on current route
     if (this.shouldInitialize()) {
       this.init();
     } else {
@@ -678,19 +740,14 @@ class PageLoader {
     }
   }
   
-  /**
-   * Check if page loader should run based on current route
-   */
- shouldInitialize() {
+  shouldInitialize() {
   const currentPath = window.location.pathname;
   
-  // Only allow page loader on /projects routes
   const validRoutes = [
-    '/projects',   // Main projects page
-    '/projects/',  // With trailing slash
+    '/projects',
+    '/projects/',
   ];
   
-  // Check if current path matches any valid route
   const shouldRun = validRoutes.some(route => {
     return currentPath === route || currentPath.startsWith(route);
   });
@@ -708,7 +765,6 @@ class PageLoader {
   }
   
   createLoader() {
-    // Create loader overlay
     this.loadingElement = document.createElement('div');
     this.loadingElement.className = 'page-loader';
     this.loadingElement.innerHTML = `
@@ -729,7 +785,6 @@ class PageLoader {
   }
   
   waitForGridAndImages() {
-    // Wait for grid to be rendered
     const checkGrid = () => {
       const grid = document.getElementById('dynamicGrid');
       const images = grid ? grid.querySelectorAll('img') : [];
@@ -744,7 +799,7 @@ class PageLoader {
       this.trackImageLoading(images);
     };
     
-    setTimeout(checkGrid, 500); // Give grid time to render
+    setTimeout(checkGrid, 500);
   }
   
   trackImageLoading(images) {
@@ -760,11 +815,10 @@ class PageLoader {
         this.onImageLoad();
       } else {
         img.addEventListener('load', () => this.onImageLoad());
-        img.addEventListener('error', () => this.onImageLoad()); // Count errors as loaded
+        img.addEventListener('error', () => this.onImageLoad());
       }
     });
     
-    // Timeout fallback
     setTimeout(() => {
       if (this.isLoading) {
         console.log('📄 Loader timeout - completing anyway');
@@ -781,7 +835,7 @@ class PageLoader {
     console.log(`📸 Project image loaded: ${this.loadedImages}/${this.totalImages} (${progress}%)`);
     
     if (this.loadedImages >= this.totalImages) {
-      setTimeout(() => this.completeLoading(), 300); // Small delay for smooth UX
+      setTimeout(() => this.completeLoading(), 300);
     }
   }
   
@@ -801,10 +855,8 @@ class PageLoader {
     console.log('✅ Projects page loading complete - removing loader');
     this.isLoading = false;
     
-    // Add loaded class to body
     document.body.classList.add('page-loaded');
     
-    // Fade out loader
     if (this.loadingElement) {
       this.loadingElement.classList.add('fade-out');
       
@@ -815,13 +867,9 @@ class PageLoader {
       }, 500);
     }
     
-    // Dispatch loaded event
     window.dispatchEvent(new CustomEvent('pageFullyLoaded'));
   }
   
-  /**
-   * Public method to manually trigger loading (if needed)
-   */
   static initializeForCurrentRoute() {
     if (window.pageLoader) {
       console.log('📄 Page loader already exists');
@@ -832,16 +880,13 @@ class PageLoader {
     return window.pageLoader;
   }
   
-  /**
-   * Public method to force complete loading (for debugging)
-   */
   forceComplete() {
     console.log('🔧 Force completing page loader');
     this.completeLoading();
   }
 }
 
-// Enhanced Category Filter with Multiple Selector Support and Better Debug
+// Category Filter - UNCHANGED
 window.CategoryFilter = {
   isInitialized: false,
   currentCategory: 'all',
@@ -860,8 +905,7 @@ window.CategoryFilter = {
       const cardCategory = this.getCardCategory(card);
       const shouldShow = selectedCategory === 'all' || cardCategory === selectedCategory.toUpperCase();
       
-      // Debug logging for troubleshooting
-      if (index < 5) { // Only log first 5 for debugging
+      if (index < 5) {
         console.log(`Card ${index}:`, {
           category: cardCategory,
           shouldShow: shouldShow,
@@ -881,7 +925,6 @@ window.CategoryFilter = {
       }
     });
     
-    // Keep non-project items visible
     const nonProjectItems = dynamicGrid.querySelectorAll('.break-glass-card, .full-width-component, [data-type="custom"], [data-type="full-width"]');
     nonProjectItems.forEach(item => {
       item.style.display = '';
@@ -892,14 +935,12 @@ window.CategoryFilter = {
   },
   
   getCardCategory: function(card) {
-    // Look for category in .category p element
     const categoryElement = card.querySelector('.category p');
     if (categoryElement && categoryElement.textContent.trim()) {
       const categoryText = categoryElement.textContent.trim().toUpperCase();
       return categoryText;
     }
     
-    // Fallback to data attribute
     const dataCategory = card.getAttribute('data-category');
     if (dataCategory) {
       return dataCategory.toUpperCase();
@@ -928,7 +969,6 @@ window.CategoryFilter = {
     });
   },
   
-  // Debug method to inspect category structure
   debugCategoryStructure: function() {
     const dynamicGrid = document.getElementById('dynamicGrid');
     if (!dynamicGrid) return;
@@ -937,7 +977,7 @@ window.CategoryFilter = {
     console.group('🐛 Category Structure Debug');
     
     projectCards.forEach((card, index) => {
-      if (index < 10) { // Only check first 10 cards
+      if (index < 10) {
         const categoryDiv = card.querySelector('.category');
         const categoryP = card.querySelector('.category p');
         const dataCategory = card.getAttribute('data-category');
@@ -958,7 +998,6 @@ window.CategoryFilter = {
   init: function() {
     console.log('🎯 Initializing Category Filter...');
     
-    // Delayed initialization to ensure DOM is ready
     setTimeout(() => {
       const radioInputs = document.querySelectorAll('.filter-radio');
       
@@ -986,14 +1025,11 @@ window.CategoryFilter = {
         });
       });
       
-      // Initial filter and setup
       this.filterProjects('all');
       this.updateButtonStates('all');
       this.isInitialized = true;
       
       console.log('✅ Category filter initialized');
-      
-      // Debug the structure once initialized
       console.log('🔍 Running category structure debug...');
       this.debugCategoryStructure();
       
@@ -1005,7 +1041,6 @@ window.CategoryFilter = {
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname;
   
-  // Only initialize projects components on /projects routes
   const isProjectsRoute = currentPath === '/projects' || 
                          currentPath === '/projects/' || 
                          currentPath.startsWith('/projects/');
@@ -1013,10 +1048,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isProjectsRoute) {
     console.log('🎯 Initializing projects page components...');
     
-    // Start page loader (will auto-check if it should run)
     window.pageLoader = new PageLoader();
     
-    // Initialize grid pool
     window.cleanGridPool = new CleanGridPool({
       containerSelector: '#dynamicGrid',
       controlsSelector: '.grid-controls',
@@ -1031,13 +1064,13 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.log('📄 Not on projects route - skipping projects-specific components');
     
-    // Still add page-loaded class for other pages
     setTimeout(() => {
       document.body.classList.add('page-loaded');
     }, 100);
   }
 });
 
+// Debug functions
 window.debugPageLoader = function() {
   if (window.pageLoader) {
     console.log('Page Loader Status:', {
@@ -1052,9 +1085,6 @@ window.debugPageLoader = function() {
   }
 };
 
-console.log('🎯 Conditional Page Loader System loaded');
-
-// Debug functions
 window.debugAspectRatios = function() {
   const cards = document.querySelectorAll('#dynamicGrid .project-card');
   console.group('🐛 Aspect Ratios Debug');
@@ -1084,388 +1114,4 @@ window.debugCategoryFilter = function() {
   }
 };
 
-console.log('🎯 Clean Grid Pool System loaded with Page Loader');
-
-
-// Add these methods to your CleanGridPool class
-class ImageHeightManager {
-  constructor(gridContainer) {
-    this.grid = gridContainer;
-    this.observedImages = new Set();
-    this.retryAttempts = new Map();
-    this.maxRetries = 3;
-    
-    this.init();
-  }
-
-  init() {
-    console.log('🔧 Image Height Manager initialized');
-    this.setupImageObserver();
-    this.fixExistingImages();
-  }
-
-  setupImageObserver() {
-    // Create intersection observer to handle images entering viewport
-    this.imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.handleImageVisible(entry.target);
-        }
-      });
-    }, {
-      rootMargin: '50px'
-    });
-
-    // Create resize observer for responsive height adjustments
-    this.resizeObserver = new ResizeObserver(entries => {
-      entries.forEach(entry => {
-        this.adjustCardHeight(entry.target);
-      });
-    });
-  }
-
-  handleImageVisible(img) {
-    if (this.observedImages.has(img)) return;
-    
-    this.observedImages.add(img);
-    
-    if (img.complete && img.naturalHeight > 0) {
-      this.fixImageHeight(img);
-    } else {
-      img.addEventListener('load', () => this.fixImageHeight(img));
-      img.addEventListener('error', () => this.handleImageError(img));
-    }
-  }
-
-  fixImageHeight(img) {
-    const card = img.closest('.project-card');
-    if (!card) return;
-
-    const wrapper = img.parentElement;
-    const aspectRatio = card.getAttribute('data-aspect-ratio') || this.detectAspectRatio(img);
-    
-    // Set aspect ratio if not set
-    if (!card.getAttribute('data-aspect-ratio')) {
-      card.setAttribute('data-aspect-ratio', aspectRatio);
-    }
-
-    // Apply proper height based on aspect ratio
-    this.applyHeightByAspectRatio(card, aspectRatio);
-    
-    // Ensure image fills wrapper properly
-    this.ensureImageFit(img, wrapper);
-    
-    // Remove loading state
-    card.classList.remove('loading');
-    
-    console.log(`✅ Fixed height for ${aspectRatio} image in card`);
-  }
-
-  detectAspectRatio(img) {
-    if (!img.naturalWidth || !img.naturalHeight) return 'square';
-    
-    const ratio = img.naturalWidth / img.naturalHeight;
-    
-    if (ratio < 0.9) return 'portrait';
-    if (ratio > 1.1) return 'landscape';
-    return 'square';
-  }
-
-  applyHeightByAspectRatio(card, aspectRatio) {
-    // Remove existing aspect ratio classes
-    card.classList.remove('portrait-card', 'landscape-card', 'square');
-    
-    // Apply new class and styles
-    switch (aspectRatio) {
-      case 'portrait':
-        card.classList.add('portrait-card');
-        card.style.minHeight = '600px';
-        card.style.height = 'auto';
-        card.style.gridRow = 'span 2';
-        card.style.gridColumn = 'span 1';
-        break;
-      case 'landscape':
-        card.classList.add('landscape-card');
-        card.style.height = '300px';
-        card.style.minHeight = '300px';
-        card.style.gridRow = 'span 1';
-        card.style.gridColumn = 'span 2';
-        break;
-      case 'square':
-      default:
-        card.classList.add('square');
-        card.style.height = '300px';
-        card.style.minHeight = '300px';
-        card.style.gridRow = 'span 1';
-        card.style.gridColumn = 'span 1';
-        break;
-    }
-  }
-
-  ensureImageFit(img, wrapper) {
-    // Critical image styling for proper height behavior
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.display = 'block';
-    img.style.verticalAlign = 'top';
-    
-    // Ensure wrapper takes full card height
-    if (wrapper) {
-      wrapper.style.position = 'absolute';
-      wrapper.style.top = '0';
-      wrapper.style.left = '0';
-      wrapper.style.width = '100%';
-      wrapper.style.height = '100%';
-      wrapper.style.overflow = 'hidden';
-      wrapper.style.boxSizing = 'border-box';
-    }
-  }
-
-  handleImageError(img) {
-    const card = img.closest('.project-card');
-    const attempts = this.retryAttempts.get(img) || 0;
-    
-    if (attempts < this.maxRetries) {
-      this.retryAttempts.set(img, attempts + 1);
-      
-      // Try to reload the image after a delay
-      setTimeout(() => {
-        const newSrc = img.src;
-        img.src = '';
-        img.src = newSrc;
-      }, 1000 * (attempts + 1));
-      
-      console.warn(`⚠️ Image load failed, retrying (${attempts + 1}/${this.maxRetries}):`, img.src);
-    } else {
-      // Give up and apply default styling
-      console.error('❌ Image failed to load after retries:', img.src);
-      this.applyDefaultStyling(card);
-    }
-  }
-
-  applyDefaultStyling(card) {
-    if (!card) return;
-    
-    card.classList.add('square');
-    card.style.height = '300px';
-    card.style.minHeight = '300px';
-    card.style.backgroundColor = '#444';
-    
-    // Add placeholder content
-    const wrapper = card.querySelector('.project-image-wrapper');
-    if (wrapper && !wrapper.querySelector('.image-placeholder')) {
-      const placeholder = document.createElement('div');
-      placeholder.className = 'image-placeholder';
-      placeholder.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #999;
-        font-size: 14px;
-        text-align: center;
-      `;
-      placeholder.textContent = 'Image not available';
-      wrapper.appendChild(placeholder);
-    }
-  }
-
-  fixExistingImages() {
-    const images = this.grid.querySelectorAll('.project-card img');
-    console.log(`🔍 Checking ${images.length} existing images...`);
-    
-    images.forEach(img => {
-      // Add loading class initially
-      const card = img.closest('.project-card');
-      if (card) card.classList.add('loading');
-      
-      // Observe the image
-      this.imageObserver.observe(img);
-      
-      // If already loaded, fix immediately
-      if (img.complete && img.naturalHeight > 0) {
-        this.handleImageVisible(img);
-      }
-    });
-  }
-
-  adjustCardHeight(card) {
-    if (!card.classList.contains('project-card')) return;
-    
-    const img = card.querySelector('img');
-    if (!img || !img.complete) return;
-    
-    // Reapply height based on current viewport size
-    const aspectRatio = card.getAttribute('data-aspect-ratio');
-    if (aspectRatio) {
-      this.applyResponsiveHeights(card, aspectRatio);
-    }
-  }
-
-  applyResponsiveHeights(card, aspectRatio) {
-    const width = window.innerWidth;
-    
-    if (width <= 480) {
-      // Mobile: all cards same height
-      card.style.height = '250px';
-      card.style.minHeight = '250px';
-    } else if (width <= 768) {
-      // Tablet
-      switch (aspectRatio) {
-        case 'portrait':
-          card.style.minHeight = '400px';
-          break;
-        case 'landscape':
-          card.style.height = '200px';
-          card.style.minHeight = '200px';
-          break;
-        case 'square':
-          card.style.height = '200px';
-          card.style.minHeight = '200px';
-          break;
-      }
-    } else if (width <= 1200) {
-      // Desktop
-      switch (aspectRatio) {
-        case 'portrait':
-          card.style.minHeight = '560px';
-          break;
-        case 'landscape':
-        case 'square':
-          card.style.height = '280px';
-          card.style.minHeight = '280px';
-          break;
-      }
-    } else {
-      // Large desktop - default heights
-      switch (aspectRatio) {
-        case 'portrait':
-          card.style.minHeight = '600px';
-          break;
-        case 'landscape':
-        case 'square':
-          card.style.height = '300px';
-          card.style.minHeight = '300px';
-          break;
-      }
-    }
-  }
-
-  // Public method to force recheck all images
-  recheckAllImages() {
-    console.log('🔄 Rechecking all images...');
-    this.observedImages.clear();
-    this.retryAttempts.clear();
-    this.fixExistingImages();
-  }
-
-  // Clean up observers
-  destroy() {
-    if (this.imageObserver) this.imageObserver.disconnect();
-    if (this.resizeObserver) this.resizeObserver.disconnect();
-    this.observedImages.clear();
-    this.retryAttempts.clear();
-    console.log('🧹 Image Height Manager destroyed');
-  }
-}
-
-
-// Standalone function for immediate use in your existing code:
-window.fixAllImageHeights = function() {
-  console.log('🔧 Running immediate image height fix...');
-  
-  const grid = document.getElementById('dynamicGrid') || document.querySelector('.projects-grid');
-  if (!grid) {
-    console.error('❌ Grid container not found');
-    return;
-  }
-  
-  const cards = grid.querySelectorAll('.project-card');
-  let fixedCount = 0;
-  
-  cards.forEach(card => {
-    const img = card.querySelector('img');
-    const wrapper = card.querySelector('.project-image-wrapper');
-    
-    if (!img || !wrapper) return;
-    
-    // Detect aspect ratio
-    let aspectRatio = card.getAttribute('data-aspect-ratio');
-    if (!aspectRatio && img.naturalWidth && img.naturalHeight) {
-      const ratio = img.naturalWidth / img.naturalHeight;
-      if (ratio < 0.9) aspectRatio = 'portrait';
-      else if (ratio > 1.1) aspectRatio = 'landscape';
-      else aspectRatio = 'square';
-      
-      card.setAttribute('data-aspect-ratio', aspectRatio);
-    }
-    
-    // Apply height fixes
-    switch (aspectRatio) {
-      case 'portrait':
-        card.classList.add('portrait-card');
-        card.style.minHeight = '600px';
-        card.style.height = 'auto';
-        break;
-      case 'landscape':
-        card.classList.add('landscape-card');
-        card.style.height = '300px';
-        card.style.minHeight = '300px';
-        break;
-      case 'square':
-      default:
-        card.classList.add('square');
-        card.style.height = '300px';
-        card.style.minHeight = '300px';
-        break;
-    }
-    
-    // Fix image styling
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.display = 'block';
-    
-    // Fix wrapper styling
-    wrapper.style.position = 'absolute';
-    wrapper.style.top = '0';
-    wrapper.style.left = '0';
-    wrapper.style.width = '100%';
-    wrapper.style.height = '100%';
-    wrapper.style.overflow = 'hidden';
-    
-    fixedCount++;
-  });
-  
-  console.log(`✅ Fixed ${fixedCount} image heights`);
-};
-
-// Debug function to check current state
-window.debugImageHeights = function() {
-  const grid = document.getElementById('dynamicGrid') || document.querySelector('.projects-grid');
-  if (!grid) return console.error('❌ Grid not found');
-  
-  const cards = grid.querySelectorAll('.project-card');
-  console.group('🐛 Image Height Debug');
-  
-  cards.forEach((card, index) => {
-    const img = card.querySelector('img');
-    const wrapper = card.querySelector('.project-image-wrapper');
-    const aspectRatio = card.getAttribute('data-aspect-ratio');
-    
-    console.log(`Card ${index}:`, {
-      aspectRatio,
-      cardHeight: card.offsetHeight + 'px',
-      cardMinHeight: getComputedStyle(card).minHeight,
-      imgLoaded: img ? img.complete && img.naturalHeight > 0 : 'No image',
-      imgDimensions: img && img.naturalWidth ? `${img.naturalWidth}x${img.naturalHeight}` : 'Unknown',
-      wrapperHeight: wrapper ? wrapper.offsetHeight + 'px' : 'No wrapper',
-      classes: Array.from(card.classList)
-    });
-  });
-  
-  console.groupEnd();
-};
-
-console.log('🎯 Image Height Manager loaded - Use window.fixAllImageHeights() or window.debugImageHeights()');
+console.log('🎯 Clean Grid Pool System loaded - Ready for modular components');
