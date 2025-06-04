@@ -5,15 +5,24 @@ import { logger } from "@tinyhttp/logger";
 import { Liquid } from "liquidjs";
 import { log } from "../client/debug.js";
 import sirv from "sirv";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const _DebugBool = false;
 const _fileName = "server";
 
 // Configuration
 const PREPR_CONFIG = {
-  apiUrl: "https://graphql.prepr.io/ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
-  token: "ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
+  apiUrl: process.env.PREPR_API_URL,
+  token: process.env.PREPR_TOKEN,
 };
+
+// Validate required environment variables
+if (!process.env.PREPR_TOKEN) {
+  console.warn("Warning: PREPR_TOKEN not found in environment variables, using fallback");
+}
+
 
 // GraphQL queries
 const PROJECTS_QUERY = `
@@ -286,10 +295,9 @@ const renderTemplate = (template, data) => {
     return engine.renderFileSync(template, data);
 };
 
-// Start server
-app.listen(3000, () => {
-    console.log("Server available on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server available on http://localhost:${PORT}`);
     console.log("Clean data-only server running");
 });
-
 export default app;
