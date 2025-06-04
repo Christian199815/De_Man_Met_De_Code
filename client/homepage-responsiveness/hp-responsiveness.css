@@ -173,7 +173,11 @@ img {
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-
+@property --gradient-position {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 100%;
+}
 
 
 
@@ -216,7 +220,8 @@ img {
 
 body {
     overflow: hidden;
-    scale: 1.01; /* <-- TEMPORARY FIX */
+    scale: 1.01;
+    /* <-- TEMPORARY FIX */
 }
 
 .frame {
@@ -416,12 +421,46 @@ body {
     left: 0;
 }
 
+.frame .logo-container .hanging-sign .logo .gradient {
+    position: absolute;
+    --gradient-position: 100%;
+    background: linear-gradient(145deg,
+            rgba(0, 0, 0, 0) 45%,
+            rgba(255, 255, 255, 1) 47.5%,
+            rgba(255, 255, 255, 1) 52.5%,
+            rgba(0, 0, 0, 0) 55%);
+    background-size: 400%;
+    background-position: var(--gradient-position);
+
+    mask: url('/public/images/images-responsiveness/hanging-logo.png');
+    mask-position: center;
+    mask-mode: alpha;
+    mask-size: contain;
+
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+
+    mix-blend-mode: overlay;
+}
+
+.frame .logo-container .hanging-sign .logo .gradient:hover {
+    --gradient-position: 0%;
+    transition: --gradient-position 2s ease;
+}
+
+
+.frame .logo-container .hanging-sign .logo img {
+    width: 100%;
+}
+
 .frame .logo-container .hanging-sign .cable {
     position: absolute;
     z-index: 2;
     width: 2px;
     height: 80%;
-    background: linear-gradient(90deg,rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(176, 176, 176, 1) 100%);
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(176, 176, 176, 1) 100%);
 }
 
 .frame .logo-container .hanging-sign .cable:nth-of-type(1) {
