@@ -5,9 +5,9 @@
 {% block content %}
 <div class="container">
   <nav>
-    <img src="/public/images/Man-met-hamer.png" alt="logo of DMMDH">
+    <a href="/"><img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH"></a>
       {% render '../../components/category-filter/category-filter.liquid', categories: categories %}
-  {% render '../../components/project-sorting/project-sorting.liquid' %}
+  {% comment %} {% render '../../components/project-sorting/project-sorting.liquid' %} {% endcomment %}
   <div>
     <button hidden><img src="" alt="search icon"></button>
     {% render '../../components/search-bar/search-bar.liquid' %}

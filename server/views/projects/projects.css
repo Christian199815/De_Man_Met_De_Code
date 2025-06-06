@@ -9,10 +9,25 @@
   nav {
     display: flex;
     flex-direction: row;
-    background-color: #fafafa;
-
+    background-color: #212121;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
+    /* gap: 2rem; */
+    padding: 0 .5rem ;
+    height: 8rem;
+    position: relative;
+
+
+
+    > a {
+    flex-grow: 1;
+    img{
+      /* width: clamp(5dvw, 20rem, 2dvw); */
+      height: 100%;
+      /* aspect-ratio: 1; */
+    }
+
+  }
 
     >div{
       display: flex;
@@ -397,7 +412,7 @@ h1 {
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
+    /* padding: 1rem; */
   }
 
   h1 {
@@ -834,6 +849,16 @@ body.page-loaded .container {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .container nav{
+    flex-direction: column;
+    gap: 2rem;
+
+    > a img{
+      width: 6rem;
+    }
+  }
+
+
   .newsletter-form {
     flex-direction: column;
   }

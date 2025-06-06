@@ -5,16 +5,24 @@ import { logger } from "@tinyhttp/logger";
 import { Liquid } from "liquidjs";
 import { log } from "../client/debug.js";
 import sirv from "sirv";
+import dotenv from "dotenv";
+
+// Load environment variables
+dotenv.config();
 
 const _DebugBool = false;
 const _fileName = "server";
 
-// Configuration
+// Configuration with environment variables
 const PREPR_CONFIG = {
-  apiUrl: "https://graphql.prepr.io/ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
-  token: "ac_c957f8b18f145116ffd7434e47029e0deee9d41f2d76f4e2b52612e400da0d1c",
+  apiUrl: process.env.PREPR_API_URL,
+  token: process.env.PREPR_TOKEN,
 };
 
+// Validate required environment variables
+if (!process.env.PREPR_TOKEN) {
+  console.warn("Warning: PREPR_TOKEN not found in environment variables, using fallback");
+}
 // GraphQL queries
 const PROJECTS_QUERY = `
 query GetProjects {
@@ -99,6 +107,29 @@ async function fetchFromPrepr(query, variables = {}) {
   }
 }
 
+// Helper function to parse and sort dates
+function parseProjectDate(dateString) {
+    if (!dateString) return new Date(0); // Default to epoch for missing dates
+    
+    // Handle various date formats that might come from Prepr
+    const date = new Date(dateString);
+    
+    // If the date is invalid, try parsing as ISO string or other common formats
+    if (isNaN(date.getTime())) {
+        // Try parsing as YYYY-MM-DD format
+        const isoMatch = dateString.match(/(\d{4})-(\d{2})-(\d{2})/);
+        if (isoMatch) {
+            return new Date(parseInt(isoMatch[1]), parseInt(isoMatch[2]) - 1, parseInt(isoMatch[3]));
+        }
+        
+        // If all else fails, return epoch
+        console.warn(`Could not parse date: ${dateString}`);
+        return new Date(0);
+    }
+    
+    return date;
+}
+
 // Transform Prepr project data
 function transformPreprData(preprData) {
     if (!preprData?.Projects?.items) {
@@ -138,6 +169,7 @@ function transformPreprData(preprData) {
             aspectRatioClass: aspectRatioClass,
             category: category,
             projectDate: project.project_date || '',
+            projectDateParsed: parseProjectDate(project.project_date), // Add parsed date for sorting
             productionName: project.production_name || '',
             photographerName: project.photographer_name || '',
             forSale: project.for_sale || false,
@@ -145,10 +177,16 @@ function transformPreprData(preprData) {
         };
     });
     
+    // Sort projects by date - newest first (descending order)
+    transformedProjects.sort((a, b) => {
+        return b.projectDateParsed.getTime() - a.projectDateParsed.getTime();
+    });
+    
     const categories = Array.from(uniqueCategories).sort();
     
     console.log(`Transformed ${transformedProjects.length} projects from Prepr`);
     console.log(`Categories: ${categories.join(', ')}`);
+    console.log(`Date range: ${transformedProjects[transformedProjects.length - 1]?.projectDate} to ${transformedProjects[0]?.projectDate}`);
     
     return {
         projects: transformedProjects,
@@ -249,17 +287,15 @@ app.get('/projects', async (req, res) => {
         
         const allData = await loadAllData();
         
-        console.log('Data being passed to template:', {
-            projects: allData.projects.length,
-            squares: allData.squares.length,
-            custom: allData.custom.length,
-            categories: allData.categories.length
+        // Add this logging to see the actual order being sent
+        console.log('First 10 projects in order being sent to template:');
+        allData.projects.slice(0, 10).forEach((project, index) => {
+            console.log(`${index + 1}. ${project.projectname} - ${project.projectDate} (${project.projectDateParsed.toISOString()})`);
         });
         
-        // Let Liquid handle all HTML generation
         return res.send(renderTemplate('server/views/projects/projects.liquid', { 
             title: 'Projects',
-            allData: allData, // Raw data for Liquid to process
+            allData: allData,
             categories: allData.categories
         }));
     } catch (error) {
@@ -287,8 +323,9 @@ const renderTemplate = (template, data) => {
 };
 
 // Start server
-app.listen(3000, () => {
-    console.log("Server available on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server available on http://localhost:${PORT}`);
     console.log("Clean data-only server running");
 });
 
