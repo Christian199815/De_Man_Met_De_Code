@@ -19,29 +19,29 @@
 
   {% comment %} Grid container {% endcomment %}
   <div class="projects-grid" id="dynamicGrid">
-    
+
     {% comment %} Render your regular items {% endcomment %}
     {% for project in allData.projects %}
-      {% render '../../components/project-card/project-card.liquid', project: project %} 
+    {% render '../../components/project-card/project-card.liquid', project: project %}
     {% endfor %}
-    
+
     {% for square in allData.squares %}
-      {% render '../../components/project-item/project-item.liquid', item: square %}
+    {% render '../../components/project-item/project-item.liquid', item: square %}
     {% endfor %}
-    
+
     {% comment %} Custom components (break glass, etc.) {% endcomment %}
     <div class="break-glass-card" data-type="custom" data-id="break-glass-1">
       <div class="sign" id="sign">Don't Break</div>
       <div class="broken-glass" id="brokenGlass"></div>
       <audio id="glassSound" src="/public/audio/Break-glass.wav" preload="auto"></audio>
     </div>
-    
-    {% comment %} 
-    Custom Full Width Components 
+
+    {% comment %}
+    Custom Full Width Components
     These are your custom Liquid components that span the full width
     Add as many as you need - the system will automatically insert them every X rows
     {% endcomment %}
-    
+
     {% comment %} Full Width Component 1: Newsletter Signup {% endcomment %}
     <div class="full-width-component newsletter-signup" data-type="full-width" data-id="newsletter-1">
       <div class="full-width-content">
@@ -53,7 +53,7 @@
         </form>
       </div>
     </div>
-    
+
     {% comment %} Full Width Component 2: Call to Action {% endcomment %}
     <div class="full-width-component cta-banner" data-type="full-width" data-id="cta-1">
       <div class="full-width-content">
@@ -62,7 +62,7 @@
         <a href="/contact" class="cta-button">Contact Us</a>
       </div>
     </div>
-    
+
     {% comment %} Full Width Component 3: Stats/Achievements {% endcomment %}
     <div class="full-width-component stats-banner" data-type="full-width" data-id="stats-1">
       <div class="full-width-content">
@@ -86,134 +86,134 @@
         </div>
       </div>
     </div>
-    
-    {% comment %} 
+
+    {% comment %}
     You can also render full-width components from separate Liquid files:
     {% render '../../components/newsletter-banner/newsletter-banner.liquid' %}
     {% render '../../components/cta-section/cta-section.liquid' %}
     {% render '../../components/testimonials-slider/testimonials-slider.liquid' %}
     {% endcomment %}
-    
+
   </div>
 </div>
 
 {% comment %} Custom component styles {% endcomment %}
 <style>
-/* Newsletter Signup Full Width Component */
-.newsletter-signup {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+  /* Newsletter Signup Full Width Component */
+  .newsletter-signup {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
 
-.newsletter-signup .full-width-content {
-  padding: 3rem 2rem;
-}
+  .newsletter-signup .full-width-content {
+    padding: 3rem 2rem;
+  }
 
-.newsletter-form {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  max-width: 400px;
-  width: 100%;
-}
-
-.newsletter-input {
-  flex: 1;
-  padding: 1rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: Raleway, sans-serif;
-}
-
-.newsletter-button {
-  padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid white;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.newsletter-button:hover {
-  background: white;
-  color: #667eea;
-}
-
-/* CTA Banner Full Width Component */
-.cta-banner {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
-}
-
-.cta-button {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 1rem 3rem;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  text-decoration: none;
-  border: 2px solid white;
-  border-radius: 6px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-}
-
-.cta-button:hover {
-  background: white;
-  color: #ff6b6b;
-  transform: translateY(-2px);
-}
-
-/* Stats Banner Full Width Component */
-.stats-banner {
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  width: 100%;
-  max-width: 800px;
-}
-
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-item h3 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  color: white;
-}
-
-.stat-item p {
-  font-size: 1.1rem;
-  margin: 0;
-  opacity: 0.9;
-  color: white;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
   .newsletter-form {
-    flex-direction: column;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
     gap: 1rem;
+    margin-top: 2rem;
+    max-width: 400px;
+    width: 100%;
   }
-  
+
+  .newsletter-input {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: Raleway, sans-serif;
+  }
+
+  .newsletter-button {
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid white;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .newsletter-button:hover {
+    background: white;
+    color: #667eea;
+  }
+
+  /* CTA Banner Full Width Component */
+  .cta-banner {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+  }
+
+  .cta-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+
+  .cta-button:hover {
+    background: white;
+    color: #ff6b6b;
+    transform: translateY(-2px);
+  }
+
+  /* Stats Banner Full Width Component */
+  .stats-banner {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 800px;
+  }
+
+
+  .stat-item {
+    text-align: center;
+  }
+
   .stat-item h3 {
-    font-size: 2rem;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
   }
-}
+
+  .stat-item p {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+    color: white;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .newsletter-form {
+      flex-direction: column;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .stat-item h3 {
+      font-size: 2rem;
+    }
+  }
 </style>
 
 {% endblock %}
