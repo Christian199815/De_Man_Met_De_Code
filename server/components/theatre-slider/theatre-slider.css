@@ -1,4 +1,5 @@
 .theatre {
+  position: relative;
   background: black;
   height: 30dvh;
   display: flex;
@@ -28,24 +29,24 @@
       var(--_animation-direction, forwards) linear infinite;
   }
 
-  /* Image Sizing */
   .scroller__inner img {
-    height: 100%; /* Fill the row vertically */
-    width: auto; /* Maintain aspect ratio */
+    height: 100%;
+    width: auto;
     flex-shrink: 0;
+    object-fit: contain;
   }
 
   /* Animation Speeds */
   .scroller[data-speed="fast"] {
-    --_animation-duration: 40s;
+    --_animation-duration: 20s;
   }
 
   .scroller[data-speed="slow"] {
-    --_animation-duration: 60s;
+    --_animation-duration: 30s;
   }
 
   .scroller[data-speed="faster"] {
-    --_animation-duration: 20s;
+    --_animation-duration: 10s;
   }
 
   /* Scroll Direction */
@@ -63,6 +64,16 @@
   overflow: hidden;
 }
 
+.theatre-row-2 {
+  margin-top: -1em;
+  transform: scale(2);
+}
+
+.theatre-row-3 {
+  margin-top: -1em;
+  transform: scale(2.5);
+}
+
 @keyframes scroll {
   to {
     transform: translate(calc(-50% - 0.5rem));
@@ -71,13 +82,13 @@
 
 .cartoon-maarten {
   position: absolute;
-  top: 2em;
-  left: 30%;
-  height: 20vh;
+  top: 0;
+  left: 25%;
+  height: 150%;
   width: auto;
 
   opacity: 0;
-  transform: translateY(30%) scale(0.7) rotate(-0deg);
+  transform: translateY(50%) scale(0.6) rotate(0deg);
   transition: opacity 0.4s ease, transform 0.5s ease;
   pointer-events: none;
 }

@@ -7,20 +7,14 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
 function addAnimation() {
   scrollers.forEach((scroller) => {
     scroller.setAttribute("data-animated", true);
+
     const scrollerInner = scroller.querySelector(".scroller__inner");
-    const items = Array.from(scrollerInner.children);
+    const scrollerContent = Array.from(scrollerInner.children);
 
-    let totalWidth = scrollerInner.scrollWidth;
-    const containerWidth = scroller.offsetWidth;
-
-    // Clone images until it’s wide enough for smooth looping
-    while (totalWidth < containerWidth * 2) {
-      items.forEach((item) => {
-        const clone = item.cloneNode(true);
-        clone.setAttribute("aria-hidden", "true");
-        scrollerInner.appendChild(clone);
-      });
-      totalWidth = scrollerInner.scrollWidth;
-    }
+    scrollerContent.forEach((item) => {
+      const duplicatedItem = item.cloneNode(true);
+      duplicatedItem.setAttribute("aria-hidden", true);
+      scrollerInner.appendChild(duplicatedItem);
+    });
   });
 }
