@@ -1,0 +1,8 @@
+body, a{
+    cursor: url("/images/cursor/hammer-cursor-normal.svg") 48 48, auto;
+}
+
+body:active, a:active{
+cursor: url("/images/cursor/hammer-cursor-active.svg") 48 48, auto;
+}
+

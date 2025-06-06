@@ -7,7 +7,9 @@ import { log } from "../client/debug.js";
 import sirv from "sirv";
 import dotenv from "dotenv";
 
+
 // Load environment variables
+
 dotenv.config();
 
 const _DebugBool = false;
@@ -23,6 +25,8 @@ const PREPR_CONFIG = {
 if (!process.env.PREPR_TOKEN) {
   console.warn("Warning: PREPR_TOKEN not found in environment variables, using fallback");
 }
+
+
 // GraphQL queries
 const PROJECTS_QUERY = `
 query GetProjects {
@@ -322,11 +326,11 @@ const renderTemplate = (template, data) => {
     return engine.renderFileSync(template, data);
 };
 
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server available on http://localhost:${PORT}`);
     console.log("Clean data-only server running");
 });
-
 export default app;

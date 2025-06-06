@@ -18,25 +18,27 @@
 
   {% comment %} Grid container {% endcomment %}
   <div class="projects-grid" id="dynamicGrid">
-    
+
     {% comment %} Render your regular items {% endcomment %}
     {% for project in allData.projects %}
-      {% render '../../components/project-card/project-card.liquid', project: project %} 
+    {% render '../../components/project-card/project-card.liquid', project: project %}
     {% endfor %}
-    
+
     {% for square in allData.squares %}
-      {% render '../../components/project-item/project-item.liquid', item: square %}
+    {% render '../../components/project-item/project-item.liquid', item: square %}
     {% endfor %}
+
     
     {% comment %} UPDATED: Use only the modular break glass component {% endcomment %}
     {% comment %} {% render '../../components/break-glass/break-glass.liquid' %} {% endcomment %}
     
     {% comment %} 
     Custom Full Width Components 
+
     These are your custom Liquid components that span the full width
     Add as many as you need - the system will automatically insert them every X rows
     {% endcomment %}
-    
+
     {% comment %} Full Width Component 1: Newsletter Signup {% endcomment %}
     <div class="full-width-component newsletter-signup" data-type="full-width" data-id="newsletter-1">
       <div class="full-width-content">
@@ -48,7 +50,7 @@
         </form>
       </div>
     </div>
-    
+
     {% comment %} Full Width Component 2: Call to Action {% endcomment %}
     <div class="full-width-component cta-banner" data-type="full-width" data-id="cta-1">
       <div class="full-width-content">
@@ -57,7 +59,7 @@
         <a href="/contact" class="cta-button">Contact Us</a>
       </div>
     </div>
-    
+
     {% comment %} Full Width Component 3: Stats/Achievements {% endcomment %}
     <div class="full-width-component stats-banner" data-type="full-width" data-id="stats-1">
       <div class="full-width-content">
@@ -83,6 +85,5 @@
     </div>
   </div>
 </div>
-
 
 {% endblock %}
