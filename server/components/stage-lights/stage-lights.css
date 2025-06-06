@@ -1,0 +1,47 @@
+/* .container{
+padding: 0;
+margin: 0;} */
+#rails {    
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    top:20%;
+    left:0;
+    width: 100vw;
+    height: 50px;
+    background-color:black;
+}
+
+.lights {
+    width: fit-content;
+}
+
+.lights:nth-child(1) { 
+    background-color: green;
+    transform: rotate(-30deg);
+}
+
+.lights:nth-child(2) {
+    background-color: orange; 
+    transform: rotate(-15deg);
+}
+
+.lights:nth-child(3) { 
+    background-color: yellow; 
+    transform: rotate(-5deg);
+}
+
+.lights:nth-child(4) { 
+    background-color: teal; 
+    transform: rotate(5deg) scaleX(-1); 
+}
+
+.lights:nth-child(5) { 
+    background-color: purple; 
+    transform: rotate(15deg) scaleX(-1);
+}
+
+.lights:nth-child(6) {  
+    background-color: blue; 
+    transform: rotate(30deg) scaleX(-1);
+}

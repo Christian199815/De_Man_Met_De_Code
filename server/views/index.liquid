@@ -3,12 +3,11 @@
 
 
 {% block content %}
-<div class="container">
-  <h1>De Man met de hamer</h1>
 
-  <a href="/projects">
-    <h2>Naar projecten</h2>
-  </a>
+{% render 'server/components/stage-lights/stage-lights.liquid'  %}
+  
+  {% comment %} <a href="/projects"> <h2>Naar projecten</h2></a> {% endcomment %}
 
 
 {% endblock %}
+
