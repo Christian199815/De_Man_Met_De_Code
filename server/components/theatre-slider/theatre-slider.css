@@ -1,0 +1,88 @@
+.theatre {
+  background: black;
+  height: 30dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+
+  border-top: 16px solid black;
+  border-bottom: 16px solid black;
+
+  .scroller {
+    width: 100vw;
+    height: 100%;
+  }
+
+  .scroller__inner {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
+    padding-block: 0; /* remove extra spacing */
+  }
+
+  .scroller[data-animated="true"] .scroller__inner {
+    width: max-content;
+    animation: scroll var(--_animation-duration, 10s)
+      var(--_animation-direction, forwards) linear infinite;
+  }
+
+  /* Image Sizing */
+  .scroller__inner img {
+    height: 100%; /* Fill the row vertically */
+    width: auto; /* Maintain aspect ratio */
+    flex-shrink: 0;
+  }
+
+  /* Animation Speeds */
+  .scroller[data-speed="fast"] {
+    --_animation-duration: 40s;
+  }
+
+  .scroller[data-speed="slow"] {
+    --_animation-duration: 60s;
+  }
+
+  .scroller[data-speed="faster"] {
+    --_animation-duration: 20s;
+  }
+
+  /* Scroll Direction */
+  .scroller[data-direction="right"] {
+    --_animation-direction: reverse;
+  }
+
+  .scroller[data-direction="left"] {
+    --_animation-direction: forwards;
+  }
+}
+
+.theatre > div {
+  flex: 1;
+  overflow: hidden;
+}
+
+@keyframes scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
+  }
+}
+
+.cartoon-maarten {
+  position: absolute;
+  top: 2em;
+  left: 30%;
+  height: 20vh;
+  width: auto;
+
+  opacity: 0;
+  transform: translateY(30%) scale(0.7) rotate(-0deg);
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.theatre:hover .cartoon-maarten {
+  opacity: 1;
+  transform: translateY(0%) scale(1) rotate(-15deg);
+}
