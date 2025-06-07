@@ -39,7 +39,6 @@
   color: white;
   font-size: 2rem;
   font-weight: bold;
-  cursor: pointer;
   user-select: none;
   position: relative;
   z-index: 10;
@@ -180,7 +179,6 @@ body.glass-broken {
   grid-row: span 1;
   overflow: hidden;
   border-radius: 4px;
-  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   font-family: Raleway, sans-serif;
 }

@@ -1,8 +1,8 @@
 {% block project-card %}
 
-<div class="project-card {{ project.aspectRatioClass }}">
+<div class="project-card {{ project.aspectRatioClass }}" data-pop-image>
     <div class="project-image-wrapper">
-        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" loading="lazy" data-pop-image>
+        <img src="{{ project.projectFeaturedImage }}" alt="{{ project.projectname }}" loading="lazy">
     </div>
 
     <div class="project-info">

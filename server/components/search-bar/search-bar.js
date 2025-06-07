@@ -14,14 +14,11 @@ class ProjectSearchManager {
   }
 
   init() {
-    console.log('🔍 Initializing Project Search Manager...');
-    
     // Wait for DOM to be ready
     const initAttempt = () => {
       this.searchInput = document.getElementById('projectSearch');
       
       if (!this.searchInput) {
-        console.log('⏳ Search input not ready, retrying...');
         setTimeout(initAttempt, 500);
         return;
       }
@@ -29,8 +26,6 @@ class ProjectSearchManager {
       this.setupEventListeners();
       this.setupGlobalInterface();
       this.isInitialized = true;
-      
-      console.log('✅ Project Search Manager initialized successfully');
     };
     
     // Start initialization after a short delay
@@ -81,10 +76,7 @@ class ProjectSearchManager {
   }
 
   async performSearch(searchTerm) {
-    console.log(`🔍 Starting search for: "${searchTerm}"`);
-    
     if (!searchTerm) {
-      console.log('🔄 Empty search term, resetting');
       this.resetSearch();
       return;
     }
@@ -94,7 +86,6 @@ class ProjectSearchManager {
     
     // Find all project cards to filter
     const projectCards = document.querySelectorAll('.project-card');
-    console.log('📋 Found project cards:', projectCards.length);
     
     let matchCount = 0;
     
@@ -110,8 +101,6 @@ class ProjectSearchManager {
         this.hideCard(card);
       }
     });
-
-    console.log(`🎯 Search results: ${matchCount}/${projectCards.length} cards match`);
     
     // Simulate search delay
     await this.delay(300);
@@ -124,8 +113,6 @@ class ProjectSearchManager {
   }
 
   async resetSearch() {
-    console.log('🔄 Resetting search');
-    
     this.currentSearchTerm = '';
     
     // Remove searching state
@@ -142,7 +129,6 @@ class ProjectSearchManager {
   }
 
   clearSearch() {
-    console.log('🧹 Clearing search');
     this.searchInput.value = '';
     this.resetSearch();
     this.searchInput.focus();
@@ -256,8 +242,6 @@ class ProjectSearchManager {
         element.classList.remove('search-hidden');
       }
     });
-    
-    console.log(`${isSearching ? 'Hidden' : 'Shown'} ${fullWidthElements.length} full-width elements`);
   }
 
   debounce(func, delay) {
@@ -275,7 +259,6 @@ class ProjectSearchManager {
   // Public method to refresh search
   refreshSearch() {
     if (this.currentSearchTerm) {
-      console.log('🔄 Refreshing search');
       this.performSearch(this.currentSearchTerm);
     }
   }
@@ -284,35 +267,14 @@ class ProjectSearchManager {
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
-    console.log('🔍 Attempting to initialize search manager...');
     window.projectSearchManager = new ProjectSearchManager();
   }, 300);
 });
 
-// Debug function for testing
-window.debugSearch = function() {
-  console.log('🔍 Debug Search Status:');
-  console.log('- Search input found:', !!document.getElementById('projectSearch'));
-  
-  // Try to force initialize if not already done
-  if (!window.projectSearchManager) {
-    console.log('🔧 Force initializing search manager...');
-    window.projectSearchManager = new ProjectSearchManager();
-  }
-};
-
 // Example of how to listen for search events in other parts of your application
 document.addEventListener('projectSearch', (event) => {
   const { searchTerm, isActive } = event.detail;
-  console.log(`📡 Search event received: "${searchTerm}", active: ${isActive}`);
   
   // Here you would implement your search logic for filtering content
   // For example, if you have a grid or list of items to filter
 });
-
-console.log('🔍 Basic Project Search System loaded');
-console.log('Available commands:');
-console.log('- window.ProjectSearch.searchFor("term")');
-console.log('- window.ProjectSearch.resetSearch()');
-console.log('- window.ProjectSearch.clearSearch()');
-console.log('- Listen for "projectSearch" events on document');

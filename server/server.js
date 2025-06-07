@@ -188,10 +188,6 @@ function transformPreprData(preprData) {
     
     const categories = Array.from(uniqueCategories).sort();
     
-    console.log(`Transformed ${transformedProjects.length} projects from Prepr`);
-    console.log(`Categories: ${categories.join(', ')}`);
-    console.log(`Date range: ${transformedProjects[transformedProjects.length - 1]?.projectDate} to ${transformedProjects[0]?.projectDate}`);
-    
     return {
         projects: transformedProjects,
         categories: categories
@@ -216,14 +212,12 @@ function transformSquareItemsData(itemsData) {
         };
     });
     
-    console.log(`Transformed ${squareItems.length} square items`);
     return squareItems;
 }
 
 // Load all data for the system
 async function loadAllData() {
     try {
-        console.log('=== Loading all data ===');
         
         // Fetch both datasets
         const [projectsData, itemsData] = await Promise.all([
@@ -235,8 +229,7 @@ async function loadAllData() {
         const transformedProjects = transformPreprData(projectsData);
         const transformedItems = transformSquareItemsData(itemsData);
         
-        console.log(`Loaded ${transformedProjects.projects.length} projects`);
-        console.log(`Loaded ${transformedItems.length} square items`);
+       
         
         return {
             projects: transformedProjects.projects,
@@ -264,7 +257,7 @@ async function loadAllData() {
 }
 
 // Setup middleware
-app.use(logger());
+// app.use(logger());
 app.use("/resources", sirv("public/resources", { dev: true }));
 app.use("/public", sirv("public", { dev: true }));
 app.use("/", sirv("dist", { dev: true }));
@@ -287,15 +280,14 @@ app.get("/", async (req, res) => {
 // Main projects route - pass data to Liquid for HTML generation
 app.get('/projects', async (req, res) => {
     try {
-        console.log('=== Serving /projects route ===');
         
         const allData = await loadAllData();
         
         // Add this logging to see the actual order being sent
-        console.log('First 10 projects in order being sent to template:');
-        allData.projects.slice(0, 10).forEach((project, index) => {
-            console.log(`${index + 1}. ${project.projectname} - ${project.projectDate} (${project.projectDateParsed.toISOString()})`);
-        });
+        // console.log('First 10 projects in order being sent to template:');
+        // allData.projects.slice(0, 10).forEach((project, index) => {
+        //     console.log(`${index + 1}. ${project.projectname} - ${project.projectDate} (${project.projectDateParsed.toISOString()})`);
+        // });
         
         return res.send(renderTemplate('server/views/projects/projects.liquid', { 
             title: 'Projects',

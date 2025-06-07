@@ -220,7 +220,7 @@
   opacity: 1 !important;
   transform: scale(1) !important;
   filter: none !important;
-  pointer-events: auto !important;
+  /* pointer-events: auto !important; */
   animation: fadeInFilter 0.4s ease forwards;
 }
 
