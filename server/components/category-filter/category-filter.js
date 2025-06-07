@@ -34,8 +34,8 @@ window.CategoryFilter = {
           console.log(`Card ${index}:`, {
             category: category,
             element: card,
-            categoryElement: card.querySelector('.catagorie p'),
-            categoryText: card.querySelector('.catagorie p')?.textContent
+            categoryElement: card.querySelector('.category p'),
+            categoryText: card.querySelector('.category p')?.textContent
           });
         });
       } else {
@@ -49,28 +49,23 @@ window.CategoryFilter = {
   getCardCategory: function(card) {
     if (!card) return '';
     
-    // Your cards use .catagorie p for category text
-    const categoryElement = card.querySelector('.catagorie p');
+    // Your cards use .category p for category text
+    const categoryElement = card.querySelector('.category p');
     if (categoryElement) {
       const category = categoryElement.textContent.trim().toUpperCase();
-      console.log(`Found category from .catagorie p: "${category}"`);
       return category;
     }
     
     // Fallback: check data attributes
     const dataCategory = card.getAttribute('data-category');
     if (dataCategory) {
-      console.log(`Found category from data-category: "${dataCategory}"`);
       return dataCategory.toUpperCase();
     }
     
-    console.log('No category found for card');
     return '';
   },
   
   filterProjects: function(selectedCategory) {
-    console.log('🔍 NEW FILTER: Filtering by category:', selectedCategory);
-    
     const dynamicGrid = document.getElementById('dynamicGrid');
     if (!dynamicGrid) {
       console.error('❌ Grid container not found');
@@ -79,7 +74,6 @@ window.CategoryFilter = {
     
     // Find all project cards (not break glass or full-width items)
     const projectCards = dynamicGrid.querySelectorAll('.project-card');
-    console.log(`🔍 Found ${projectCards.length} project cards to filter`);
     
     if (projectCards.length === 0) {
       console.warn('⚠️ No project cards found');
@@ -92,8 +86,6 @@ window.CategoryFilter = {
     projectCards.forEach((card, index) => {
       const cardCategory = this.getCardCategory(card);
       const shouldShow = selectedCategory === 'all' || cardCategory === selectedCategory.toUpperCase();
-      
-      console.log(`Card ${index}: category="${cardCategory}", should show: ${shouldShow}`);
       
       if (shouldShow) {
         // Show the card completely
@@ -127,7 +119,6 @@ window.CategoryFilter = {
     // Update visible count
     this.updateVisibleCount(visibleCount, totalProjects, selectedCategory);
     
-    console.log(`🔍 NEW FILTER COMPLETE: ${visibleCount}/${totalProjects} cards visible`);
     return visibleCount;
   },
   
@@ -153,20 +144,16 @@ window.CategoryFilter = {
   },
   
   init: function() {
-    console.log('🎛️ NEW CATEGORY FILTER: Starting initialization...');
-    
     // Wait for the grid to be fully rendered
     const waitForGrid = () => {
       const dynamicGrid = document.getElementById('dynamicGrid');
       const projectCards = dynamicGrid ? dynamicGrid.querySelectorAll('.project-card') : [];
       
       if (!dynamicGrid || projectCards.length === 0) {
-        console.log('⏳ Waiting for grid to be rendered...');
         setTimeout(waitForGrid, 500);
         return;
       }
       
-      console.log('✅ Grid found with', projectCards.length, 'project cards');
       this.setupEventListeners();
     };
     
@@ -182,8 +169,6 @@ window.CategoryFilter = {
       return;
     }
     
-    console.log(`🎛️ Setting up listeners for ${radioInputs.length} radio inputs`);
-    
     // Set up event listeners for radio buttons
     radioInputs.forEach(radio => {
       // Remove any existing listeners
@@ -193,7 +178,6 @@ window.CategoryFilter = {
       radio.addEventListener('change', (e) => {
         if (e.target.checked) {
           const category = e.target.value;
-          console.log(`🎛️ NEW FILTER: Radio changed to: ${category}`);
           
           this.currentCategory = category;
           this.updateButtonStates(category);
@@ -231,7 +215,6 @@ window.CategoryFilter = {
     this.updateButtonStates('all');
     
     this.isInitialized = true;
-    console.log('✅ NEW CATEGORY FILTER: Initialized successfully');
     
     // Run initial debug
     setTimeout(() => this.debugCategories(), 500);
@@ -240,11 +223,8 @@ window.CategoryFilter = {
 
 // Initialize when DOM is ready and after grid pool
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🌟 NEW CATEGORY FILTER: DOM loaded, waiting for grid...');
-  
   // Wait a bit longer for your grid pool to finish
   setTimeout(() => {
-    console.log('🎛️ NEW CATEGORY FILTER: Starting initialization...');
     window.CategoryFilter.init();
   }, 2000); // Wait 2 seconds for grid pool to be ready
 });
@@ -260,7 +240,6 @@ window.debugCategoryFilter = function() {
 };
 
 window.testCategoryFilter = function(category = 'INTERIEUR') {
-  console.log(`🧪 Testing filter with category: ${category}`);
   if (window.CategoryFilter?.isInitialized) {
     window.CategoryFilter.filterProjects(category);
     // Also update the radio button
@@ -273,7 +252,6 @@ window.testCategoryFilter = function(category = 'INTERIEUR') {
 };
 
 window.resetCategoryFilter = function() {
-  console.log('🔄 Resetting category filter');
   if (window.CategoryFilter) {
     window.CategoryFilter.filterProjects('all');
     window.CategoryFilter.updateButtonStates('all');
@@ -282,90 +260,84 @@ window.resetCategoryFilter = function() {
   }
 };
 
-// Enhanced CSS for clean show/hide filtering
-const newFilterCSS = `
-<style id="new-category-filter-effects">
-.project-card {
-  transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
+// // Enhanced CSS for clean show/hide filtering
+// const newFilterCSS = `
+// <style id="new-category-filter-effects">
+// .project-card {
+//   transition: opacity 0.3s ease, transform 0.3s ease !important;
+// }
 
-/* Hidden cards - completely invisible */
-.filtered-out {
-  display: none !important;
-}
+// /* Hidden cards - completely invisible */
+// .filtered-out {
+//   display: none !important;
+// }
 
-/* Visible cards - normal display */
-.filtered-in {
-  opacity: 1 !important;
-  transform: scale(1) !important;
-  filter: none !important;
-  pointer-events: auto !important;
-}
+// /* Visible cards - normal display */
+// .filtered-in {
+//   opacity: 1 !important;
+//   transform: scale(1) !important;
+//   filter: none !important;
+//   pointer-events: auto !important;
+// }
 
-/* Ensure non-project items stay visible and interactive */
-.break-glass-card,
-.full-width-component,
-[data-type="custom"],
-[data-type="full-width"] {
-  display: block !important;
-  opacity: 1 !important;
-  transform: scale(1) !important;
-  filter: none !important;
-  pointer-events: auto !important;
-  transition: none !important;
-}
+// /* Ensure non-project items stay visible and interactive */
+// .break-glass-card,
+// .full-width-component,
+// [data-type="custom"],
+// [data-type="full-width"] {
+//   display: block !important;
+//   opacity: 1 !important;
+//   transform: scale(1) !important;
+//   filter: none !important;
+//   pointer-events: auto !important;
+//   transition: none !important;
+// }
 
-/* Enhanced button states */
-.filter-btn {
-  transition: all 0.3s ease !important;
-}
+// /* Enhanced button states */
+// .filter-btn {
+//   transition: all 0.3s ease !important;
+// }
 
-.filter-btn.active {
-  background-color: #3490dc !important;
-  color: white !important;
-  border-color: #3490dc !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 4px 12px rgba(52, 144, 220, 0.4) !important;
-}
+// .filter-btn.active {
+//   background-color: #3490dc !important;
+//   color: white !important;
+//   border-color: #3490dc !important;
+//   transform: translateY(-2px) !important;
+//   box-shadow: 0 4px 12px rgba(52, 144, 220, 0.4) !important;
+// }
 
-.filter-btn:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-}
+// .filter-btn:hover {
+//   transform: translateY(-1px) !important;
+//   box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+// }
 
-/* Grid animation when filtering */
-#dynamicGrid {
-  transition: opacity 0.2s ease;
-}
+// /* Grid animation when filtering */
+// #dynamicGrid {
+//   transition: opacity 0.2s ease;
+// }
 
-/* Smooth fade-in for visible cards */
-.filtered-in {
-  animation: fadeInFilter 0.4s ease forwards;
-}
+// /* Smooth fade-in for visible cards */
+// .filtered-in {
+//   animation: fadeInFilter 0.4s ease forwards;
+// }
 
-@keyframes fadeInFilter {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-</style>
-`;
+// @keyframes fadeInFilter {
+//   from {
+//     opacity: 0;
+//     transform: translateY(10px) scale(0.95);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateY(0) scale(1);
+//   }
+// }
+// </style>
+// `;
 
-// Remove old styles and add new ones
-const oldStyles = document.getElementById('category-filter-effects');
-if (oldStyles) oldStyles.remove();
+// // Remove old styles and add new ones
+// const oldStyles = document.getElementById('category-filter-effects');
+// if (oldStyles) oldStyles.remove();
 
-if (!document.getElementById('new-category-filter-effects')) {
-  document.head.insertAdjacentHTML('beforeend', newFilterCSS);
-}
-
-console.log('🎛️ NEW Category Filter loaded. Commands:');
-console.log('- window.debugCategoryFilter()');
-console.log('- window.testCategoryFilter("INTERIEUR")');
-console.log('- window.resetCategoryFilter()');
-console.log('- window.CategoryFilter.debugCategories()');
+// if (!document.getElementById('new-category-filter-effects')) {
+//   document.head.insertAdjacentHTML('beforeend', newFilterCSS);
+// }

@@ -16,15 +16,17 @@
 </head>
 
 <body>
-  <header>
+  {% comment %} <header>
     <h1>De man met de hamer</h1>
-  </header>
+  </header> {% endcomment %}
   <main>
     {% block content %}{% endblock %}
   </main>
-  <footer>
-    <p>de man met de code productions</p>
-  </footer>
+  {% comment %} <footer>
+       <p>de man met de code productions</p>
+    </footer> 
+ {% endcomment %}
+
 </body>
 
 </html>

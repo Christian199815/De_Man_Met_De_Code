@@ -1,99 +1,198 @@
-/* Project Sorting Component Styles */
+/* ====================================
+   PROJECT SORTING COMPONENT STYLES
+   ==================================== */
 
-/* Sorting Container */
 .project-sorting {
-    margin-bottom: 1.5rem;
-    padding: 1rem 1.5rem;
-    background-color: #f8f8f8;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  font-family: Raleway, sans-serif;
+}
+
+/* ====================================
+   SORT BUTTONS
+   ==================================== */
+
+.sort-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  user-select: none;
+  font-family: Raleway, sans-serif;
+}
+
+.sort-btn:hover {
+  background-color: #f0f0f0;
+  border-color: #bbb;
+  color: #222;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.sort-btn:active {
+  transform: translateY(0);
+}
+
+.sort-btn.active {
+  background-color: #3490dc;
+  color: white;
+  border-color: #3490dc;
+  box-shadow: 0 2px 8px rgba(52, 144, 220, 0.3);
+}
+
+.sort-btn.active:hover {
+  background-color: #2779bd;
+  border-color: #2779bd;
+}
+
+/* ====================================
+   SORT ICONS
+   ==================================== */
+
+.sort-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transition: transform 0.3s ease;
+}
+
+/* Icon states for different sort directions */
+.sort-btn[data-direction="asc"] .sort-icon {
+  transform: rotate(180deg);
+}
+
+.sort-btn[data-direction="desc"] .sort-icon {
+  transform: rotate(0deg);
+}
+
+/* Hover effects for icons */
+.sort-btn:hover .sort-icon {
+  transform: scale(1.1);
+}
+
+.sort-btn[data-direction="asc"]:hover .sort-icon {
+  transform: rotate(180deg) scale(1.1);
+}
+
+.sort-btn[data-direction="desc"]:hover .sort-icon {
+  transform: rotate(0deg) scale(1.1);
+}
+
+/* ====================================
+   SORT STATES
+   ==================================== */
+
+.sort-btn[data-sort="date"] {
+  position: relative;
+}
+
+.sort-btn[data-sort="name"] {
+  position: relative;
+}
+
+/* Visual indicator for active sort */
+.sort-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+}
+
+/* ====================================
+   SORT LABELS
+   ==================================== */
+
+.sort-btn span {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+@media (max-width: 768px) {
+  .project-sorting {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
   }
-  
-  .project-sorting h2 {
-    font-size: 1.2rem;
-    margin-bottom: 0.75rem;
-    color: #333;
-  }
-  
-  /* Sort Buttons */
+
   .sort-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
   }
-  
+
   .sort-btn {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #555;
-    cursor: pointer;
-    transition: all 0.2s ease;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
   }
-  
-  .sort-btn:hover {
-    background-color: #f0f0f0;
-    color: #222;
-    border-color: #ccc;
-  }
-  
-  .sort-btn.active {
-    background-color: #3490dc;
-    color: white;
-    border-color: #3490dc;
-  }
-  
-  /* Sort Icon */
+
   .sort-icon {
-    margin-right: 0.5rem;
-    fill: currentColor;
-    transition: transform 0.2s ease;
+    width: 16px;
+    height: 16px;
   }
-  
-  .sort-btn:hover .sort-icon {
-    transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .sort-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
   }
-  
-  .sort-btn.active .sort-icon {
-    fill: white;
+
+  .sort-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
   }
-  
-  /* Direction indicators */
-  .sort-btn[data-direction="asc"] .sort-icon {
-    transform: rotate(0deg);
+
+  .sort-icon {
+    width: 14px;
+    height: 14px;
   }
-  
-  .sort-btn[data-direction="desc"] .sort-icon {
-    transform: rotate(180deg);
-  }
-  
-  /* Animation for reordering */
-  .projects-grid.reordering {
-    position: relative;
-  }
-  
-  .projects-grid.reordering .project-card {
-    transition: none !important;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .project-sorting {
-      padding: 0.75rem 1rem;
-    }
-    
-    .sort-buttons {
-      justify-content: center;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .sort-btn {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.8rem;
-    }
-  }
+}
+
+/* ====================================
+   ANIMATION STATES
+   ==================================== */
+
+.sorting {
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes sortPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.sort-btn.processing {
+  animation: sortPulse 1s infinite;
+}
