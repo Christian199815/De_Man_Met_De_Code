@@ -1,8 +1,28 @@
 <template id="image-popover-template" style="display: none;">
   <div class="image-popover-overlay">
     <div class="image-popover-container">
-      <img class="image-popover-img" src="" alt="Popup image">
-      <button class="image-popover-close" aria-label="Close image popup">
+      
+      <!-- Project Title -->
+      <h3 class="project-popover-title">Project Title</h3>
+      
+      <!-- Project Details -->
+      <p class="project-popover-production" style="display: none;">Production info</p>
+      <p class="project-popover-photographer" style="display: none;">Photographer info</p>
+      <p class="project-popover-date" style="display: none;">Date info</p>
+      
+      <!-- Images List -->
+      <ul class="project-popover-images-list">
+        <!-- Images will be populated by JavaScript -->
+      </ul>
+      
+      <!-- Meta Info -->
+      <div class="project-popover-meta">
+        <span class="project-popover-category" style="display: none;">Category</span>
+        <span class="project-popover-for-sale" style="display: none;">Te koop</span>
+      </div>
+      
+      <!-- Close Button -->
+      <button class="image-popover-close" aria-label="Close project popup">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>

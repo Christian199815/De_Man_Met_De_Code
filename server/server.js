@@ -111,6 +111,15 @@ async function fetchFromPrepr(query, variables = {}) {
   }
 }
 
+// Helper function to process full_content
+function processFullContent(fullContent) {
+    if (!fullContent) return [];
+    if (fullContent.items && Array.isArray(fullContent.items)) return fullContent.items;
+    if (Array.isArray(fullContent)) return fullContent;
+    if (fullContent.url) return [fullContent];
+    return [];
+}
+
 // Helper function to parse and sort dates
 function parseProjectDate(dateString) {
     if (!dateString) return new Date(0); // Default to epoch for missing dates
@@ -177,6 +186,8 @@ function transformPreprData(preprData) {
             productionName: project.production_name || '',
             photographerName: project.photographer_name || '',
             forSale: project.for_sale || false,
+            fullContentImages: processFullContent(project.full_content),
+            fullContentCount: processFullContent(project.full_content).length,
             source: 'prepr'
         };
     });
