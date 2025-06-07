@@ -108,9 +108,6 @@ cursor: url("/images/cursor/hammer-cursor-active.svg") 48 48, auto;
 /* SET UP */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-body {
-    overflow: hidden;
-}
 
 .frame {
     position: relative;
