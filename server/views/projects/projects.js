@@ -9,8 +9,8 @@ class CleanGridPool {
   constructor(options = {}) {
     this.config = {
       containerSelector: options.containerSelector || '#dynamicGrid',
-      defaultShowCount: options.defaultShowCount || 50,
-      fullWidthEveryRows: options.fullWidthEveryRows || 3,
+      defaultShowCount: options.defaultShowCount || 100,
+      fullWidthEveryRows: options.fullWidthEveryRows || 5,
       columnsCount: options.columnsCount || 5,
       debug: options.debug || false
     };
@@ -117,85 +117,97 @@ class CleanGridPool {
     return 1;
   }
 
-  createProperRowLayout() {
-    this.pools.mixed = [];
-    
-    const regularItems = [
-      ...this.pools.projects,
-      ...this.pools.squares,
-      ...this.pools.custom
-    ];
+createProperRowLayout() {
+  this.pools.mixed = [];
+  
+  const regularItems = [
+    ...this.pools.projects,
+    ...this.pools.squares,
+    ...this.pools.custom
+  ];
 
-    if (regularItems.length === 0) {
-      return;
-    }
-
-    // Items maintain their DOM order which reflects the server-side date sorting
-    if (this.config.debug) {
-      console.log('=== Regular Items Order Before Layout ===');
-      regularItems.slice(0, 10).forEach((item, index) => {
-        const title = item.data.title || `Item ${index}`;
-        console.log(`${index + 1}. ${title} (${item.type})`);
-      });
-    }
-
-    // Preserve order and place items sequentially
-    let currentRow = 0;
-    let currentColumn = 0;
-    let regularRowsProcessed = 0;
-    let fullWidthIndex = 0;
-    
-    const totalColumns = this.config.columnsCount;
-    const rowsBeforeFullWidth = this.config.fullWidthEveryRows;
-    const maxPossibleFullWidthItems = Math.floor(regularItems.length / (rowsBeforeFullWidth * totalColumns));
-    const fullWidthItemsToUse = Math.min(maxPossibleFullWidthItems, this.pools.fullWidth.length);
-
-    for (let i = 0; i < regularItems.length; i++) {
-      const item = regularItems[i];
-      const itemSpans = item.spans || 1;
-      
-      // Check if we need to move to next row
-      if (currentColumn + itemSpans > totalColumns) {
-        regularRowsProcessed++;
-        currentRow++;
-        currentColumn = 0;
-        
-        // Check if we should insert a full-width item
-        if (regularRowsProcessed > 0 && 
-            regularRowsProcessed % rowsBeforeFullWidth === 0 && 
-            fullWidthIndex < fullWidthItemsToUse) {
-          
-          this.pools.mixed.push({
-            ...this.pools.fullWidth[fullWidthIndex],
-            rowPosition: currentRow,
-            columnStart: 0,
-            isFullWidth: true
-          });
-          fullWidthIndex++;
-          currentRow++;
-        }
-      }
-      
-      // Place the current item
-      this.pools.mixed.push({
-        ...item,
-        rowPosition: currentRow,
-        columnStart: currentColumn
-      });
-      
-      currentColumn += itemSpans;
-    }
-    
-    if (this.config.debug) {
-      console.log('=== Final Mixed Order ===');
-      this.pools.mixed.slice(0, 15).forEach((item, index) => {
-        const title = item.data.title || `Item ${index}`;
-        const type = item.isFullWidth ? 'FULL-WIDTH' : item.type;
-        console.log(`${index + 1}. ${title} (${type}) - Row: ${item.rowPosition}, Col: ${item.columnStart}`);
-      });
-    }
+  if (regularItems.length === 0) {
+    return;
   }
 
+  // Items maintain their DOM order which reflects the server-side date sorting
+  if (this.config.debug) {
+    console.log('=== Regular Items Order Before Layout ===');
+    regularItems.slice(0, 10).forEach((item, index) => {
+      const title = item.data.title || `Item ${index}`;
+      console.log(`${index + 1}. ${title} (${item.type})`);
+    });
+  }
+
+  // Preserve order and place items sequentially
+  let currentRow = 0;
+  let currentColumn = 0;
+  let regularRowsProcessed = 0;
+  let fullWidthIndex = 0;
+  
+  const totalColumns = this.config.columnsCount;
+  const rowsBeforeFullWidth = this.config.fullWidthEveryRows;
+  
+  // Use ALL available full-width items instead of limiting them
+  const fullWidthItemsToUse = this.pools.fullWidth.length;
+
+  for (let i = 0; i < regularItems.length; i++) {
+    const item = regularItems[i];
+    const itemSpans = item.spans || 1;
+    
+    // Check if we need to move to next row
+    if (currentColumn + itemSpans > totalColumns) {
+      regularRowsProcessed++;
+      currentRow++;
+      currentColumn = 0;
+      
+      // Check if we should insert a full-width item
+      if (regularRowsProcessed > 0 && 
+          regularRowsProcessed % rowsBeforeFullWidth === 0 && 
+          fullWidthIndex < fullWidthItemsToUse) {
+        
+        this.pools.mixed.push({
+          ...this.pools.fullWidth[fullWidthIndex],
+          rowPosition: currentRow,
+          columnStart: 0,
+          isFullWidth: true
+        });
+        fullWidthIndex++;
+        currentRow++;
+      }
+    }
+    
+    // Place the current item
+    this.pools.mixed.push({
+      ...item,
+      rowPosition: currentRow,
+      columnStart: currentColumn
+    });
+    
+    currentColumn += itemSpans;
+  }
+  
+  // Add any remaining full-width items at the end
+  while (fullWidthIndex < fullWidthItemsToUse) {
+    currentRow++;
+    this.pools.mixed.push({
+      ...this.pools.fullWidth[fullWidthIndex],
+      rowPosition: currentRow,
+      columnStart: 0,
+      isFullWidth: true
+    });
+    fullWidthIndex++;
+  }
+  
+  if (this.config.debug) {
+    console.log('=== Final Mixed Order ===');
+    this.pools.mixed.slice(0, 15).forEach((item, index) => {
+      const title = item.data.title || `Item ${index}`;
+      const type = item.isFullWidth ? 'FULL-WIDTH' : item.type;
+      console.log(`${index + 1}. ${title} (${type}) - Row: ${item.rowPosition}, Col: ${item.columnStart}`);
+    });
+  }
+}
   renderGrid() {
     if (!this.container) return;
 
@@ -440,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.cleanGridPool = new CleanGridPool({
       containerSelector: '#dynamicGrid',
       defaultShowCount: 50,
-      fullWidthEveryRows: 3,
+      fullWidthEveryRows: 5,
       columnsCount: 5,
       debug: false
     });
