@@ -1,47 +1,171 @@
 /* .container{
 padding: 0;
 margin: 0;} */
-#rails {    
+body {
+    overflow:hidden;
+}
+
+#rails {
+    --lightzindex: 1;
+    --beamzindex: 2;
     display: flex;
     justify-content: space-evenly;
     position: relative;
-    top:20%;
-    left:0;
+    top: 20%;
+    left: 0;
     width: 100vw;
     height: 50px;
-    background-color:black;
+    background-color: black;
 }
 
 .lights {
+    --base-rotate: 0deg;
+    /* doet niet zoveel*/
+    position: relative;
+    display: none;
     width: fit-content;
+
 }
 
-.lights:nth-child(1) { 
-    background-color: green;
-    transform: rotate(-30deg);
+.lights:nth-child(4),
+.lights:nth-child(5) {
+    display: block;
+}
+
+.lights img {
+    position: relative;
+    z-index: var(--lightzindex);
+}
+
+.lights:hover {
+    animation: wiggle 2s infinite;
+}
+
+.beam {
+    display: none;
+    transform-origin: top;
+    transform: perspective(100px) rotateX(10deg);
+    position: absolute;
+    top: 3.9em;
+    width: 100%;
+    height: 80vh;
+    background: linear-gradient(to bottom,
+            rgba(12, 232, 170, 0.5) 0%,
+            rgba(255, 213, 0, 0) 100%);
+    mix-blend-mode: darken;
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: var(--beamzindex);
+}
+
+.beam.active {
+    display: block;
+    animation: beamPulse 1.5s ease-in-out infinite;
+
+}
+
+.lights:nth-child(1) {
+    --base-rotate: -20deg;
+    transform: rotate(var(--base-rotate));
 }
 
 .lights:nth-child(2) {
-    background-color: orange; 
-    transform: rotate(-15deg);
+    --base-rotate: -15deg;
+    transform: rotate(var(--base-rotate));
 }
 
-.lights:nth-child(3) { 
-    background-color: yellow; 
-    transform: rotate(-5deg);
+.lights:nth-child(3) {
+    --base-rotate: -10deg;
+    transform: rotate(var(--base-rotate));
 }
 
-.lights:nth-child(4) { 
-    background-color: teal; 
-    transform: rotate(5deg) scaleX(-1); 
+.lights:nth-child(4) {
+    --base-rotate: -5deg;
+    transform: rotate(var(--base-rotate));
 }
 
-.lights:nth-child(5) { 
-    background-color: purple; 
-    transform: rotate(15deg) scaleX(-1);
+.lights:nth-child(5) {
+    --base-rotate: 5deg;
+    transform: rotate(var(--base-rotate));
 }
 
-.lights:nth-child(6) {  
-    background-color: blue; 
-    transform: rotate(30deg) scaleX(-1);
+.lights:nth-child(6) {
+    --base-rotate: 10deg;
+    transform: rotate(var(--base-rotate));
+}
+
+.lights:nth-child(7) {
+    --base-rotate: 15deg;
+    transform: rotate(var(--base-rotate));
+}
+
+.lights:nth-child(8) {
+    --base-rotate: 20deg;
+    transform: rotate(var(--base-rotate));
+}
+
+.lights.malfunction {
+    animation: fallDown 1.2s ease forwards;
+    transform-origin: top center;
+}
+
+@keyframes fallDown {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(90vh);
+        opacity: 0;
+    }
+}
+
+@keyframes wiggle {
+    0%,
+    100% {
+        transform: rotate(var(--base-rotate));
+    }
+    25% {
+        transform: rotate(calc(var(--base-rotate) + 5deg));
+    }
+    75% {
+        transform: rotate(calc(var(--base-rotate) - 5deg));
+    }
+}
+
+@keyframes beamPulse {
+
+    0%,
+    100% {
+        opacity: 0.9;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+@media (min-width: 960px) {
+
+    .lights:nth-child(3),
+    .lights:nth-child(6) {
+        display: block;
+    }
+}
+
+@media (min-width: 1280px) {
+
+    .lights:nth-child(2),
+    .lights:nth-child(7) {
+        display: block;
+    }
+}
+
+
+@media (min-width: 1440px) {
+
+    .lights:nth-child(1),
+    .lights:nth-child(8) {
+        display: block;
+    }
 }
