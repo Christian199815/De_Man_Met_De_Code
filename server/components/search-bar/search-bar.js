@@ -1,18 +1,14 @@
 /**
- * Search Bar Component with Filtering Transitions
- * Integrates with CleanGridPool system
+ * Search Bar Component - Basic Implementation
+ * Simplified for standalone search input
  */
 
 class ProjectSearchManager {
   constructor() {
     this.searchInput = null;
-    this.clearSearchBtn = null;
-    this.searchResultsInfo = null;
-    this.dynamicGrid = null;
     this.minSearchLength = 2;
     this.currentSearchTerm = '';
     this.isInitialized = false;
-    this.isFiltering = false;
     
     this.init();
   }
@@ -20,15 +16,12 @@ class ProjectSearchManager {
   init() {
     console.log('🔍 Initializing Project Search Manager...');
     
-    // Wait for DOM and grid to be ready
+    // Wait for DOM to be ready
     const initAttempt = () => {
       this.searchInput = document.getElementById('projectSearch');
-      this.clearSearchBtn = document.getElementById('clearSearch');
-      this.searchResultsInfo = document.getElementById('searchResultsInfo');
-      this.dynamicGrid = document.getElementById('dynamicGrid');
       
-      if (!this.searchInput || !this.clearSearchBtn || !this.searchResultsInfo || !this.dynamicGrid) {
-        console.log('⏳ Search elements not ready, retrying...');
+      if (!this.searchInput) {
+        console.log('⏳ Search input not ready, retrying...');
         setTimeout(initAttempt, 500);
         return;
       }
@@ -61,11 +54,6 @@ class ProjectSearchManager {
         }
       }
     });
-
-    // Clear button
-    this.clearSearchBtn.addEventListener('click', () => {
-      this.clearSearch();
-    });
   }
 
   setupGlobalInterface() {
@@ -87,54 +75,35 @@ class ProjectSearchManager {
     
     if (searchTerm.length >= this.minSearchLength || searchTerm === '') {
       this.performSearch(searchTerm);
-    } else if (searchTerm.length > 0) {
-      this.searchResultsInfo.textContent = `Typ minimaal ${this.minSearchLength} tekens om te zoeken`;
     } else {
-      this.searchResultsInfo.textContent = '';
       this.resetSearch();
     }
-    
-    this.toggleClearButton(searchTerm);
   }
 
   async performSearch(searchTerm) {
-    console.log(`🔍 Performing search for: "${searchTerm}"`);
+    console.log(`🔍 Starting search for: "${searchTerm}"`);
     
     if (!searchTerm) {
+      console.log('🔄 Empty search term, resetting');
       this.resetSearch();
-      this.searchResultsInfo.textContent = '';
       return;
     }
 
-    // Start filtering transition
-    this.startFilteringTransition();
-
-    // Get all current project cards from the grid
-    const projectCards = this.dynamicGrid.querySelectorAll('.project-card');
+    // Add searching state to search container
+    this.searchInput.parentElement.classList.add('searching');
+    
+    // Find all project cards to filter
+    const projectCards = document.querySelectorAll('.project-card');
+    console.log('📋 Found project cards:', projectCards.length);
+    
     let matchCount = 0;
-    let totalCards = projectCards.length;
     
-    // Get current category filter state
-    const currentCategory = window.CategoryFilter ? window.CategoryFilter.currentCategory : 'all';
-    
-    // Phase 1: Fade out all cards
-    projectCards.forEach(card => {
-      card.classList.add('filtering-fade-out');
-    });
-
-    // Wait for fade out to complete
-    await this.delay(200);
-
-    // Phase 2: Process each card
-    projectCards.forEach(card => {
+    // Filter each project card
+    projectCards.forEach((card, index) => {
       const cardData = this.extractCardData(card);
       const passesSearch = this.matchesSearchTerm(cardData, searchTerm);
-      const passesFilter = this.passesCategoryFilter(card, currentCategory);
       
-      // Show card only if it passes both search and filter
-      const shouldShow = passesSearch && passesFilter;
-      
-      if (shouldShow) {
+      if (passesSearch) {
         this.showCard(card);
         matchCount++;
       } else {
@@ -142,74 +111,61 @@ class ProjectSearchManager {
       }
     });
 
-    // Phase 3: Fade in visible cards with staggered animation
-    const visibleCards = Array.from(projectCards).filter(card => !card.classList.contains('search-hidden'));
-    visibleCards.forEach((card, index) => {
-      setTimeout(() => {
-        card.classList.add('filtering-fade-in');
-        card.classList.remove('filtering-fade-out');
-      }, index * 50); // Stagger by 50ms
-    });
-
-    // Keep non-project items visible
-    this.keepNonProjectItemsVisible();
+    console.log(`🎯 Search results: ${matchCount}/${projectCards.length} cards match`);
     
-    // Update results info
-    this.updateResultsInfo(matchCount, totalCards, searchTerm);
+    // Simulate search delay
+    await this.delay(300);
     
-    // End filtering transition
-    setTimeout(() => {
-      this.endFilteringTransition();
-    }, 400 + (visibleCards.length * 50));
-    
-    // Preserve styles after search
-    setTimeout(() => {
-      if (window.cleanGridPool) {
-        window.cleanGridPool.fixAllCardStyles();
-      }
-    }, 500);
-  }
-
-  startFilteringTransition() {
-    this.isFiltering = true;
-    
-    // Add filtering classes to components
-    this.dynamicGrid.classList.add('filtering-active');
-    this.searchInput.parentElement.classList.add('searching');
-    
-    // Show loading indicator in search
-    this.searchInput.classList.add('loading');
-    
-    // Dim the grid slightly
-    this.dynamicGrid.style.opacity = '0.8';
-    this.dynamicGrid.style.transform = 'scale(0.98)';
-  }
-
-  endFilteringTransition() {
-    this.isFiltering = false;
-    
-    // Remove filtering classes
-    this.dynamicGrid.classList.remove('filtering-active');
+    // Remove searching state
     this.searchInput.parentElement.classList.remove('searching');
-    this.searchInput.classList.remove('loading');
     
-    // Restore grid appearance
-    this.dynamicGrid.style.opacity = '1';
-    this.dynamicGrid.style.transform = 'scale(1)';
+    // Emit search event (this will also hide full-width cards)
+    this.emitSearchEvent(searchTerm);
+  }
+
+  async resetSearch() {
+    console.log('🔄 Resetting search');
     
-    // Clean up transition classes
-    const allCards = this.dynamicGrid.querySelectorAll('.project-card');
-    allCards.forEach(card => {
-      card.classList.remove('filtering-fade-out', 'filtering-fade-in');
+    this.currentSearchTerm = '';
+    
+    // Remove searching state
+    this.searchInput.parentElement.classList.remove('searching');
+    
+    // Show all project cards
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+      this.showCard(card);
     });
+    
+    // Emit reset event (this will also show full-width cards)
+    this.emitSearchEvent('');
+  }
+
+  clearSearch() {
+    console.log('🧹 Clearing search');
+    this.searchInput.value = '';
+    this.resetSearch();
+    this.searchInput.focus();
   }
 
   extractCardData(card) {
     // Extract searchable data from project card
-    const titleElement = card.querySelector('.project-details h2') || card.querySelector('h3') || card.querySelector('h2');
-    const categoryElement = card.querySelector('.catagorie p');
-    const productionElement = card.querySelector('.project-production') || card.querySelector('.production-name');
-    const photographerElement = card.querySelector('.photographer-name');
+    const titleElement = card.querySelector('.project-details h2') || 
+                        card.querySelector('h3') || 
+                        card.querySelector('h2') ||
+                        card.querySelector('.project-title') ||
+                        card.querySelector('.title');
+    
+    const categoryElement = card.querySelector('.category p') ||
+                           card.querySelector('.category') ||
+                           card.querySelector('[data-category]');
+    
+    const productionElement = card.querySelector('.project-production') || 
+                             card.querySelector('.production-name') ||
+                             card.querySelector('.production');
+    
+    const photographerElement = card.querySelector('.photographer-name') ||
+                               card.querySelector('.photographer');
     
     return {
       title: titleElement ? titleElement.textContent.trim() : '',
@@ -237,17 +193,6 @@ class ProjectSearchManager {
     return searchFields.some(field => field.includes(searchTerm));
   }
 
-  passesCategoryFilter(card, currentCategory) {
-    if (currentCategory === 'all') return true;
-    
-    const categoryElement = card.querySelector('.catagorie p');
-    const cardCategory = categoryElement ? 
-      categoryElement.textContent.trim().toUpperCase() : 
-      (card.getAttribute('data-category') || '').toUpperCase();
-    
-    return cardCategory === currentCategory.toUpperCase();
-  }
-
   showCard(card) {
     // Remove search-related hiding classes
     card.classList.remove('search-hidden', 'filtered-out');
@@ -273,119 +218,46 @@ class ProjectSearchManager {
     
     // Actually hide after transition
     setTimeout(() => {
-      card.style.display = 'none';
+      if (card.classList.contains('search-hidden')) {
+        card.style.display = 'none';
+      }
     }, 300);
   }
 
-  keepNonProjectItemsVisible() {
-    // Always keep break glass cards and full-width components visible
-    const nonProjectItems = this.dynamicGrid.querySelectorAll('.break-glass-card, .full-width-component, [data-type="custom"], [data-type="full-width"]');
-    nonProjectItems.forEach(item => {
-      item.style.display = '';
-      item.style.opacity = '1';
-      item.style.transform = 'scale(1)';
-      item.style.filter = 'none';
-      item.style.pointerEvents = 'auto';
-      item.classList.remove('search-hidden', 'filtered-out');
-    });
-  }
-
-  async resetSearch() {
-    console.log('🔄 Resetting search');
+  emitSearchEvent(searchTerm) {
+    // Hide/show full-width cards based on search state
+    this.toggleFullWidthCards(searchTerm.length > 0);
     
-    this.currentSearchTerm = '';
-    
-    // Start reset transition
-    this.startFilteringTransition();
-    
-    // Reset all project cards with transition
-    const projectCards = this.dynamicGrid.querySelectorAll('.project-card');
-    
-    // Phase 1: Fade out hidden cards
-    const hiddenCards = Array.from(projectCards).filter(card => card.classList.contains('search-hidden'));
-    hiddenCards.forEach(card => {
-      card.classList.remove('search-hidden', 'search-match', 'filtered-out');
-      card.classList.add('filtered-in');
-      card.style.display = '';
-      card.style.opacity = '0';
-      card.style.transform = 'scale(0.8)';
-      card.style.filter = 'blur(2px)';
-    });
-    
-    await this.delay(100);
-    
-    // Phase 2: Fade in all cards with stagger
-    projectCards.forEach((card, index) => {
-      setTimeout(() => {
-        card.style.opacity = '1';
-        card.style.transform = 'scale(1)';
-        card.style.filter = 'none';
-        card.style.pointerEvents = 'auto';
-        card.classList.add('filtering-fade-in');
-      }, index * 30);
-    });
-
-    // Re-apply category filter if active
-    if (window.CategoryFilter && window.CategoryFilter.currentCategory !== 'all') {
-      setTimeout(() => {
-        window.CategoryFilter.filterProjects(window.CategoryFilter.currentCategory);
-      }, 50);
-    }
-    
-    // End transition
-    setTimeout(() => {
-      this.endFilteringTransition();
-      
-      // Preserve styles after reset
-      if (window.cleanGridPool) {
-        window.cleanGridPool.fixAllCardStyles();
+    // Emit custom event that other parts of your application can listen to
+    const searchEvent = new CustomEvent('projectSearch', {
+      detail: {
+        searchTerm: searchTerm,
+        isActive: searchTerm.length > 0
       }
-    }, 400 + (projectCards.length * 30));
-  }
-
-  clearSearch() {
-    console.log('🧹 Clearing search');
-    this.searchInput.value = '';
-    this.searchResultsInfo.textContent = '';
-    this.resetSearch();
-    this.toggleClearButton('');
-    this.searchInput.focus();
-  }
-
-  updateResultsInfo(matchCount, totalCards, searchTerm) {
-    // Add a subtle pulse animation to the results info
-    this.searchResultsInfo.classList.add('updating');
+    });
     
-    setTimeout(() => {
-      if (matchCount === 0) {
-        this.searchResultsInfo.textContent = `Geen projecten gevonden voor "${searchTerm}"`;
-        this.searchResultsInfo.classList.add('no-results');
-      } else if (matchCount === totalCards) {
-        this.searchResultsInfo.textContent = `Alle ${totalCards} projecten komen overeen`;
-        this.searchResultsInfo.classList.remove('no-results');
+    document.dispatchEvent(searchEvent);
+  }
+
+  toggleFullWidthCards(isSearching) {
+    // Find all full-width elements in the page
+    const fullWidthElements = document.querySelectorAll(
+      '.full-width-component, [data-type="full-width"], .break-glass-card, [data-type="custom"]'
+    );
+    
+    fullWidthElements.forEach(element => {
+      if (isSearching) {
+        // Hide full-width cards when searching
+        element.style.display = 'none';
+        element.classList.add('search-hidden');
       } else {
-        this.searchResultsInfo.textContent = `${matchCount} van ${totalCards} projecten gevonden`;
-        this.searchResultsInfo.classList.remove('no-results');
+        // Show full-width cards when not searching
+        element.style.display = '';
+        element.classList.remove('search-hidden');
       }
-      
-      this.searchResultsInfo.classList.remove('updating');
-    }, 200);
-  }
-
-  toggleClearButton(term) {
-    if (term && term.length > 0) {
-      this.clearSearchBtn.style.opacity = '1';
-      this.clearSearchBtn.style.visibility = 'visible';
-      this.clearSearchBtn.style.transform = 'scale(1)';
-    } else {
-      this.clearSearchBtn.style.opacity = '0';
-      this.clearSearchBtn.style.visibility = 'hidden';
-      this.clearSearchBtn.style.transform = 'scale(0.8)';
-    }
-  }
-
-  escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    });
+    
+    console.log(`${isSearching ? 'Hidden' : 'Shown'} ${fullWidthElements.length} full-width elements`);
   }
 
   debounce(func, delay) {
@@ -400,91 +272,47 @@ class ProjectSearchManager {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // Public method to refresh search when grid changes
+  // Public method to refresh search
   refreshSearch() {
     if (this.currentSearchTerm) {
-      console.log('🔄 Refreshing search after grid change');
+      console.log('🔄 Refreshing search');
       this.performSearch(this.currentSearchTerm);
     }
   }
 }
 
-// Enhanced Category Filter Integration
-if (window.CategoryFilter) {
-  const originalFilterProjects = window.CategoryFilter.filterProjects;
-  
-  window.CategoryFilter.filterProjects = function(selectedCategory) {
-    console.log('🔍 Enhanced filter with search integration:', selectedCategory);
-    
-    // If search is active, perform combined search and filter
-    if (window.ProjectSearch && window.ProjectSearch.isSearchActive()) {
-      const currentSearchTerm = window.projectSearchManager ? window.projectSearchManager.currentSearchTerm : '';
-      
-      // Update category first
-      this.currentCategory = selectedCategory;
-      this.updateButtonStates(selectedCategory);
-      
-      // Then perform search with new category
-      if (currentSearchTerm) {
-        window.ProjectSearch.performSearch(currentSearchTerm);
-      } else {
-        // Just apply category filter
-        originalFilterProjects.call(this, selectedCategory);
-      }
-    } else {
-      // No active search, use original filter
-      originalFilterProjects.call(this, selectedCategory);
-    }
-    
-    return this.getVisibleCount();
-  };
-  
-  // Add helper method to get visible count
-  window.CategoryFilter.getVisibleCount = function() {
-    const dynamicGrid = document.getElementById('dynamicGrid');
-    if (!dynamicGrid) return 0;
-    
-    const visibleCards = dynamicGrid.querySelectorAll('.project-card:not(.search-hidden):not(.filtered-out)');
-    return visibleCards.length;
-  };
-}
-
-// Enhanced Grid Pool Integration
-if (window.cleanGridPool) {
-  const originalRenderGrid = window.cleanGridPool.renderGrid;
-  
-  window.cleanGridPool.renderGrid = function() {
-    console.log('🎨 Enhanced render with search integration...');
-    
-    // Store current search state
-    const wasSearchActive = window.ProjectSearch && window.ProjectSearch.isSearchActive();
-    const currentSearchTerm = window.projectSearchManager ? window.projectSearchManager.currentSearchTerm : '';
-    
-    // Call original render
-    originalRenderGrid.call(this);
-    
-    // Restore search after rendering
-    setTimeout(() => {
-      if (wasSearchActive && currentSearchTerm && window.ProjectSearch) {
-        console.log('🔄 Restoring search after grid render');
-        window.ProjectSearch.performSearch(currentSearchTerm);
-      } else if (window.projectSearchManager) {
-        window.projectSearchManager.refreshSearch();
-      }
-    }, 150);
-  };
-}
-
-// Initialize search manager when DOM is ready
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  // Wait for other systems to initialize first
   setTimeout(() => {
+    console.log('🔍 Attempting to initialize search manager...');
     window.projectSearchManager = new ProjectSearchManager();
-  }, 1000);
+  }, 300);
 });
 
-console.log('🔍 Enhanced Project Search System with Transitions loaded');
+// Debug function for testing
+window.debugSearch = function() {
+  console.log('🔍 Debug Search Status:');
+  console.log('- Search input found:', !!document.getElementById('projectSearch'));
+  
+  // Try to force initialize if not already done
+  if (!window.projectSearchManager) {
+    console.log('🔧 Force initializing search manager...');
+    window.projectSearchManager = new ProjectSearchManager();
+  }
+};
+
+// Example of how to listen for search events in other parts of your application
+document.addEventListener('projectSearch', (event) => {
+  const { searchTerm, isActive } = event.detail;
+  console.log(`📡 Search event received: "${searchTerm}", active: ${isActive}`);
+  
+  // Here you would implement your search logic for filtering content
+  // For example, if you have a grid or list of items to filter
+});
+
+console.log('🔍 Basic Project Search System loaded');
 console.log('Available commands:');
 console.log('- window.ProjectSearch.searchFor("term")');
 console.log('- window.ProjectSearch.resetSearch()');
 console.log('- window.ProjectSearch.clearSearch()');
+console.log('- Listen for "projectSearch" events on document');

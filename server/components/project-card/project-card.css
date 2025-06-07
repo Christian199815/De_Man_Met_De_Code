@@ -1,30 +1,102 @@
-/* .project-card {
+/* ====================================
+   PROJECT CARD COMPONENT STYLES
+   ==================================== */
+
+.project-card {
   display: flex;
   flex-wrap: wrap;
   font-family: Raleway, sans-serif;
-}
-
-.landscape-card,
-.portrait-card {
   position: relative;
-
+  overflow: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  min-height: 200px;
 }
 
-.landscape-card {
-  grid-row: span 1;
-  grid-column: span 2;
+/* ====================================
+   ASPECT RATIO CLASSES
+   ==================================== */
+
+.landscape-card, 
+.landscape,
+.project-card[data-aspect-ratio="landscape"] {
+  grid-row: span 1 !important;
+  grid-column: span 2 !important;
+  height: 300px;
+  min-height: 300px;
 }
 
-.portrait-card {
-  grid-row: span 2;
-  grid-column: span 1;
+.portrait-card, 
+.portrait,
+.project-card[data-aspect-ratio="portrait"] {
+  grid-row: span 2 !important;
+  grid-column: span 1 !important;
+  min-height: 600px;
+  height: auto;
 }
 
-.square{
-  grid-row: span 1;
-  grid-column: span 1;
+.square,
+.project-card[data-aspect-ratio="square"] {
+  grid-row: span 1 !important;
+  grid-column: span 1 !important;
+  height: 300px;
+  min-height: 300px;
 }
 
+/* Smart Sizing Classes for Grid Optimizer */
+.span-2 {
+  grid-column: span 2 !important;
+}
+
+.span-3 {
+  grid-column: span 3 !important;
+}
+
+.row-span-2 {
+  grid-row: span 2 !important;
+}
+
+/* ====================================
+   PROJECT IMAGE
+   ==================================== */
+
+.project-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.project-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 100%;
+  transition: transform 0.3s ease;
+  background-color: #333;
+  display: block;
+  vertical-align: top;
+}
+
+/* Image Loading States */
+.project-image-wrapper img:not([src]),
+.project-image-wrapper img[src=""] {
+  background-color: #444;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ctext x='50' y='50' text-anchor='middle' dominant-baseline='middle' fill='%23999' font-size='12'%3ELoading...%3C/text%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100px 100px;
+}
+
+.project-card:hover .project-image-wrapper img {
+  transform: scale(1.05);
+}
+
+/* ====================================
+   PROJECT DETAILS
+   ==================================== */
 
 .project-details {
   position: absolute;
@@ -32,61 +104,238 @@
   left: 0;
   z-index: 2;
   width: 100%;
-  display: flex;
-
-  h2 {
-    color: white;
-    width: 100%;
-    margin: auto 0;
-    padding: 0 0 0.5em 0.5em;
-    text-transform: uppercase;
-    font-size: clamp(1em, 3vw, 1.5em);
-    font-weight: 600;
-  }
+  pointer-events: none;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.catagory {
+.project-details h2 {
+  color: white;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: clamp(1em, 3vw, 1.5em);
+  font-weight: 600;
+  pointer-events: auto;
+}
+
+/* ====================================
+   PROJECT INFO
+   ==================================== */
+
+.project-info {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.project-production, 
+.project-date {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.25rem;
+}
+
+/* ====================================
+   CATEGORY BADGE
+   ==================================== */
+
+.category {
   position: absolute;
-  bottom: 50px;
-  right: 30px;
-  z-index: 2;
-  transition: transform 0.3s ease;
-  border: 4px solid black;
+  bottom: 60px;
+  right: 20px;
+  z-index: 3;
+  border: 3px solid black;
   padding: 0.5em;
-
-  p {
-    color: white;
-    text-transform: uppercase;
-    font-size: clamp(1em, 3vw, 1.3em);
-    font-weight: 600;
-  }
+  pointer-events: none;
+  transition: transform 0.3s ease;
 }
 
-.catagory.decor {
+.category p {
+  color: white;
+  text-transform: uppercase;
+  font-size: clamp(0.8em, 2.5vw, 1.1em);
+  font-weight: 600;
+  margin: 0;
+  pointer-events: auto;
+}
+
+/* Category Colors */
+.category.decor,
+.category-decor .category {
   background-color: blue;
 }
 
-.catagory.props {
+.category.props,
+.category-props .category {
   background-color: red;
 }
 
-.catagory.interior {
+.category.interieur,
+.category-interieur .category {
   background-color: green;
 }
 
-.catagory.news {
+.category.nieuws,
+.category-nieuws .category {
   background-color: gold;
 }
 
-.project-image-wrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+/* ====================================
+   SPECIAL BADGES
+   ==================================== */
+
+.for-sale-badge {
+  display: inline-block;
+  background-color: #4caf50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
 }
 
-.project-image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-} */
+/* ====================================
+   HOVER EFFECTS
+   ==================================== */
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover .category {
+  transform: scale(1.1);
+}
+
+/* ====================================
+   FILTER STATES
+   ==================================== */
+
+.filtered-out {
+  display: none !important;
+}
+
+.filtered-in {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+  filter: none !important;
+  pointer-events: auto !important;
+  animation: fadeInFilter 0.4s ease forwards;
+}
+
+@keyframes fadeInFilter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.filtering {
+  transition: opacity 0.3s ease;
+}
+
+/* ====================================
+   LOADING STATES
+   ==================================== */
+
+.project-card.loading {
+  min-height: 300px;
+}
+
+.project-card.loading .project-image-wrapper {
+  background-color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card.loading .project-image-wrapper::before {
+  content: "Loading...";
+  color: #999;
+  font-size: 14px;
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+@media (max-width: 1200px) {
+  .landscape-card,
+  .square {
+    height: 280px;
+    min-height: 280px;
+  }
+  
+  .portrait-card {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landscape-card {
+    grid-column: span 2 !important;
+    height: 200px;
+    min-height: 200px;
+  }
+  
+  .portrait-card {
+    min-height: 400px;
+  }
+  
+  .square {
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .category {
+    bottom: 40px;
+    right: 15px;
+    border: 2px solid black;
+    padding: 0.3em;
+  }
+}
+
+@media (max-width: 480px) {
+  .landscape-card,
+  .portrait-card,
+  .square {
+    grid-column: span 1 !important;
+    height: 250px;
+    min-height: 250px;
+  }
+
+  .category {
+    bottom: 30px;
+    right: 10px;
+    padding: 0.25em;
+  }
+
+  .category p {
+    font-size: clamp(0.7em, 2vw, 0.9em);
+  }
+}
+
+/* ====================================
+   DEBUG STYLES (OPTIONAL)
+   ==================================== */
+
+.debug-aspect-ratios .project-card {
+  border: 2px solid red !important;
+}
+
+.debug-aspect-ratios .portrait-card {
+  border-color: blue !important;
+}
+
+.debug-aspect-ratios .landscape-card {
+  border-color: green !important;
+}
+
+.debug-aspect-ratios .square {
+  border-color: orange !important;
+}
