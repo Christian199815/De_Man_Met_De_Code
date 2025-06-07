@@ -10,7 +10,6 @@
 
 /* component styling */
 
-@import "../server/components/contact-button/contact-button.css";
 @import "../server/components/category-filter/category-filter.css";
 @import "../server/components/project-sorting/project-sorting.css";
 @import "../server/components/search-bar/search-bar.css";
@@ -22,3 +21,6 @@
 @import "../server/components/break-glass/break-glass.css";
 @import "../server/components/submarine/submarine.css";
 @import "../server/components/theatre-slider/theatre-slider.css";
+@import "../server/components/pop-over/pop-over.css";
+
+

@@ -7,7 +7,6 @@
   <nav>
     <a href="/"><img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH"></a>
       {% render '../../components/category-filter/category-filter.liquid', categories: categories %}
-  {% comment %} {% render '../../components/project-sorting/project-sorting.liquid' %} {% endcomment %}
   <div>
     <button hidden><img src="" alt="search icon"></button>
     {% render '../../components/search-bar/search-bar.liquid' %}
@@ -28,62 +27,22 @@
     {% render '../../components/project-item/project-item.liquid', item: square %}
     {% endfor %}
 
-    
-    {% comment %} UPDATED: Use only the modular break glass component {% endcomment %}
-    {% comment %} {% render '../../components/break-glass/break-glass.liquid' %} {% endcomment %}
-    
-    {% comment %} 
-    Custom Full Width Components 
 
-    These are your custom Liquid components that span the full width
-    Add as many as you need - the system will automatically insert them every X rows
-    {% endcomment %}
-
-    {% comment %} Full Width Component 1: Newsletter Signup {% endcomment %}
-    <div class="full-width-component newsletter-signup" data-type="full-width" data-id="newsletter-1">
+    {% comment %} Full Width Component 4: Theatre Slider {% endcomment %}
+    <div class="full-width-component theatre-slider-wrapper" data-type="full-width" data-id="theatre-1">
       <div class="full-width-content">
-        <h2>Stay Updated</h2>
-        <p>Subscribe to our newsletter for the latest project updates</p>
-        <form class="newsletter-form">
-          <input type="email" placeholder="Enter your email" class="newsletter-input">
-          <button type="submit" class="newsletter-button">Subscribe</button>
-        </form>
+        {% render "../../components/theatre-slider/theatre-slider.liquid" %}
       </div>
     </div>
 
-    {% comment %} Full Width Component 2: Call to Action {% endcomment %}
-    <div class="full-width-component cta-banner" data-type="full-width" data-id="cta-1">
+    {% comment %} Full Width Component 5: Crocodile Component {% endcomment %}
+    <div class="full-width-component crocodile-wrapper" data-type="full-width" data-id="crocodile-1">
       <div class="full-width-content">
-        <h2>Ready to Start Your Project?</h2>
-        <p>Get in touch with us to discuss your next big idea</p>
-        <a href="/contact" class="cta-button">Contact Us</a>
-      </div>
-    </div>
-
-    {% comment %} Full Width Component 3: Stats/Achievements {% endcomment %}
-    <div class="full-width-component stats-banner" data-type="full-width" data-id="stats-1">
-      <div class="full-width-content">
-        <div class="stats-grid">
-          <div class="stat-item">
-            <h3>250+</h3>
-            <p>Projects Completed</p>
-          </div>
-          <div class="stat-item">
-            <h3>50+</h3>
-            <p>Happy Clients</p>
-          </div>
-          <div class="stat-item">
-            <h3>5+</h3>
-            <p>Years Experience</p>
-          </div>
-          <div class="stat-item">
-            <h3>100%</h3>
-            <p>Satisfaction Rate</p>
-          </div>
-        </div>
+        {% render "../../components/full-width-crocodile/crocodile.liquid" %}
       </div>
     </div>
   </div>
 </div>
 
+{% render '../../components/pop-over/pop-over.liquid' %}
 {% endblock %}

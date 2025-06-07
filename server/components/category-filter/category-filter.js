@@ -12,39 +12,7 @@ if (window.CategoryFilter) {
 window.CategoryFilter = {
   isInitialized: false,
   currentCategory: 'all',
-  categories: ['DECOR', 'INTERIEUR', 'PROPS'], // From your console output
-  
-  debugCategories: function() {
-    console.group('🐛 DEBUG: Category Filter Analysis');
-    console.log('Initialized:', this.isInitialized);
-    console.log('Current category:', this.currentCategory);
-    console.log('Available categories:', this.categories);
-    
-    const dynamicGrid = document.getElementById('dynamicGrid');
-    console.log('Grid container found:', !!dynamicGrid);
-    
-    if (dynamicGrid) {
-      const projectCards = dynamicGrid.querySelectorAll('.project-card');
-      console.log('Project cards found:', projectCards.length);
-      
-      if (projectCards.length > 0) {
-        console.log('Analyzing all project cards:');
-        projectCards.forEach((card, index) => {
-          const category = this.getCardCategory(card);
-          console.log(`Card ${index}:`, {
-            category: category,
-            element: card,
-            categoryElement: card.querySelector('.category p'),
-            categoryText: card.querySelector('.category p')?.textContent
-          });
-        });
-      } else {
-        console.log('❌ No project cards found in grid');
-      }
-    }
-    
-    console.groupEnd();
-  },
+  categories: ['DECOR', 'INTERIEUR', 'PROPS'],
   
   getCardCategory: function(card) {
     if (!card) return '';
@@ -68,7 +36,6 @@ window.CategoryFilter = {
   filterProjects: function(selectedCategory) {
     const dynamicGrid = document.getElementById('dynamicGrid');
     if (!dynamicGrid) {
-      console.error('❌ Grid container not found');
       return 0;
     }
     
@@ -76,7 +43,6 @@ window.CategoryFilter = {
     const projectCards = dynamicGrid.querySelectorAll('.project-card');
     
     if (projectCards.length === 0) {
-      console.warn('⚠️ No project cards found');
       return 0;
     }
     
@@ -165,7 +131,6 @@ window.CategoryFilter = {
     const filterButtons = document.getElementById('filterButtons');
     
     if (!filterButtons || radioInputs.length === 0) {
-      console.error('❌ Filter controls not found');
       return;
     }
     
@@ -215,9 +180,6 @@ window.CategoryFilter = {
     this.updateButtonStates('all');
     
     this.isInitialized = true;
-    
-    // Run initial debug
-    setTimeout(() => this.debugCategories(), 500);
   }
 };
 
@@ -228,116 +190,3 @@ document.addEventListener('DOMContentLoaded', function() {
     window.CategoryFilter.init();
   }, 2000); // Wait 2 seconds for grid pool to be ready
 });
-
-// Helper functions for debugging
-window.debugCategoryFilter = function() {
-  console.log('🐛 Category Filter Status:');
-  console.log('- Initialized:', window.CategoryFilter?.isInitialized);
-  console.log('- Current category:', window.CategoryFilter?.currentCategory);
-  if (window.CategoryFilter) {
-    window.CategoryFilter.debugCategories();
-  }
-};
-
-window.testCategoryFilter = function(category = 'INTERIEUR') {
-  if (window.CategoryFilter?.isInitialized) {
-    window.CategoryFilter.filterProjects(category);
-    // Also update the radio button
-    const radio = document.querySelector(`input[value="${category}"]`);
-    if (radio) radio.checked = true;
-    window.CategoryFilter.updateButtonStates(category);
-  } else {
-    console.error('❌ CategoryFilter not initialized yet');
-  }
-};
-
-window.resetCategoryFilter = function() {
-  if (window.CategoryFilter) {
-    window.CategoryFilter.filterProjects('all');
-    window.CategoryFilter.updateButtonStates('all');
-    const allRadio = document.querySelector('input[value="all"]');
-    if (allRadio) allRadio.checked = true;
-  }
-};
-
-// // Enhanced CSS for clean show/hide filtering
-// const newFilterCSS = `
-// <style id="new-category-filter-effects">
-// .project-card {
-//   transition: opacity 0.3s ease, transform 0.3s ease !important;
-// }
-
-// /* Hidden cards - completely invisible */
-// .filtered-out {
-//   display: none !important;
-// }
-
-// /* Visible cards - normal display */
-// .filtered-in {
-//   opacity: 1 !important;
-//   transform: scale(1) !important;
-//   filter: none !important;
-//   pointer-events: auto !important;
-// }
-
-// /* Ensure non-project items stay visible and interactive */
-// .break-glass-card,
-// .full-width-component,
-// [data-type="custom"],
-// [data-type="full-width"] {
-//   display: block !important;
-//   opacity: 1 !important;
-//   transform: scale(1) !important;
-//   filter: none !important;
-//   pointer-events: auto !important;
-//   transition: none !important;
-// }
-
-// /* Enhanced button states */
-// .filter-btn {
-//   transition: all 0.3s ease !important;
-// }
-
-// .filter-btn.active {
-//   background-color: #3490dc !important;
-//   color: white !important;
-//   border-color: #3490dc !important;
-//   transform: translateY(-2px) !important;
-//   box-shadow: 0 4px 12px rgba(52, 144, 220, 0.4) !important;
-// }
-
-// .filter-btn:hover {
-//   transform: translateY(-1px) !important;
-//   box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-// }
-
-// /* Grid animation when filtering */
-// #dynamicGrid {
-//   transition: opacity 0.2s ease;
-// }
-
-// /* Smooth fade-in for visible cards */
-// .filtered-in {
-//   animation: fadeInFilter 0.4s ease forwards;
-// }
-
-// @keyframes fadeInFilter {
-//   from {
-//     opacity: 0;
-//     transform: translateY(10px) scale(0.95);
-//   }
-//   to {
-//     opacity: 1;
-//     transform: translateY(0) scale(1);
-//   }
-// }
-// </style>
-// `;
-
-// // Remove old styles and add new ones
-// const oldStyles = document.getElementById('category-filter-effects');
-// if (oldStyles) oldStyles.remove();
-
-// if (!document.getElementById('new-category-filter-effects')) {
-//   document.head.insertAdjacentHTML('beforeend', newFilterCSS);
-// }
