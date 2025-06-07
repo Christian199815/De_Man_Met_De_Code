@@ -2,7 +2,7 @@
 
 
 
-{% block content %}
+{% comment %} {% block content %}
 <div class="container">
   <h1>De Man met de hamer</h1>
 
@@ -10,5 +10,52 @@
     <h2>Naar projecten</h2>
   </a>
 
+
+{% endblock %} {% endcomment %}
+
+
+{% block content %}
+    <div class="frame">
+        <div class="audience layer-3">
+            <img src="/public/images/images-responsiveness/audience.png">
+        </div>
+
+        <img class="bottom-left layer-2" src="/public/images/images-responsiveness/frame-bottom-left.png">
+        <img class="top-left layer-2" src="/public/images/images-responsiveness/frame-top-left.png">
+        <div class="repeating-wall-left layer-2"></div>
+
+        <div class="repeating-cage layer-2"></div>
+        <div class="repeating-floor layer-2"></div>
+        <a href="/projects">
+            <div class="prop-container layer-1">
+                <img class="prop-shadows" src="/public/images/images-responsiveness/prop-shadows.png">
+                <img class="props" src="/public/images/images-responsiveness/props.png">
+                <h2>Bekijk <span class="break"></span>Projecten</h2>
+            </div>
+        </a>
+        <div class="repeating-roof layer-2">
+        </div>
+
+        <div class="repeating-wall-right layer-2"></div>
+        <img class="bottom-right layer-2" src="/public/images/images-responsiveness/frame-bottom-right.png">
+        <img class="top-right layer-2" src="/public/images/images-responsiveness/frame-top-right.png">
+    </div>
+
+
+    <svg class="visually-hidden" width="10" height="10" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="border-text" filterUnits="userSpaceOnUse">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="DILATED" />
+
+                <feFlood flood-color="white" />
+                <feComposite in="OUTLINE-COLOR" in2="DILATED" operator="in" result="COLORED-OUTLINE" />
+
+                <feMerge>
+                    <feMergeNode in="COLORED-OUTLINE" />
+                    <feMergeNode in="SourceGraphic" />
+                </feMerge>
+            </filter>
+        </defs>
+    </svg>
 
 {% endblock %}
