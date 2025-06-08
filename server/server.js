@@ -293,13 +293,6 @@ app.get('/projects', async (req, res) => {
     try {
         
         const allData = await loadAllData();
-        
-        // Add this logging to see the actual order being sent
-        // console.log('First 10 projects in order being sent to template:');
-        // allData.projects.slice(0, 10).forEach((project, index) => {
-        //     console.log(`${index + 1}. ${project.projectname} - ${project.projectDate} (${project.projectDateParsed.toISOString()})`);
-        // });
-        
         return res.send(renderTemplate('server/views/projects/projects.liquid', { 
             title: 'Projects',
             allData: allData,
@@ -336,4 +329,5 @@ app.listen(PORT, () => {
     console.log(`Server available on http://localhost:${PORT}`);
     console.log("Clean data-only server running");
 });
+
 export default app;

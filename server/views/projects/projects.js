@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.gridPool = window.cleanGridPool;
-    // CategoryFilter.init() will be called by your separate category filter script
+
   } else {
     setTimeout(() => {
       document.body.classList.add('page-loaded');

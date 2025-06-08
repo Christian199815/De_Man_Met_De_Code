@@ -110,35 +110,23 @@
     // Populate production name
     const production = container.querySelector('.project-popover-production');
     if (production && projectData.productionName && projectData.productionName.trim() !== '') {
-      production.innerHTML = `<strong>Productie:</strong> ${projectData.productionName}`;
-      production.classList.remove('popover-hide');
-      production.classList.add('popover-show-block');
-    } else if (production) {
-      production.classList.remove('popover-show-block');
-      production.classList.add('popover-hide');
+      production.textContent = projectData.productionName;
+      production.style.display = 'block';
     }
 
     // Populate photographer
     const photographer = container.querySelector('.project-popover-photographer');
     if (photographer && projectData.photographerName) {
-      photographer.innerHTML = `<strong>Fotograaf:</strong> ${projectData.photographerName}`;
-      photographer.classList.remove('popover-hide');
-      photographer.classList.add('popover-show-block');
-    } else if (photographer) {
-      photographer.classList.remove('popover-show-block');
-      photographer.classList.add('popover-hide');
+      photographer.textContent = projectData.photographerName;
+      photographer.style.display = 'block';
     }
 
     // Populate date
     const dateElement = container.querySelector('.project-popover-date');
     if (dateElement && projectData.projectDate) {
       const formattedDate = formatDutchDate(projectData.projectDate);
-      dateElement.innerHTML = `<strong>Datum:</strong> ${formattedDate}`;
-      dateElement.classList.remove('popover-hide');
-      dateElement.classList.add('popover-show-block');
-    } else if (dateElement) {
-      dateElement.classList.remove('popover-show-block');
-      dateElement.classList.add('popover-hide');
+      dateElement.textContent = formattedDate;
+      dateElement.style.display = 'block';
     }
 
     // Populate images list
@@ -199,11 +187,13 @@
     const category = container.querySelector('.project-popover-category');
     if (category && projectData.category) {
       category.textContent = projectData.category;
+      category.style.display = 'inline';
     }
     
     const forSale = container.querySelector('.project-popover-for-sale');
     if (forSale && projectData.forSale) {
       forSale.textContent = 'Te koop';
+      forSale.style.display = 'inline';
     }
   }
 

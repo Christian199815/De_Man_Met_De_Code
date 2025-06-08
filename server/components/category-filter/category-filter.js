@@ -72,8 +72,6 @@ window.CategoryFilter = {
       item.classList.add('filtered-in');
     });
     
-    // Update visible count
-    this.updateVisibleCount(visibleCount, totalProjects, selectedCategory);
     
     return visibleCount;
   },
