@@ -10,17 +10,18 @@ const bubbleContainer = document.querySelector(".bubble-container");
 let lastScrollY = window.scrollY;
 let isFlipped = true;
 
-const triggerElement = document.querySelector("#dynamicGrid");
+const triggerElement = document.querySelector('#dynamicGrid'); //[data-id="theatre-1"]
 const triggerHeight = triggerElement.offsetHeight;
 
 // Main animation timeline
 const tl = gsap.timeline({
   scrollTrigger: {
-    trigger: "#dynamicGrid",
+    trigger: '#dynamicGrid',
     start: "top center",
-    end: `+=${triggerHeight * 2}`,
+    end: "bottom center",
+    // end: `+=${triggerHeight * 2}`,
     scrub: 1,
-    markers: true,
+    markers: false,
     onToggle: (self) => {
       gsap.to(submarineContainer, {
         opacity: self.isActive ? 1 : 0,
