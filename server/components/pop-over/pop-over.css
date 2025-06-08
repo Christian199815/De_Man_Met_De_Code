@@ -115,3 +115,15 @@ img[data-pop-image] {
 img[data-pop-image]:hover {
   opacity: 0.9;
 }
+
+.popover-hide {
+  display: none;
+}
+
+.popover-show-block {
+  display: block;
+}
+
+.popover-show-inline {
+  display: inline;
+}

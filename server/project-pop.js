@@ -111,18 +111,22 @@
     const production = container.querySelector('.project-popover-production');
     if (production && projectData.productionName && projectData.productionName.trim() !== '') {
       production.innerHTML = `<strong>Productie:</strong> ${projectData.productionName}`;
-      production.style.display = 'block';
+      production.classList.remove('popover-hide');
+      production.classList.add('popover-show-block');
     } else if (production) {
-      production.style.display = 'none';
+      production.classList.remove('popover-show-block');
+      production.classList.add('popover-hide');
     }
 
     // Populate photographer
     const photographer = container.querySelector('.project-popover-photographer');
     if (photographer && projectData.photographerName) {
       photographer.innerHTML = `<strong>Fotograaf:</strong> ${projectData.photographerName}`;
-      photographer.style.display = 'block';
+      photographer.classList.remove('popover-hide');
+      photographer.classList.add('popover-show-block');
     } else if (photographer) {
-      photographer.style.display = 'none';
+      photographer.classList.remove('popover-show-block');
+      photographer.classList.add('popover-hide');
     }
 
     // Populate date
@@ -130,9 +134,11 @@
     if (dateElement && projectData.projectDate) {
       const formattedDate = formatDutchDate(projectData.projectDate);
       dateElement.innerHTML = `<strong>Datum:</strong> ${formattedDate}`;
-      dateElement.style.display = 'block';
+      dateElement.classList.remove('popover-hide');
+      dateElement.classList.add('popover-show-block');
     } else if (dateElement) {
-      dateElement.style.display = 'none';
+      dateElement.classList.remove('popover-show-block');
+      dateElement.classList.add('popover-hide');
     }
 
     // Populate images list
@@ -193,17 +199,11 @@
     const category = container.querySelector('.project-popover-category');
     if (category && projectData.category) {
       category.textContent = projectData.category;
-      category.style.display = 'inline';
-    } else if (category) {
-      category.style.display = 'none';
     }
     
     const forSale = container.querySelector('.project-popover-for-sale');
     if (forSale && projectData.forSale) {
       forSale.textContent = 'Te koop';
-      forSale.style.display = 'inline';
-    } else if (forSale) {
-      forSale.style.display = 'none';
     }
   }
 
@@ -241,7 +241,7 @@
       };
       
       // Add pointer cursor to indicate clickability
-      card.style.cursor = 'pointer';
+      card.classList.add('project-card-clickable');
       
       card.addEventListener('click', card._popoverHandler);
       console.log('✅ Added click handler to project card:', index);
