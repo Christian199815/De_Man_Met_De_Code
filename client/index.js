@@ -17,7 +17,7 @@ import "../server/components/full-width-crocodile/crocodile.js";
 import "../server/components/break-glass/break-glass.js";
 // import "../server/components/submarine/submarine.js";
 import "../server/components/theatre-slider/theatre-slider.js";
-import '../server/components/stage-lights/stage-lights.js';
+import '../server/components/stage-lights/stage-light.js';
 import "../server/project-pop.js";
 
 

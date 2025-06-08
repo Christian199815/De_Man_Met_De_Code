@@ -1,5 +1,5 @@
 /**
- * Search Bar Component - Basic Implementation
+ * Search Bar Component - CSS-free Implementation
  * Simplified for standalone search input
  */
 
@@ -81,7 +81,7 @@ class ProjectSearchManager {
       return;
     }
 
-    // Add searching state to search container
+    // Add searching state using CSS classes
     this.searchInput.parentElement.classList.add('searching');
     
     // Find all project cards to filter
@@ -183,31 +183,12 @@ class ProjectSearchManager {
     // Remove search-related hiding classes
     card.classList.remove('search-hidden', 'filtered-out');
     card.classList.add('search-match', 'filtered-in');
-    
-    // Ensure card is visible
-    card.style.display = '';
-    card.style.opacity = '1';
-    card.style.transform = 'scale(1)';
-    card.style.filter = 'none';
-    card.style.pointerEvents = 'auto';
   }
 
   hideCard(card) {
-    // Hide the card with transition
+    // Hide the card using CSS classes
     card.classList.add('search-hidden', 'filtered-out');
     card.classList.remove('search-match', 'filtered-in');
-    
-    // Use transition to hide
-    card.style.opacity = '0';
-    card.style.transform = 'scale(0.8)';
-    card.style.filter = 'blur(2px)';
-    
-    // Actually hide after transition
-    setTimeout(() => {
-      if (card.classList.contains('search-hidden')) {
-        card.style.display = 'none';
-      }
-    }, 300);
   }
 
   emitSearchEvent(searchTerm) {
@@ -233,12 +214,10 @@ class ProjectSearchManager {
     
     fullWidthElements.forEach(element => {
       if (isSearching) {
-        // Hide full-width cards when searching
-        element.style.display = 'none';
+        // Hide full-width cards when searching using CSS classes
         element.classList.add('search-hidden');
       } else {
         // Show full-width cards when not searching
-        element.style.display = '';
         element.classList.remove('search-hidden');
       }
     });
@@ -271,10 +250,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }, 300);
 });
 
-// Example of how to listen for search events in other parts of your application
-document.addEventListener('projectSearch', (event) => {
-  const { searchTerm, isActive } = event.detail;
-  
-  // Here you would implement your search logic for filtering content
-  // For example, if you have a grid or list of items to filter
-});

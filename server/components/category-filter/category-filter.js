@@ -1,5 +1,5 @@
 /**
- * Final Category Filter - Replaces the old one
+ * Final Category Filter - CSS-free version
  * Integrated with your existing grid pool system
  */
 
@@ -54,19 +54,12 @@ window.CategoryFilter = {
       const shouldShow = selectedCategory === 'all' || cardCategory === selectedCategory.toUpperCase();
       
       if (shouldShow) {
-        // Show the card completely
-        card.style.display = '';
-        card.style.opacity = '1';
-        card.style.transform = 'scale(1)';
-        card.style.filter = 'none';
-        card.style.pointerEvents = 'auto';
-        card.style.transition = 'all 0.3s ease';
+        // Show the card using CSS classes
         card.classList.remove('filtered-out');
         card.classList.add('filtered-in');
         visibleCount++;
       } else {
-        // Completely hide the card
-        card.style.display = 'none';
+        // Hide the card using CSS classes
         card.classList.add('filtered-out');
         card.classList.remove('filtered-in');
       }
@@ -75,11 +68,8 @@ window.CategoryFilter = {
     // Keep non-project items always visible
     const nonProjectItems = dynamicGrid.querySelectorAll('.break-glass-card, .full-width-component, [data-type="custom"], [data-type="full-width"]');
     nonProjectItems.forEach(item => {
-      item.style.display = '';
-      item.style.opacity = '1';
-      item.style.transform = 'scale(1)';
-      item.style.filter = 'none';
-      item.style.pointerEvents = 'auto';
+      item.classList.remove('filtered-out');
+      item.classList.add('filtered-in');
     });
     
     // Update visible count
@@ -88,14 +78,6 @@ window.CategoryFilter = {
     return visibleCount;
   },
   
-  updateVisibleCount: function(visible, total, category) {
-    const visibleCountElement = document.getElementById('visibleCount');
-    if (visibleCountElement) {
-      const categoryText = category === 'all' ? 'alle categorieën' : category;
-      visibleCountElement.textContent = 
-        `${visible} van ${total} projecten zichtbaar (${categoryText})`;
-    }
-  },
   
   updateButtonStates: function(selectedCategory) {
     const labels = document.querySelectorAll('.filter-btn');
@@ -148,13 +130,12 @@ window.CategoryFilter = {
           this.updateButtonStates(category);
           this.filterProjects(category);
           
-          // Add visual feedback
+          // Add visual feedback using CSS classes
           const dynamicGrid = document.getElementById('dynamicGrid');
           if (dynamicGrid) {
-            dynamicGrid.style.transition = 'opacity 0.3s ease';
-            dynamicGrid.style.opacity = '0.8';
+            dynamicGrid.classList.add('filtering');
             setTimeout(() => {
-              dynamicGrid.style.opacity = '1';
+              dynamicGrid.classList.remove('filtering');
             }, 200);
           }
         }
