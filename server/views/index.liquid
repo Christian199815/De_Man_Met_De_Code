@@ -13,19 +13,21 @@
 
 {% endblock %} {% endcomment %}
 
-{% render '../components/stage-lights/stage-light.liquid' %}
 
 {% block content %}
+
     <div class="frame">
         <div class="audience layer-3">
             <img src="/public/images/images-responsiveness/audience.png">
         </div>
+
 
         <img class="bottom-left layer-2" src="/public/images/images-responsiveness/frame-bottom-left.png">
         <img class="top-left layer-2" src="/public/images/images-responsiveness/frame-top-left.png">
         <div class="repeating-wall-left layer-2"></div>
 
         <div class="repeating-cage layer-2"></div>
+
         <div class="repeating-floor layer-2"></div>
         <a href="/projects">
             <div class="prop-container layer-1">
@@ -41,6 +43,7 @@
         <img class="bottom-right layer-2" src="/public/images/images-responsiveness/frame-bottom-right.png">
         <img class="top-right layer-2" src="/public/images/images-responsiveness/frame-top-right.png">
     </div>
+{% render '../components/stage-lights/stage-light.liquid' %}
 
 
     <svg class="visually-hidden" width="10" height="10" xmlns="http://www.w3.org/2000/svg">
@@ -58,5 +61,6 @@
             </filter>
         </defs>
     </svg>
+
 
 {% endblock %}

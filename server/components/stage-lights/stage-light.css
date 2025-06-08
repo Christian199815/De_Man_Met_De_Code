@@ -10,12 +10,12 @@ body {
     --beamzindex: 2;
     display: flex;
     justify-content: space-evenly;
-    position: relative;
+    position: absolute;
     top: 20%;
     left: 0;
     width: 100vw;
     height: 50px;
-    background-color: black;
+    background-color: transparent;
 }
 
 .lights {
