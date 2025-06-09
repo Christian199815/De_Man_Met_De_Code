@@ -28,7 +28,6 @@
   gap: 1rem;
   justify-content: flex-start;
   margin-right: 2em;
-
 }
 
 .radio-group {
@@ -52,7 +51,6 @@
   --content: attr(data-category);
   --padding: 1rem 2rem;
 
-  
   position: relative;
   text-transform: uppercase;
   border: none;
@@ -66,7 +64,6 @@
   letter-spacing: 0.5px;
   user-select: none;
   text-align: center;
-
 }
 
 .filter-btn::before,
@@ -110,12 +107,12 @@
 
 .filter-btn::before {
   clip-path: polygon(0% 0%, 0% 100%, 40% 100%, 60% 0%);
-  z-index: 1;  /* 👈 Add this */
+  z-index: 1;
 }
 
 .filter-btn::after {
   clip-path: polygon(60% 0%, 40% 100%, 100% 100%, 100% 0%);
-  z-index: 2;  /* 👈 Add this - higher value, so it's on top */
+  z-index: 2;
 }
 
 /* Hover effects */
@@ -145,19 +142,13 @@
 .filter-btn.active::after {
   transform: rotate(3deg);
 }
-/* 
-
-.filter-radio:checked + .filter-btn,
-.filter-btn.active {
-  filter: brightness(1.1);
-} */
 
 /* ====================================
    CATEGORY-SPECIFIC TICKET COLORS
    ==================================== */
 
 /* Default/All button - Blue theme */
-.filter-btn[data-category="ALL"] {
+.filter-btn[data-category="all"] {
   --ticket-color-border: #3490dc;
   --ticket-color-card: #e6f3ff;
   --ticket-color-text: #1a5490;
@@ -182,11 +173,44 @@
   --ticket-color-text: #524100;
 }
 
-
 /* ====================================
-   FILTER FEEDBACK
+   FILTER FUNCTIONALITY - FROM JS
    ==================================== */
 
+/* Filtered project cards */
+.project-card.filtered-out {
+  display: none !important;
+}
+
+.project-card.filtered-in {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+/* Grid transition effects */
+.dynamic-grid {
+  transition: opacity 0.3s ease;
+}
+
+.dynamic-grid.filtering {
+  opacity: 0.8;
+}
+
+/* Visual feedback for filtering */
+.project-card {
+  transition: all 0.3s ease;
+}
+
+.project-card:not(.filtered-out) {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+  pointer-events: auto;
+}
 
 /* ====================================
    RESPONSIVE DESIGN
