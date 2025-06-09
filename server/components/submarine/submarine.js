@@ -11,7 +11,6 @@ let lastScrollY = window.scrollY;
 let isFlipped = true;
 
 const triggerElement = document.querySelector("#dynamicGrid");
-const triggerHeight = triggerElement.offsetHeight;
 
 // Main animation timeline
 const tl = gsap.timeline({
