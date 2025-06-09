@@ -248,17 +248,20 @@ img {
         scale: 1;
         opacity: 1;
     }
+
     100% {
         scale: 2;
         opacity: 0;
     }
 }
 
-.logo-container:has(:hover) .pulse {
+.logo-container:has(:hover) .pulse,
+.logo-container:has(:focus-visible) .pulse {
     opacity: 0;
 }
 
-.prop-container:has(:hover) .pulse {
+.prop-container:has(:hover) .pulse,
+.prop-container:has(:focus-visible) .pulse {
     opacity: 0;
 }
 
@@ -421,7 +424,8 @@ body {
     text-align: right;
 }
 
-.frame .prop-container:hover .nav-text {
+.frame .prop-container:hover .nav-text,
+.frame .prop-container:focus-visible .nav-text {
     top: 10%;
     opacity: 1;
     scale: 1;
@@ -433,7 +437,8 @@ body {
     /* niks */
 }
 
-.frame .prop-container .props:hover {
+.frame .prop-container .props:hover,
+.frame .prop-container .props:focus-visible {
     filter: url("#border-text");
 }
 
@@ -449,7 +454,27 @@ body {
 }
 
 
+/* -=-=-=-=-=-=-=-=-=- CANNON -=-=-=-=-=-=-=-=-=- */
+.frame .cannon-container {
+    position: absolute;
+    bottom: -30px;
+    left: 100px;
+    z-index: 100;
+}
+
+.frame .cannon-container .cannon {
+    /* niks */
+}
+
+.frame .cannon-container .cannon-shadow {
+    position: absolute;
+    bottom: -15px;
+    right: 10px;
+}
+
+
 /* -=-=-=-=-=-=-=-=-=- LOGO -=-=-=-=-=-=-=-=-=- */
+
 .frame .logo-container {
     top: 0;
     left: 300px;
@@ -463,7 +488,8 @@ body {
     width: 100%;
 }
 
-.frame .hanging-sign:hover {
+.frame .hanging-sign:hover,
+.frame .hanging-sign:focus-visible {
     filter: url("#border-text");
 }
 
@@ -537,7 +563,8 @@ body {
     text-align: left;
 }
 
-.frame .logo-container:hover .nav-text {
+.frame .logo-container:hover .nav-text,
+.frame .logo-container:focus-visible .nav-text {
     bottom: 12%;
     right: -180px;
     opacity: 1;
@@ -567,4 +594,158 @@ body {
 
 .layer-3 {
     translate: 0 0 5px;
+}
+
+
+
+
+@media (max-width: 800px) {
+
+    /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+    /* FRAME PIECES */
+    /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+    /* TOP LEFT */
+    .frame .top-left {
+        top: 0;
+        left: -25px;
+        height: calc(370px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- BOTTOM LEFT -=-=-=-=-=-=-=-=-=- */
+    .frame .bottom-left {
+        bottom: 0;
+        left: -25px;
+        height: calc(230px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- LEFT WALL -=-=-=-=-=-=-=-=-=- */
+    .frame .repeating-wall-left {
+        top: 0;
+        left: -25px;
+        background-size: calc(155px / 2);
+        height: 100%;
+        width: calc(155px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- TOP RIGHT -=-=-=-=-=-=-=-=-=- */
+    .frame .top-right {
+        top: 0;
+        right: -25px;
+        height: calc(370px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- BOTTOM RIGHT -=-=-=-=-=-=-=-=-=- */
+    .frame .bottom-right {
+        bottom: 0;
+        right: -25px;
+        height: calc(240px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- RIGHT WALL -=-=-=-=-=-=-=-=-=- */
+    .frame .repeating-wall-right {
+        top: 0;
+        right: -25px;
+        background-size: calc(155px / 2);
+        height: 100%;
+        width: calc(155px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- CAGE -=-=-=-=-=-=-=-=-=- */
+    .frame .repeating-cage {
+        top: calc(80px / 2); 
+        left: 0;
+        background-size: calc(1150px / 2);
+        height: calc(300px / 2);
+        width: 100%;
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- ROOF -=-=-=-=-=-=-=-=-=- */
+    .frame .repeating-roof {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: calc(105px / 2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- AUDIENCE -=-=-=-=-=-=-=-=-=- */
+    .frame .audience {
+        min-width: 100vw;
+        height: 80%;
+        bottom: 30px;
+        left: 0;
+    }
+
+    .frame .audience img {
+        height: 90%;
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- FLOOR -=-=-=-=-=-=-=-=-=- */
+    .frame .repeating-floor {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: calc(80px / 2);
+    }
+
+
+
+
+
+
+
+    /* -=-=-=-=-=-=-=-=-=- PROPS -=-=-=-=-=-=-=-=-=- */
+    .frame .prop-container {
+        position: absolute;
+        bottom: 10px;
+        right: 0;
+        z-index: 100;
+    }
+
+    .frame .prop-container .props {
+        width: calc(500px / 1.2);
+        right: 0;
+        bottom: 0;
+    }
+
+    .frame .prop-container .prop-shadows {
+        position: absolute;
+        width: calc(660px / 1.2);
+        right: calc(-180px / 1.2);
+        bottom: calc(-30px / 1.2);
+    }
+
+    /* -=-=-=-=-=-=-=-=-=- CANNON -=-=-=-=-=-=-=-=-=- */
+
+    .frame .cannon-container {
+        display: none !important;
+    }
+
+
+
+    /* -=-=-=-=-=-=-=-=-=- LOGO -=-=-=-=-=-=-=-=-=- */
+    .frame .logo-container {
+        top: 0;
+        left: 150px;
+        z-index: 100;
+        height: 500px;
+        width: 150px;
+    }
+
+    .frame .logo-container .hanging-sign .cable {
+        position: absolute;
+        z-index: 2;
+        width: 2px;
+        height: 80%;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(176, 176, 176, 1) 100%);
+    }
+
+    .frame .logo-container:hover .nav-text,
+    .frame .logo-container:focus-visible .nav-text {
+        bottom: 8%;
+        right: -180px;
+        opacity: 1;
+        scale: 1;
+    }
+
 }
