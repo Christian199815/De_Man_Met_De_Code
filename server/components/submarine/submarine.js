@@ -18,9 +18,9 @@ const tl = gsap.timeline({
   scrollTrigger: {
     trigger: "#dynamicGrid",
     start: "top center",
-    end: `+=${triggerHeight * 2}`,
+    end: `bottom center`,
     scrub: 1,
-    markers: true,
+    markers: false,
     onToggle: (self) => {
       gsap.to(submarineContainer, {
         opacity: self.isActive ? 1 : 0,
