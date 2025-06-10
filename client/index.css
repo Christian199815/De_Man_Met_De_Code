@@ -23,4 +23,5 @@
 @import "../server/components/theatre-slider/theatre-slider.css";
 @import "../server/components/pop-over/pop-over.css";
 @import '../server/components/stage-lights/stage-light.css';
+@import '../server/components/preloader/preload.css';
 

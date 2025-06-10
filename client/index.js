@@ -1,7 +1,7 @@
 import "./index.css";
 import { log } from "./debug.js";
 
-console.log("Hello, world!");
+console.log("I like Beef");
 
 // Views
 import "../server/views/projects/projects.js";
@@ -18,6 +18,7 @@ import "../server/components/break-glass/break-glass.js";
 import "../server/components/submarine/submarine.js";
 import "../server/components/theatre-slider/theatre-slider.js";
 import '../server/components/stage-lights/stage-light.js';
+import '../server/components/preloader/preload.js';
 import "../server/project-pop.js";
 
 
