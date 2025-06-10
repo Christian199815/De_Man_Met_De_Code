@@ -1,6 +1,6 @@
 .crocodile-container {
   position: relative !important;
-  overflow: hidden !important;
+  overflow: hidden;
   width: 100vw !important;
   height: 50vh !important;
   border-top: 16px solid black;
@@ -40,7 +40,8 @@
 
 /* === WADDLE ANIMATION (only on the <img>) === */
 @keyframes waddle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(2deg);
   }
   25% {
@@ -63,15 +64,15 @@
   transform-origin: center !important;
   position: relative !important;
   z-index: 102 !important;
-  
+
   /* Force visibility */
   opacity: 1 !important;
   visibility: visible !important;
-  
+
   /* Ensure it has dimensions */
   min-width: 100px !important;
   min-height: 100px !important;
-  
+
   /* Add hover effect for debugging */
   transition: filter 0.2s ease, transform 0.2s ease !important;
 }
