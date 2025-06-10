@@ -21,7 +21,7 @@
 .project-card[data-aspect-ratio="landscape"] {
   grid-row: span 1 !important;
   grid-column: span 2 !important;
-  height: 300px;
+  /* height: 300px; */
   min-height: 300px;
 }
 
@@ -38,7 +38,7 @@
 .project-card[data-aspect-ratio="square"] {
   grid-row: span 1 !important;
   grid-column: span 1 !important;
-  height: 300px;
+  /* height: 300px; */
   min-height: 300px;
 }
 
@@ -139,20 +139,59 @@
 /* ====================================
    CATEGORY BADGE
    ==================================== */
+/* ====================================
+   CATEGORY BADGE - TICKET STYLE
+   ==================================== */
 
 .category {
   position: absolute;
   bottom: 60px;
   right: 20px;
   z-index: 3;
-  border: 3px solid black;
-  padding: 0.5em;
   pointer-events: none;
   transition: transform 0.3s ease;
+  
+  /* Ticket Style Variables */
+  --ticket-color-border: black;
+  --ticket-color-card: white;
+  --ticket-color-text: black;
+  --hapje: 0.5rem;
+  --border: 0.3em;
+  --padding: 0.5rem 1rem;
+  
+  /* Reset previous styles */
+  border: none;
+  background-color: transparent;
+  padding: var(--padding);
+  
+  /* Ticket Style Background */
+  background-image:
+    linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+    linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+    radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
+    radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
+    radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
+    radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0);
+  
+  background-size:
+    calc(100% - 2 * var(--hapje)) 100%,
+    100% calc(100% - 2 * var(--hapje)),
+    51% 51%,
+    51% 51%,
+    51% 51%,
+    51% 51%;
+  background-repeat: no-repeat;
+  background-position:
+    center top,
+    left center,
+    left top,
+    right top,
+    right bottom,
+    left bottom;
 }
 
 .category p {
-  color: white;
+  color: var(--ticket-color-text);
   text-transform: uppercase;
   font-size: clamp(0.8em, 2.5vw, 1.1em);
   font-weight: 600;
@@ -160,27 +199,53 @@
   pointer-events: auto;
 }
 
-/* Category Colors */
-.category.decor,
-.category-decor .category {
-  background-color: blue;
+/* Category Color Variants - matching filter button colors */
+.category.decor {
+  --ticket-color-border: #b80006;
+  --ticket-color-card: #e81b21;
+  --ticket-color-text: #3d0002;
 }
 
-.category.props,
-.category-props .category {
-  background-color: red;
+.category.props {
+  --ticket-color-border: #104C1C;
+  --ticket-color-card: #308F3E;
+  --ticket-color-text: #012809;
 }
 
 .category.interieur,
-.category-interieur .category {
-  background-color: green;
+.category.interior {
+  --ticket-color-border: #B89300;
+  --ticket-color-card: #ffca3a;
+  --ticket-color-text: #524100;
 }
 
-.category.nieuws,
-.category-nieuws .category {
-  background-color: gold;
+/* ====================================
+   RESPONSIVE ADJUSTMENTS
+   ==================================== */
+
+@media (max-width: 768px) {
+  .category {
+    bottom: 40px;
+    right: 15px;
+    --padding: 0.3rem 0.8rem;
+    --hapje: 0.4rem;
+    --border: 0.25em;
+  }
 }
 
+@media (max-width: 480px) {
+  .category {
+    bottom: 30px;
+    right: 10px;
+    --padding: 0.25rem 0.6rem;
+    --hapje: 0.3rem;
+    --border: 0.2em;
+  }
+
+  .category p {
+    font-size: clamp(0.7em, 2vw, 0.9em);
+  }
+}
 /* ====================================
    SPECIAL BADGES
    ==================================== */
