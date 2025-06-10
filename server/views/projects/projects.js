@@ -32,6 +32,37 @@ class CleanGridPool {
     this.init();
   }
 
+  initializeCustomComponents() {
+  this.initializeFullWidthComponents();
+  this.initializeCrocodileComponents(); // Add this line
+  
+  document.dispatchEvent(new CustomEvent('gridRerendered', {
+    detail: { gridInstance: this }
+  }));
+}
+
+// Add this new method to handle crocodile initialization
+initializeCrocodileComponents() {
+  const crocodileContainers = this.container.querySelectorAll('.crocodile-container');
+  
+  crocodileContainers.forEach((container) => {
+    // Check if already initialized to prevent duplicates
+    if (container.querySelector('.croc-wrapper')) {
+      return;
+    }
+    
+    // Trigger crocodile initialization if function exists
+    if (typeof window.initializeCrocodiles === 'function') {
+      window.initializeCrocodiles();
+    } else {
+      // If the function doesn't exist globally, dispatch an event
+      document.dispatchEvent(new CustomEvent('initializeCrocodiles', {
+        detail: { container: container }
+      }));
+    }
+  });
+}
+
   init() {
     if (!this.container) {
       return;
@@ -328,4 +359,42 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('page-loaded');
     }, 100);
   }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('.search-input');
+  const searchContainer = document.querySelector('.search-container');
+  const logoElement = document.querySelector('.logo-element');
+  const categoryFilter = document.querySelector('.category-filter'); // Adjust selector as needed
+  
+  if (!searchInput || !searchContainer) return;
+  
+  function checkSearchWidth() {
+    const viewportWidth = window.innerWidth;
+    const searchWidth = searchContainer.offsetWidth;
+    const widthPercentage = (searchWidth / viewportWidth) * 100;
+    
+    // Hide elements when search reaches 60% of viewport width
+    if (widthPercentage >= 60) {
+      if (logoElement) logoElement.style.display = 'none';
+      if (categoryFilter) categoryFilter.style.display = 'none';
+      document.body.classList.add('search-expanded');
+    } else {
+      if (logoElement) logoElement.style.display = '';
+      if (categoryFilter) categoryFilter.style.display = '';
+      document.body.classList.remove('search-expanded');
+    }
+  }
+  
+  // Check on input events
+  searchInput.addEventListener('input', checkSearchWidth);
+  searchInput.addEventListener('focus', checkSearchWidth);
+  searchInput.addEventListener('blur', checkSearchWidth);
+  
+  // Check on window resize
+  window.addEventListener('resize', checkSearchWidth);
+  
+  // Initial check
+  checkSearchWidth();
 });

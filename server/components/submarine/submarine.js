@@ -63,18 +63,11 @@ window.addEventListener("scroll", () => {
 });
 
 function createBubbleAtTail() {
-  console.log("createBubbleAtTail called");
-
   if (!submarine || !bubbleContainer) {
-    console.log("Missing elements:", {
-      submarine: !!submarine,
-      bubbleContainer: !!bubbleContainer,
-    });
     return;
   }
 
   const rect = submarineContainer.getBoundingClientRect();
-  console.log("Submarine rect:", rect);
 
   const bubble = document.createElement("div");
   bubble.classList.add("bubble");
@@ -87,8 +80,6 @@ function createBubbleAtTail() {
   // Position at the submarine's tail
   const offsetX = rect.left + rect.width * (isFlipped ? 0.15 : 0.85);
   const offsetY = rect.top + rect.height * 0.6;
-
-  console.log("Bubble position:", { offsetX, offsetY, isFlipped });
 
   bubble.style.left = `${offsetX}px`;
   bubble.style.top = `${offsetY}px`;
@@ -103,13 +94,11 @@ function createBubbleAtTail() {
   bubble.style.backgroundColor = "rgba(173, 216, 230, 0.9)"; // More visible
 
   bubbleContainer.appendChild(bubble);
-  console.log("Bubble added to container");
 
   // Remove bubble after animation
   setTimeout(() => {
     if (bubble.parentNode) {
       bubble.remove();
-      console.log("Bubble removed");
     }
   }, 2000);
 }
