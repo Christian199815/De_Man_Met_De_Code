@@ -21,9 +21,6 @@ function updateButton() {
     }
 }
 
-// Initialize
-updateButton();
-
 // Wait for all content to load
 window.addEventListener('load', () => {
     isReady = true;
@@ -117,7 +114,7 @@ projectsButton.addEventListener('click', function(e) {
     // Wait for animations to complete, then transition to next page
     setTimeout(() => {
         // Replace 'next-page.html' with your actual next page URL
-        window.location.href = 'next-page.html';
+        window.location.href = 'http://localhost:3000/projects';
         // Or if you're using a single-page app:
         // showNextPage();
     }, 2000); // 2000ms = 2s animation duration

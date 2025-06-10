@@ -1,3 +1,6 @@
+@view-transition {
+  navigation: auto;
+}
 body {
     overflow: hidden;
     --curtain-pattern: repeating-linear-gradient(90deg,
