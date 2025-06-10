@@ -19,9 +19,9 @@
 
 
 
-    > a {
+    > .logo-element {
     flex-grow: 1;
-    img{
+    a img{
       /* width: clamp(5dvw, 20rem, 2dvw); */
       height: 100%;
       /* aspect-ratio: 1; */
@@ -435,4 +435,57 @@ h1 {
   }
 
 
+}
+
+/* ====================================
+   NAVBAR - Updated for search expansion
+   ==================================== */
+.container nav {
+  display: flex;
+  flex-direction: row;
+  background-color: #212121;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 .5rem;
+  height: 8rem;
+  position: relative;
+  transition: justify-content 0.3s ease;
+}
+
+.container nav > .logo-element {
+  flex-grow: 1;
+  transition: all 0.3s ease;
+  
+  a img {
+    height: 100%;
+  }
+}
+
+.container nav > div {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.3s ease;
+}
+
+/* Search component stays visible */
+.search-component {
+  flex-shrink: 0;
+}
+
+/* When search is expanded, change nav layout */
+.search-expanded nav {
+  justify-content: flex-end;
+}
+
+/* Optional: Add smooth transitions when elements are hidden by JS */
+.logo-element,
+.category-filter {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Optional: Add a class for when search is expanded (controlled by JS) */
+.search-expanded .logo-element,
+.search-expanded .category-filter {
+  opacity: 0;
+  transform: scale(0.8);
 }

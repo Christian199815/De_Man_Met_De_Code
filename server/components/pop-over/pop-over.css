@@ -254,7 +254,7 @@ img[data-pop-image]:hover {
   margin: 0 5px;
   background: #aaa;
   border-radius: 50%;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .carousel-dots span.active {
