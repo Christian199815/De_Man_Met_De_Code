@@ -337,3 +337,19 @@ window.debugBreakGlass = function() {
 console.log('🎯 Break Glass Simple System loaded (supports both old and new structure)');
 console.log('🔧 Use window.debugBreakGlass() to inspect components');
 console.log('💥 Use window.breakAllGlass() or window.restoreAllGlass() for testing');
+
+window.debugBreakGlassElements = function() {
+  const cards = document.querySelectorAll('.break-glass-card');
+  const overlays = document.querySelectorAll('.broken-glass-fullscreen');
+  
+  console.log(`Cards found: ${cards.length}`);
+  console.log(`Overlays found: ${overlays.length}`);
+  
+  cards.forEach((card, i) => {
+    const cardId = card.getAttribute('data-id');
+    const overlay = document.querySelector(`[data-break-glass-overlay][data-break-glass-id="${cardId}"]`);
+    console.log(`Card ${i}: ${cardId} -> Overlay found: ${!!overlay}`);
+  });
+};
+
+debugBreakGlassElements();

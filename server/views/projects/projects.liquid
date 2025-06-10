@@ -1,5 +1,3 @@
-<!-- Liquid Template with Custom Full Width Components -->
-
 {% layout "server/layouts/base.liquid" %}
 
 {% block content %}
@@ -18,7 +16,7 @@
   {% comment %} Grid container {% endcomment %}
   <div class="projects-grid" id="dynamicGrid">
 
-    {% comment %} Render your regular items {% endcomment %}
+    {% comment %} Regular items {% endcomment %}
     {% for project in allData.projects %}
     {% render '../../components/project-card/project-card.liquid', project: project %}
     {% endfor %}
@@ -27,19 +25,33 @@
     {% render '../../components/project-item/project-item.liquid', item: square %}
     {% endfor %}
 
+    {% comment %} Break Glass Cards {% endcomment %}
+    {% for i in (1..3) %}
+    <div class="break-glass-card" data-type="custom" data-component="break-glass" data-id="break-glass-{{ i }}">
+      <div class="sign" data-break-glass-sign>Don't Break</div>
+      <audio data-break-glass-audio src="/public/audio/Break-glass.wav" preload="auto"></audio>
+    </div>
+    {% endfor %}
 
-    {% comment %} Full Width Component 4: Theatre Slider {% endcomment %}
+    {% comment %} Full Width Components {% endcomment %}
     <div class="full-width-component theatre-slider-wrapper" data-type="full-width" data-id="theatre-1">
       <div class="full-width-content">
         {% render "../../components/theatre-slider/theatre-slider.liquid" %}
       </div>
     </div>
 
-    {% comment %} Full Width Component 5: Crocodile Component {% endcomment %}
     <div class="crocodile-direct-wrapper" data-type="full-width" style="grid-column: 1 / -1;">
-  {% render "../../components/full-width-crocodile/crocodile.liquid" %}
-</div>
+      {% render "../../components/full-width-crocodile/crocodile.liquid" %}
+    </div>
   </div>
+
+  {% comment %} Full-screen overlays - outside grid {% endcomment %}
+  {% for i in (1..3) %}
+  <div class="broken-glass-fullscreen" 
+     data-break-glass-overlay 
+     data-break-glass-id="break-glass-{{ i }}">
+  </div>
+  {% endfor %}
 </div>
 
 {% render '../../components/submarine/submarine.liquid' %}

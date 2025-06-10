@@ -1,171 +1,4 @@
-/* ====================================
-   BREAK GLASS COMPONENT STYLES - ADAPTED FROM ORIGINAL
-   ==================================== */
-
-.break-glass-card {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  grid-column: span 1;
-  grid-row: span 1;
-  overflow: hidden;
-  border-radius: 4px;
-  font-family: Raleway, sans-serif;
-}
-
-.break-glass-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.sign {
-  padding: 20px 40px;
-  background-color: #ff4444;
-  color: white;
-  font-size: 2rem;
-  font-weight: bold;
-  user-select: none;
-  position: relative;
-  z-index: 10;
-  transition: transform 0.3s ease;
-  text-transform: uppercase;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.sign:hover {
-  background-color: #ff6666;
-  transform: scale(1.05);
-}
-
-.sign:active {
-  transform: scale(0.95);
-}
-
-.sign.shake {
-  animation: shake 0.4s ease;
-}
-
-@keyframes shake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-5px, 0); }
-  50% { transform: translate(5px, 0); }
-  75% { transform: translate(-5px, 0); }
-  100% { transform: translate(0, 0); }
-}
-
-/* ====================================
-   FULLSCREEN BROKEN GLASS OVERLAY
-   ==================================== */
-
-.broken-glass-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url("https://gallery.yopriceville.com/downloadfullsize/send/18517") center center no-repeat;
-  background-size: cover;
-  pointer-events: none;
-  display: none;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.broken-glass-fullscreen.active {
-  display: block;
-  opacity: 1;
-  animation: glassBreakEffect 0.8s ease-out;
-}
-
-@keyframes glassBreakEffect {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  30% {
-    opacity: 0.5;
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ====================================
-   BODY STATES FOR FULLSCREEN EFFECT
-   ==================================== */
-
-body.glass-broken {
-  overflow: hidden;
-}
-
-/* ====================================
-   RESPONSIVE DESIGN
-   ==================================== */
-
-@media (max-width: 768px) {
-  .break-glass-card {
-    min-height: 150px;
-  }
-  
-  .sign {
-    font-size: 1.5rem;
-    padding: 15px 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .break-glass-card {
-    min-height: 120px;
-  }
-  
-  .sign {
-    font-size: 1.2rem;
-    padding: 10px 20px;
-  }
-}
-
-/* ====================================
-   ACCESSIBILITY
-   ==================================== */
-
-.break-glass-card:focus-within {
-  outline: 2px solid #ff4444;
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sign.shake {
-    animation: none;
-  }
-  
-  .broken-glass-fullscreen.active {
-    animation: none;
-  }
-  
-  .sign {
-    transition: none;
-  }
-}
-
+/* Simplified Break Glass Card for Grid */
 .break-glass-card {
   position: relative;
   width: 100%;
@@ -188,25 +21,8 @@ body.glass-broken {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* ====================================
-   BREAK GLASS CONTAINER
-   ==================================== */
-
-.break-glass-container {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-/* ====================================
-   SIGN ELEMENT
-   ==================================== */
-
-.break-glass-card .sign {
+/* Direct child sign - no container needed */
+.break-glass-card > .sign {
   padding: 20px 40px;
   background-color: #ff4444;
   color: white;
@@ -221,26 +37,49 @@ body.glass-broken {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   letter-spacing: 1px;
   text-align: center;
-  max-width: 80%;
-  word-wrap: break-word;
+  cursor: pointer;
+  z-index: 10;
 }
 
-.break-glass-card .sign:hover {
+.break-glass-card > .sign:hover {
   background-color: #ff6666;
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
-.break-glass-card .sign:active {
+.break-glass-card > .sign:active {
   transform: scale(0.95);
 }
 
-/* ====================================
-   SHAKE ANIMATION
-   ==================================== */
-
-.break-glass-card .sign.shake {
+.break-glass-card > .sign.shake {
   animation: breakGlassShake 0.4s ease;
+}
+
+/* Hide audio element */
+.break-glass-card > audio {
+  display: none;
+}
+
+/* Full-screen overlay styles remain the same */
+.broken-glass-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url("https://gallery.yopriceville.com/downloadfullsize/send/18517") center center no-repeat;
+  background-size: cover;
+  pointer-events: none;
+  display: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.broken-glass-fullscreen.active {
+  display: block;
+  opacity: 1;
+  animation: glassBreakEffect 0.8s ease-out;
 }
 
 @keyframes breakGlassShake {
@@ -257,52 +96,32 @@ body.glass-broken {
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-/* ====================================
-   BROKEN GLASS OVERLAY (REMOVED - NOW USING FULLSCREEN)
-   ==================================== */
-
-/* This section is now handled by .broken-glass-fullscreen above */
-
-/* ====================================
-   COMPONENT STATES
-   ==================================== */
-
-.break-glass-card.broken .sign {
-  background-color: #666;
-  color: #ccc;
-  border-color: rgba(255, 255, 255, 0.1);
+@keyframes glassBreakEffect {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  30% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.break-glass-card.broken .sign:hover {
-  background-color: #777;
+body.glass-broken {
+  overflow: hidden;
 }
 
-/* Loading state */
-.break-glass-card.loading {
-  background-color: #333;
-}
-
-.break-glass-card.loading .sign {
-  background-color: #555;
-  color: #999;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* ====================================
-   RESPONSIVE DESIGN
-   ==================================== */
-
+/* Responsive design */
 @media (max-width: 768px) {
   .break-glass-card {
     min-height: 150px;
   }
   
-  .break-glass-card .sign {
+  .break-glass-card > .sign {
     font-size: 1.5rem;
     padding: 15px 30px;
   }
@@ -313,32 +132,8 @@ body.glass-broken {
     min-height: 120px;
   }
   
-  .break-glass-card .sign {
+  .break-glass-card > .sign {
     font-size: 1.2rem;
     padding: 10px 20px;
-  }
-}
-
-/* ====================================
-   ACCESSIBILITY
-   ==================================== */
-
-.break-glass-card:focus-within {
-  outline: 2px solid #ff4444;
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .break-glass-card .sign.shake {
-    animation: none;
-  }
-  
-  .break-glass-card .broken-glass.active {
-    animation: none;
-  }
-  
-  .break-glass-card,
-  .break-glass-card .sign {
-    transition: none;
   }
 }

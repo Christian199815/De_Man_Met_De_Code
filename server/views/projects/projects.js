@@ -167,6 +167,37 @@ initializeCrocodileComponents() {
     return 1;
   }
 
+  // Add this method to CleanGridPool class
+initializeBreakGlassComponents() {
+  const breakGlassCards = this.container.querySelectorAll('.break-glass-card');
+  
+  breakGlassCards.forEach((card) => {
+    const sign = card.querySelector('[data-break-glass-sign]');
+    if (sign && !sign.hasAttribute('data-break-glass-initialized')) {
+      // Initialize break glass functionality
+      if (typeof window.initializeBreakGlass === 'function') {
+        window.initializeBreakGlass();
+      } else {
+        // Dispatch event for break glass initialization
+        document.dispatchEvent(new CustomEvent('initializeBreakGlass', {
+          detail: { container: card }
+        }));
+      }
+    }
+  });
+}
+
+// Update the initializeCustomComponents method
+initializeCustomComponents() {
+  this.initializeFullWidthComponents();
+  this.initializeCrocodileComponents();
+  this.initializeBreakGlassComponents(); // Add this line
+  
+  document.dispatchEvent(new CustomEvent('gridRerendered', {
+    detail: { gridInstance: this }
+  }));
+}
+
   createProperRowLayout() {
     this.pools.mixed = [];
     
