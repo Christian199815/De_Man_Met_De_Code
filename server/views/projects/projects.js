@@ -361,3 +361,40 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('.search-input');
+  const searchContainer = document.querySelector('.search-container');
+  const logoElement = document.querySelector('.logo-element');
+  const categoryFilter = document.querySelector('.category-filter'); // Adjust selector as needed
+  
+  if (!searchInput || !searchContainer) return;
+  
+  function checkSearchWidth() {
+    const viewportWidth = window.innerWidth;
+    const searchWidth = searchContainer.offsetWidth;
+    const widthPercentage = (searchWidth / viewportWidth) * 100;
+    
+    // Hide elements when search reaches 60% of viewport width
+    if (widthPercentage >= 60) {
+      if (logoElement) logoElement.style.display = 'none';
+      if (categoryFilter) categoryFilter.style.display = 'none';
+      document.body.classList.add('search-expanded');
+    } else {
+      if (logoElement) logoElement.style.display = '';
+      if (categoryFilter) categoryFilter.style.display = '';
+      document.body.classList.remove('search-expanded');
+    }
+  }
+  
+  // Check on input events
+  searchInput.addEventListener('input', checkSearchWidth);
+  searchInput.addEventListener('focus', checkSearchWidth);
+  searchInput.addEventListener('blur', checkSearchWidth);
+  
+  // Check on window resize
+  window.addEventListener('resize', checkSearchWidth);
+  
+  // Initial check
+  checkSearchWidth();
+});

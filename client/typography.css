@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "franchise";
+  src:
+    local("Franchise_Bold"),
+    url("../public/fonts/franchise_bold.ttf") format("truetype")
+}
+
 body {
   font-family: system-ui, sans-serif;
   font-weight: 400;
@@ -13,4 +20,17 @@ body {
   font-size: 1.25rem;
   margin-bottom: 10px;
   font-weight: 600;
+}
+
+.nav-text, .h3, .p{
+  font-family: 'franchise', impact, sans-serif;
+  text-transform: uppercase;
+}
+
+.h3 {
+  font-size: 1.5rem;
+}
+
+.p {
+  font-size: 1rem;
 }
