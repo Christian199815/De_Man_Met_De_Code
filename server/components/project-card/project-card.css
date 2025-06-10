@@ -16,7 +16,7 @@
    ASPECT RATIO CLASSES
    ==================================== */
 
-.landscape-card, 
+.landscape-card,
 .landscape,
 .project-card[data-aspect-ratio="landscape"] {
   grid-row: span 1 !important;
@@ -25,7 +25,7 @@
   min-height: 300px;
 }
 
-.portrait-card, 
+.portrait-card,
 .portrait,
 .project-card[data-aspect-ratio="portrait"] {
   grid-row: span 2 !important;
@@ -105,15 +105,16 @@
   z-index: 2;
   width: 100%;
   pointer-events: none;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
   padding: 1rem;
+  padding-top: 2rem;
   box-sizing: border-box;
 }
 
 .project-details h2 {
   color: white;
   margin: 0;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: clamp(1em, 3vw, 1.5em);
   font-weight: 600;
   pointer-events: auto;
@@ -129,7 +130,7 @@
   height: 100%;
 }
 
-.project-production, 
+.project-production,
 .project-date {
   font-size: 0.85rem;
   color: #777;
@@ -150,7 +151,7 @@
   z-index: 3;
   pointer-events: none;
   transition: transform 0.3s ease;
-  
+
   /* Ticket Style Variables */
   --ticket-color-border: black;
   --ticket-color-card: white;
@@ -158,36 +159,54 @@
   --hapje: 0.5rem;
   --border: 0.3em;
   --padding: 0.5rem 1rem;
-  
+
   /* Reset previous styles */
   border: none;
   background-color: transparent;
   padding: var(--padding);
-  
+
   /* Ticket Style Background */
-  background-image:
-    linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-    linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-    radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0);
-  
-  background-size:
-    calc(100% - 2 * var(--hapje)) 100%,
-    100% calc(100% - 2 * var(--hapje)),
-    51% 51%,
-    51% 51%,
-    51% 51%,
-    51% 51%;
+  background-image: linear-gradient(
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    linear-gradient(
+      90deg,
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    radial-gradient(
+      circle at 0 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    );
+
+  background-size: calc(100% - 2 * var(--hapje)) 100%,
+    100% calc(100% - 2 * var(--hapje)), 51% 51%, 51% 51%, 51% 51%, 51% 51%;
   background-repeat: no-repeat;
-  background-position:
-    center top,
-    left center,
-    left top,
-    right top,
-    right bottom,
-    left bottom;
+  background-position: center top, left center, left top, right top,
+    right bottom, left bottom;
 }
 
 .category p {
@@ -207,14 +226,14 @@
 }
 
 .category.props {
-  --ticket-color-border: #104C1C;
-  --ticket-color-card: #308F3E;
+  --ticket-color-border: #104c1c;
+  --ticket-color-card: #308f3e;
   --ticket-color-text: #012809;
 }
 
 .category.interieur,
 .category.interior {
-  --ticket-color-border: #B89300;
+  --ticket-color-border: #b89300;
   --ticket-color-card: #ffca3a;
   --ticket-color-text: #524100;
 }
@@ -335,7 +354,7 @@
     height: 280px;
     min-height: 280px;
   }
-  
+
   .portrait-card {
     min-height: 560px;
   }
@@ -347,11 +366,11 @@
     height: 200px;
     min-height: 200px;
   }
-  
+
   .portrait-card {
     min-height: 400px;
   }
-  
+
   .square {
     height: 200px;
     min-height: 200px;

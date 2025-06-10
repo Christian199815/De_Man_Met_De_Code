@@ -4,7 +4,7 @@
   width: 140dvw;
   display: flex;
   justify-content: center;
-  z-index: 9999999 !important;
+  z-index: 10;
   overflow-x: hidden;
 }
 
