@@ -1,13 +1,13 @@
 .crocodile-container {
   position: relative !important;
-  overflow: visible !important; /* This was the main problem - was set to hidden */
+  overflow: hidden !important;
   width: 100vw !important;
   height: 50vh !important;
   border-top: 16px solid black;
   border-bottom: 16px solid black;
   background: linear-gradient(to top, #111 0%, #1b2b1b 100%);
   background-color: #0d120d;
-  pointer-events: none !important; /* Container shouldn't block events */
+  pointer-events: none !important;
   z-index: 100 !important;
 }
 
@@ -15,14 +15,8 @@
   0% {
     left: -300px;
   }
-  50% {
-    left: calc(100vw + 100px); /* Go further to ensure visibility */
-  }
-  50.01% {
-    left: calc(100vw + 100px);
-  }
   100% {
-    left: -300px;
+    left: calc(100vw + 10vw);
   }
 }
 
@@ -34,9 +28,8 @@
   animation-direction: alternate !important;
   animation-fill-mode: forwards !important;
   will-change: left, transform !important;
-  pointer-events: all !important; /* CRITICAL: Allow clicks */
+  pointer-events: all !important;
   z-index: 101 !important;
-  /* Ensure it's visible */
   opacity: 1 !important;
   visibility: visible !important;
 }
@@ -64,7 +57,7 @@
 /* CONSOLIDATED CROCODILE STYLES */
 .crocodile {
   display: block !important;
-  pointer-events: all !important; /* CRITICAL: Allow clicks */
+  pointer-events: all !important;
   user-select: none !important;
   animation: waddle 0.6s ease-in-out infinite !important;
   transform-origin: center !important;
