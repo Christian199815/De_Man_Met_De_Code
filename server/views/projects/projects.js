@@ -32,6 +32,37 @@ class CleanGridPool {
     this.init();
   }
 
+  initializeCustomComponents() {
+  this.initializeFullWidthComponents();
+  this.initializeCrocodileComponents(); // Add this line
+  
+  document.dispatchEvent(new CustomEvent('gridRerendered', {
+    detail: { gridInstance: this }
+  }));
+}
+
+// Add this new method to handle crocodile initialization
+initializeCrocodileComponents() {
+  const crocodileContainers = this.container.querySelectorAll('.crocodile-container');
+  
+  crocodileContainers.forEach((container) => {
+    // Check if already initialized to prevent duplicates
+    if (container.querySelector('.croc-wrapper')) {
+      return;
+    }
+    
+    // Trigger crocodile initialization if function exists
+    if (typeof window.initializeCrocodiles === 'function') {
+      window.initializeCrocodiles();
+    } else {
+      // If the function doesn't exist globally, dispatch an event
+      document.dispatchEvent(new CustomEvent('initializeCrocodiles', {
+        detail: { container: container }
+      }));
+    }
+  });
+}
+
   init() {
     if (!this.container) {
       return;
@@ -329,3 +360,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
   }
 });
+

@@ -17,11 +17,8 @@
 
   // Enhanced function to show popover with multiple images
   function showProjectPopover(projectData) {
-    console.log("🚀 showProjectPopover called with:", projectData);
-
     // Close existing popover if any
     if (currentPopover) {
-      console.log("🗑️ Closing existing popover");
       closePopover();
     }
 
@@ -31,8 +28,6 @@
       console.error("❌ Image popover template not found");
       return;
     }
-
-    console.log("✅ Template found, creating popover");
 
     // Clone the template content
     const popoverElement = template.content.cloneNode(true);
@@ -67,13 +62,10 @@
     // Add to DOM
     document.body.appendChild(overlay);
 
-    console.log("✅ Popover added to DOM");
-
     // Trigger show animation
     setTimeout(() => {
       if (currentPopover) {
         currentPopover.classList.add("show");
-        console.log("✅ Show class added");
       }
     }, 10);
   }
@@ -242,7 +234,6 @@
     const nextBtn = container.querySelector("#next");
 
     if (!list || !counter || !dotsContainer || !prevBtn || !nextBtn) {
-      console.warn("❌ Carousel elements not found in popover");
       return;
     }
 
@@ -291,8 +282,6 @@
       `${selector}[data-pop-image][data-project-data]`
     );
 
-    console.log("Initiated Project Popovers for cards");
-
     cards.forEach((card, index) => {
       // Remove any existing click handler
       if (card._popoverHandler) {
@@ -304,8 +293,6 @@
         e.preventDefault();
         e.stopPropagation();
 
-        console.log("🖱️ Project card clicked!", this, "Index:", index);
-
         // Get project data from the card's data attribute
         const projectDataString = this.getAttribute("data-project-data");
         if (projectDataString) {
@@ -315,8 +302,6 @@
           } catch (error) {
             console.error("Error parsing project data:", error);
           }
-        } else {
-          console.warn("No project data found in clicked card");
         }
       };
 
@@ -324,10 +309,8 @@
       card.classList.add("project-card-clickable");
 
       card.addEventListener("click", card._popoverHandler);
-      console.log("✅ Added click handler to project card:", index);
     });
 
-    console.log(`Initialized ${cards.length} project card popovers`);
     return cards.length;
   };
 
