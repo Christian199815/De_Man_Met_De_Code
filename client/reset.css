@@ -68,7 +68,7 @@ table {
   border-spacing: 0;
 }
 
-img {
+img:not(.frame img) {
   max-width: 100%;
   display: block;
 }

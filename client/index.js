@@ -19,6 +19,7 @@ import "../server/components/submarine/submarine.js";
 import "../server/components/theatre-slider/theatre-slider.js";
 import '../server/components/stage-lights/stage-light.js';
 import "../server/project-pop.js";
+import "../server/components/cannon/cannon.js";
 
 
 const _DebugBool = true;
