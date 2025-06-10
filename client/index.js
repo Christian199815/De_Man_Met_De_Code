@@ -1,13 +1,12 @@
 import "./index.css";
 import { log } from "./debug.js";
 
-console.log("I like Beef");
-
 // Views
 import "../server/views/projects/projects.js";
 import "../server/views/index.js";
 
 // Components
+    
 import "../server/components/category-filter/category-filter.js";
 import "../server/components/search-bar/search-bar.js";
 import "../server/components/full-width-card/full-width-card.js";

@@ -33,10 +33,10 @@ body {
 .curtain-left {
     position: absolute;
     top: 0;
-    left: 0;
+    left: -1;
     background-image: var(--curtain-pattern);
     box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
-    width: 49vw;
+    width: 51vw;
     height: 200vh;
     z-index: 3;
     clip-path: polygon(0% 100%,
@@ -61,11 +61,11 @@ body {
     overflow: hidden;
     position: absolute;
     top: 0;
-    right: 0;
+    right: -1vw;
     background-image: var(--curtain-pattern);
-    width: 49vw;
+    width: 51vw;
     height: 200vh;
-    z-index: 3;
+    z-index: 3; 
     clip-path: polygon(100% 100%,
             100% 0%,
             0% 0%, 0% 50%,
@@ -81,34 +81,6 @@ body {
             23% 96%,
             28% 99%,
             50% 100%);
-
-}
-.curtain-right-animation {
-    animation: curtain-right-open 2s var(--custom-easing) forwards;
-    }
-
-.curtain-left-animation{
-    animation: curtain-left-open 2s var(--custom-easing) forwards;
-}
-
-@keyframes curtain-left-open {
-    0% {
-        transform: translate(0vw, 0vh);
-    }
-
-    100% {
-        transform: translate(-50vw, -100vh);
-    }
-}
-
-@keyframes curtain-right-open {
-    0% {
-        transform: translate(0vw, 0vh);
-    }
-
-    100% {
-        transform: translate(50vw, -100vh);
-    }
 }
 
 /* peter pannekoek preloader */
@@ -128,12 +100,6 @@ body {
     transform: translate(-50%, -50%) scale(0.4);
     transform-origin: center;
 }
-
-@keyframes fade-in {
-    to {
-        transform: translate(-50%, -50%) scale(.8);
-} }
-
 
 .peter-container *,
 .eye-white,
@@ -196,6 +162,100 @@ body {
     pointer-events: none;
 }
 
+.none {
+  display: none;
+}
+
+.curtain-left-animation-peak{
+    animation: curtain-left-peak 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-peak {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(-2vw, 0vh);
+    }
+}
+
+.curtain-right-animation-peak {
+    animation: curtain-right-peak 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-peak {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(2vw, 0vh);
+    }
+}
+
+.curtain-left-animation-open{
+    animation: curtain-left-open 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-open {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(-50vw, -100vh);
+    }
+}
+
+.curtain-right-animation-open {
+    animation: curtain-right-open 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-open {
+    0% {
+        transform: translate(vw, 0vh);
+    }
+
+    100% {
+        transform: translate(50vw, -100vh);
+    }
+}
+
+.curtain-left-animation-close{
+    animation: curtain-left-close 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-close {
+    0% {
+        transform: translate(-50vw, -100vh);
+    }
+
+    100% {
+        transform: translate(0vw, 0vh);
+    }
+}
+
+.curtain-right-animation-close {
+    animation: curtain-right-close 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-close {
+    0% {
+        transform: translate(50vw, -100vh);
+    }
+
+    100% {
+        transform: translate(0vw, 0vh);
+    }
+}
+
+@keyframes fade-in {
+    to {
+        transform: translate(-50%, -50%) scale(.8);
+} }
+
+
+#enterSite:disabled {
+    --ticket-color-border: #3a3a3a;
+	--ticket-color-card: #606060;
+	--ticket-color-text: #111111; 
+}
+
 #enterSite {
     --ticket-color-border: #B89300;
 	--ticket-color-card: #ffca3a;
@@ -243,6 +303,3 @@ body {
 		right bottom,
 		left bottom;
 }
-
-/* #enterSite:hover{} */
-
