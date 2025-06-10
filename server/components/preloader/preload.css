@@ -197,18 +197,52 @@ body {
 }
 
 #enterSite {
+    --ticket-color-border: #B89300;
+	--ticket-color-card: #ffca3a;
+	--ticket-color-text: #524100; 
+    --hapje: .5rem;
+	--border: .3em;
+	--padding: 1rem 1.5rem;
+	
     position: absolute;
     top: 80vh;
     left:50vw;
     transform: translate(-50%, -50%);
+    
+    text-transform:uppercase;
     z-index:5;
-    background-color:#ff0000;
-    color:white;
-    border-radius:.25rem;
-    border:none;
-    padding: 1rem 2rem;
+    border: none;
+    font-size: 1rem;
+	font-weight:600;
+    color: var(--ticket-color-text);
+	padding:var(--padding);
+    transform-origin: bottom center;
+    transition: transform 0.3s ease;
+    background:transparent;
+	background-image:
+		linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+		linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+		radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0);
+	
+		background-size:
+		calc(100% - 2 * var(--hapje)) 100%,
+		100% calc(100% - 2 * var(--hapje)),
+		51% 51%,
+		51% 51%,
+		51% 51%,
+		51% 51%;
+		background-repeat:no-repeat;
+		background-position:
+		center top,
+		left center,
+		left top,
+		right top,
+		right bottom,
+		left bottom;
 }
 
-#enterSite:hover{
-    background-color:darkred;
-}
+/* #enterSite:hover{} */
+
