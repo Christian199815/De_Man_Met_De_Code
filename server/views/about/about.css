@@ -3,17 +3,36 @@
   margin: 0;
   box-sizing: border-box;
 } */
+.wrapper-about h3 {
+font-size: 1.4rem;
+}
+
+.wrapper-about h4 {
+padding-top: 2rem;
+font-size: 1.8rem;
+text-transform: uppercase;
+}
 
 .wrapper-about h1,
 .wrapper-about h2,
-.wrapper-about h3,
 .wrapper-about h4 {
   font-family: "franchise", impact, arial, sans-serif;
   text-transform: uppercase;
 }
 
-.wrapper-about p {
-  font-family: sans-serif;
+
+.about-nav {
+width:100%;
+height: 75px;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+}
+.employee-wrapper, .about, .about-nav {
+max-width:1200px}
+
+.wrapper-about p .wrapper-about h3 {
+  font-family: monospace;
 }
 
 .wrapper-about {
@@ -29,13 +48,19 @@
   );
   background-repeat: repeat-y;
   background-size: 100% 4rem;
+  min-height: 100vh;
+
 }
 
 aside {
   width: 5vw;
-  min-width: 50px;
-  max-width: 200px;
-  background-color: #FFFFFF;
+  min-width: 4rem;
+  max-width: 8rem;
+  background: radial-gradient(circle,
+  rgba(69, 69, 69, 1) 20%, 
+  rgba(232, 232, 232, 1) 20%);
+  background-repeat: repeat-y;
+  background-size: 100% 4rem;
 }
 
 aside h3 {
@@ -53,9 +78,11 @@ aside h3:first-of-type {
 
 
 .wrapper-about main {
+  display: flex;
+  flex-direction: column;
   width: 90vw;
   flex-grow: 1;
-  padding: 2rem 2rem 2rem 1rem;
+  padding: 5rem 4rem 5rem 2rem;
   align-items: center;
 }
 
@@ -124,10 +151,10 @@ aside h3:first-of-type {
   width: 30%;
 }
 
-.employee:nth-of-type(1) .cloud{
+.employee:nth-of-type(2) .cloud{
   position: absolute;
   top: 0;
-  right: -10%;
+  left: 50%;
   /* background-color: beige; */
   rotate: 5deg;
   width: 40%;
@@ -143,16 +170,16 @@ aside h3:first-of-type {
   height: 90%;
   width: auto;
   object-fit: contain;
-  
+  z-index: 3;
 }
 
 .employee:nth-of-type(2) .tape {
   position: absolute;
   top: 30%;
-  right: -5%;
+  right: -10%;
   rotate: -5deg;
   width: 30%;
-  aspect-ratio: 6 / 3;
+  z-index: 3;
 }
 
 .employee:nth-of-type(2) .scribble {
@@ -230,6 +257,17 @@ aside h3:first-of-type {
   padding-bottom: 1rem;
 }
 
+
+.text-maps {
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+}
+
+.ontop {
+  z-index:3;
+}
+
 /* 🟨 Tablets: 2 per row */
 @media (min-width: 600px) {
   .employee-wrapper > .employee {
@@ -249,10 +287,58 @@ aside h3:first-of-type {
   }
 }
 
+.a-ticket {
+	--ticket-color-border: black;
+	--ticket-color-card: white;
+	--ticket-color-text: white;
+	--hapje: .5rem;
+	--border: .3em;
+  --content: 'filler';
+	--padding: 1rem 1.5rem;
+	text-transform:uppercase;
+  border: none;
+  font-size: 1rem;
+	font-weight:600;
+  color: transparent;
+	padding:var(--padding);
+  background-color: transparent;
+	
+	content: var(--content);
+  color: black;
+	left: 0;
+  top: 0;
+	padding:var(--padding);
+  transform-origin: bottom center;
+  transition: transform 0.3s ease;
+	background-image:
+		linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+		linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
+		radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
+		radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0);
+	
+		background-size:
+		calc(100% - 2 * var(--hapje)) 100%,
+		100% calc(100% - 2 * var(--hapje)),
+		51% 51%,
+		51% 51%,
+		51% 51%,
+		51% 51%;
+		background-repeat:no-repeat;
+		background-position:
+		center top,
+		left center,
+		left top,
+		right top,
+		right bottom,
+		left bottom;
+	text-transform:uppercase;
+}
 
-/* .employee>.image>*>img, svg {
-position:absolute;
-top:50%;
-left:50%;
-transform: translate(50% 50%);
-} */
+.ticket-color {
+  --ticket-color-border: #b80006;
+  --ticket-color-card: #e81b21;
+  --ticket-color-text: #3d0002;
+}
+
