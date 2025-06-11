@@ -68,13 +68,13 @@ playButton.addEventListener("click", () => {
   if (playButton.disabled) return;
   
   // Start visual animations immediately
-  leftCurtain.classList.remove("curtain-left-animation-peak"); // Remove peek
-  rightCurtain.classList.remove("curtain-right-animation-peak"); // Remove peek
+  leftCurtain.classList.remove("curtain-left-animation-peak"); 
+  rightCurtain.classList.remove("curtain-right-animation-peak"); 
   leftCurtain.classList.add("curtain-left-animation-open");
   rightCurtain.classList.add("curtain-right-animation-open");
   peterPannekoek.classList.add("peter-animation");
   playButton.classList.add("none");
-  
+
   setTimeout(() => {
     audio.play().catch(error => {
       console.error('Failed to play audio:', error);
@@ -91,6 +91,12 @@ playButton.addEventListener("click", () => {
       clearInterval(mouthInterval);
       bottomHead.style.transform = "translateY(0)";
       peterPannekoek.classList.add("none");
+
+      // Hide preloader wrapper instead of curtains
+      const wrapperPreloader = document.querySelector(".wrapper-preloader");
+      if (wrapperPreloader) {
+        wrapperPreloader.style.display = "none";
+      }
     }, { once: true });
   }, 1300);
 });
@@ -114,13 +120,12 @@ projectsButton.addEventListener('click', function(e) {
     // Wait for animations to complete, then transition to next page
     setTimeout(() => {
         // Replace 'next-page.html' with your actual next page URL
-        window.location.href = 'http://localhost:3000/projects';
+        window.location.href = '/projects';
         // Or if you're using a single-page app:
         // showNextPage();
     }, 2000); // 2000ms = 2s animation duration
 });
 
-// Alternative: Listen for animation end events (more precise)
 function handleAnimationEnd() {
     let animationsCompleted = 0;
     
