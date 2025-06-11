@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
   <nav>
-    <a href="/"><img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH"></a>
+    <div class="logo-element"><a href="/"><img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH"></a></div>
       {% render '../../components/category-filter/category-filter.liquid', categories: categories %}
   <div>
     <button hidden><img src="" alt="search icon"></button>
@@ -36,11 +36,9 @@
     </div>
 
     {% comment %} Full Width Component 5: Crocodile Component {% endcomment %}
-    <div class="full-width-component crocodile-wrapper" data-type="full-width" data-id="crocodile-1">
-      <div class="full-width-content">
-        {% render "../../components/full-width-crocodile/crocodile.liquid" %}
-      </div>
-    </div>
+    <div class="crocodile-direct-wrapper" data-type="full-width" style="grid-column: 1 / -1;">
+  {% render "../../components/full-width-crocodile/crocodile.liquid" %}
+</div>
   </div>
 </div>
 

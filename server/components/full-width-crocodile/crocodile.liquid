@@ -1,2 +1,9 @@
+{% comment %} <div class="crocodile-container"></div>
+<audio id="biteSound" src="/public/audio/bitesound.wav"></audio> {% endcomment %}
+
 <div class="crocodile-container"></div>
-<audio id="biteSound" src="/public/audio/John Silke - Men Emotes - Bite Mastication .wav"></audio>
+<audio id="biteSound" preload="auto">
+  <source src="/public/audio/bitesound.wav" type="audio/wav">
+  <!-- Fallback for browsers that don't support the audio format -->
+  Your browser does not support the audio element.
+</audio>
