@@ -82,7 +82,7 @@ playButton.addEventListener("click", () => {
 
     // Start mouth movement
     mouthInterval = setInterval(() => {
-      const randomOffset = Math.random() * 100;
+      const randomOffset = Math.random() * 35;
       bottomHead.style.transform = `translateY(${randomOffset}px)`;
     }, 100);
 

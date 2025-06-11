@@ -204,7 +204,7 @@ body {
     }
 
     100% {
-        transform: translate(-50vw, -100vh);
+        transform: translate(-51vw, -100vh);
     }
 }
 
@@ -217,7 +217,7 @@ body {
     }
 
     100% {
-        transform: translate(50vw, -100vh);
+        transform: translate(51vw, -100vh);
     }
 }
 
