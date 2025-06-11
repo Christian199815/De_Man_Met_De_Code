@@ -4,13 +4,14 @@
   box-sizing: border-box;
 } */
 .wrapper-about h3 {
-font-size: 1.4rem;
+  font-size: 1.4rem;
+  color: black;
 }
 
 .wrapper-about h4 {
-padding-top: 2rem;
-font-size: 1.8rem;
-text-transform: uppercase;
+  padding-top: 2rem;
+  font-size: 1.8rem;
+  text-transform: uppercase;
 }
 
 .wrapper-about h1,
@@ -18,18 +19,21 @@ text-transform: uppercase;
 .wrapper-about h4 {
   font-family: "franchise", impact, arial, sans-serif;
   text-transform: uppercase;
+  color: black;
 }
-
 
 .about-nav {
-width:100%;
-height: 75px;
-display: flex;
-align-items: center;
-justify-content: flex-start;
+  width: 100%;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
-.employee-wrapper, .about, .about-nav {
-max-width:1200px}
+.employee-wrapper,
+.about,
+.about-nav {
+  max-width: 1200px;
+}
 
 .wrapper-about p .wrapper-about h3 {
   font-family: monospace;
@@ -49,16 +53,17 @@ max-width:1200px}
   background-repeat: repeat-y;
   background-size: 100% 4rem;
   min-height: 100vh;
-
 }
 
 aside {
   width: 5vw;
   min-width: 4rem;
   max-width: 8rem;
-  background: radial-gradient(circle,
-  rgba(69, 69, 69, 1) 20%, 
-  rgba(232, 232, 232, 1) 20%);
+  background: radial-gradient(
+    circle,
+    rgba(69, 69, 69, 1) 20%,
+    rgba(232, 232, 232, 1) 20%
+  );
   background-repeat: repeat-y;
   background-size: 100% 4rem;
 }
@@ -75,7 +80,6 @@ aside h3:first-of-type {
   padding-top: 2rem;
   text-align: center;
 }
-
 
 .wrapper-about main {
   display: flex;
@@ -112,13 +116,13 @@ aside h3:first-of-type {
   padding-top: 1rem;
 }
 
-.about-h1{
+.about-h1 {
   font-size: 3rem;
   text-align: left;
   margin-bottom: 0;
 }
 
-.about-h2{
+.about-h2 {
   font-size: 2rem;
   text-align: left;
   margin-bottom: 0;
@@ -126,8 +130,9 @@ aside h3:first-of-type {
 
 .about-p {
   font-size: 1.2rem;
-  padding-top: .3rem;
+  padding-top: 0.3rem;
   line-height: 1.5;
+  color: black;
 }
 
 .employee:nth-of-type(1) .image .green-magnet {
@@ -140,7 +145,6 @@ aside h3:first-of-type {
   height: 90%;
   width: auto;
   object-fit: contain;
-  
 }
 
 .employee:nth-of-type(1) .image .hammer {
@@ -151,7 +155,7 @@ aside h3:first-of-type {
   width: 30%;
 }
 
-.employee:nth-of-type(2) .cloud{
+.employee:nth-of-type(2) .cloud {
   position: absolute;
   top: 0;
   left: 50%;
@@ -257,15 +261,14 @@ aside h3:first-of-type {
   padding-bottom: 1rem;
 }
 
-
 .text-maps {
   display: flex;
   flex-direction: column;
-  gap:1rem;
+  gap: 1rem;
 }
 
 .ontop {
-  z-index:3;
+  z-index: 3;
 }
 
 /* 🟨 Tablets: 2 per row */
@@ -288,52 +291,70 @@ aside h3:first-of-type {
 }
 
 .a-ticket {
-	--ticket-color-border: black;
-	--ticket-color-card: white;
-	--ticket-color-text: white;
-	--hapje: .5rem;
-	--border: .3em;
-  --content: 'filler';
-	--padding: 1rem 1.5rem;
-	text-transform:uppercase;
+  --ticket-color-border: black;
+  --ticket-color-card: white;
+  --ticket-color-text: white;
+  --hapje: 0.5rem;
+  --border: 0.3em;
+  --content: "filler";
+  --padding: 1rem 1.5rem;
+  text-transform: uppercase;
   border: none;
   font-size: 1rem;
-	font-weight:600;
+  font-weight: 600;
   color: transparent;
-	padding:var(--padding);
+  padding: var(--padding);
   background-color: transparent;
-	
-	content: var(--content);
+
+  content: var(--content);
   color: black;
-	left: 0;
+  left: 0;
   top: 0;
-	padding:var(--padding);
+  padding: var(--padding);
   transform-origin: bottom center;
   transition: transform 0.3s ease;
-	background-image:
-		linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-		linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-		radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
-		radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
-		radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0),
-		radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border) ), var(--ticket-color-card) 0);
-	
-		background-size:
-		calc(100% - 2 * var(--hapje)) 100%,
-		100% calc(100% - 2 * var(--hapje)),
-		51% 51%,
-		51% 51%,
-		51% 51%,
-		51% 51%;
-		background-repeat:no-repeat;
-		background-position:
-		center top,
-		left center,
-		left top,
-		right top,
-		right bottom,
-		left bottom;
-	text-transform:uppercase;
+  background-image: linear-gradient(
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    linear-gradient(
+      90deg,
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    radial-gradient(
+      circle at 0 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    );
+
+  background-size: calc(100% - 2 * var(--hapje)) 100%,
+    100% calc(100% - 2 * var(--hapje)), 51% 51%, 51% 51%, 51% 51%, 51% 51%;
+  background-repeat: no-repeat;
+  background-position: center top, left center, left top, right top,
+    right bottom, left bottom;
+  text-transform: uppercase;
 }
 
 .ticket-color {
@@ -341,4 +362,3 @@ aside h3:first-of-type {
   --ticket-color-card: #e81b21;
   --ticket-color-text: #3d0002;
 }
-
