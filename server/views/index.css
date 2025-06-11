@@ -1,21 +1,3 @@
-html,
-body,
-*,
-*::before,
-*::after {
-  cursor: url("/images/cursor/hamer-Idle.png") 32 40, auto !important;
-}
-
-button:hover,
-a:hover,
-.lights:hover {
-  cursor: url("/images/cursor/hover-hover.png") 32 40, auto !important;
-}
-
-*:active {
-  cursor: url("/images/cursor/hamer-active.png") 35 55, auto !important;
-}
-
 @property --gradient-position {
   syntax: "<percentage>";
   inherits: false;
@@ -353,7 +335,7 @@ body {
   background-position: var(--gradient-position);
   animation: gradient-animation 5s ease infinite;
 
-  mask: url("/public/images/images-responsiveness/hanging-logo.png");
+  mask: url("/public/images/images-responsiveness/hanging-logo.webp");
   mask-position: center;
   mask-mode: alpha;
   mask-size: contain;
