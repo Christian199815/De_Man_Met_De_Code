@@ -1,12 +1,20 @@
-body, a{
-    cursor: url("/images/cursor/hammer-cursor-normal.svg") 48 48, auto;
+/* 
+Ik haat deze kaka shit
+html, body, *, *::before, *::after {
+  cursor: url("/images/cursor/hamer-Idle.png") 32 40, auto !important;
 }
 
-body:active, a:active{
-cursor: url("/images/cursor/hammer-cursor-active.svg") 48 48, auto;
+button:hover, a:hover, .lights:hover {
+  cursor: url("/images/cursor/hover-hover.png") 32 40, auto !important;
 }
 
+*:active {
+  cursor: url("/images/cursor/hamer-active.png") 35 55, auto !important;
+} */
 
+/* * {
+  pointer-events: all !important;
+} */
 /* PROPS - FIXED VERSION WITH ANCHOR AROUND PROP-CONTAINER */
 .frame a {
     position: absolute;
