@@ -1,32 +1,36 @@
-/* global styles */
+/* Base route */
 @import "reset.css";
 @import "typography.css";
 @import "properties.css";
-
-/*.layout and view styling */
 @import "../server/layouts/base.css";
+@import '../server/components/curtains/curtains.css';
+@import '../server/components/hammer-cursor/hammer-cursor.css';
+
+
+/* Home route */
 @import "../server/views/index.css";
+@import "../server/components/theatre-slider/theatre-slider.css";
+@import '../server/components/preloader/preload.css';
+@import '../server/components/stage-lights/stage-light.css';
+@import "../server/components/cannon/cannon.css";
+@import "../server/components/moon/moon.css";
+
+/* Projects Route */
 @import "../server/views/projects/projects.css";
-@import "../server/views/about/about.css";
-
-/* component styling */
-
 @import "../server/components/category-filter/category-filter.css";
-/* @import "../server/components/project-sorting/project-sorting.css"; */
 @import "../server/components/search-bar/search-bar.css";
-/* @import "../server/components/full-width-card/full-width-card.css"; */
 @import "../server/components/project-card/project-card.css";
 @import "../server/components/project-item/project-item.css";
 @import "../server/components/text-slider/text-slider.css";
 @import "../server/components/full-width-crocodile/crocodile.css";
 @import "../server/components/break-glass/break-glass.css";
 @import "../server/components/submarine/submarine.css";
-@import "../server/components/theatre-slider/theatre-slider.css";
 @import "../server/components/pop-over/pop-over.css";
-@import '../server/components/stage-lights/stage-light.css';
-@import "../server/components/cannon/cannon.css";
-@import "../server/components/moon/moon.css";
-@import '../server/components/preloader/preload.css';
-@import '../server/components/hammer-cursor/hammer-cursor.css';
 
-@import '../server/components/curtains/curtains.css';
+
+/* About Route */
+@import "../server/views/about/about.css";
+
+
+
+

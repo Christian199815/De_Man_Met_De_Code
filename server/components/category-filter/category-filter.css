@@ -48,7 +48,7 @@
   --ticket-color-border: #3490dc;
   --ticket-color-card: #e6f3ff;
   --ticket-color-text: #1a5490;
-  --hapje: max(.4em, 1vmin);
+  --hapje: 0.5rem;
   --border: .4em;
   --content: attr(data-category);
   --padding: clamp(0.6rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);

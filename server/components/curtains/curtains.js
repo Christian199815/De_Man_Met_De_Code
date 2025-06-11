@@ -1,4 +1,4 @@
-// Curtains Transition Component
+// Curtains Transition Component - Original Working Version
 class CurtainsTransition {
     constructor() {
         this.curtainsContainer = document.getElementById('curtainsTransition');
@@ -45,7 +45,7 @@ class CurtainsTransition {
     navigateWithTransition(href) {
         if (this.isAnimating) return;
         
-        console.log('Starting navigation transition to:', href); // Debug log
+        console.log('Starting navigation transition to:', href);
         
         // Show curtains and close them, then navigate
         this.curtainsContainer.classList.add('curtains-active');
@@ -56,7 +56,7 @@ class CurtainsTransition {
                 // Set flag for next page behavior
                 if (href === '/' || href.endsWith('/')) {
                     // Going to home page - let preloader handle opening
-                    sessionStorage.setItem('fromNavigation', 'true');
+                    sessionStorage.setItem('fromNavigationToHome', 'true');
                 } else {
                     // Going to other pages - curtains should open
                     sessionStorage.setItem('openCurtains', 'true');
@@ -69,7 +69,7 @@ class CurtainsTransition {
     handlePageLoad() {
         // Check if we're coming from a navigation
         const shouldOpenCurtains = sessionStorage.getItem('openCurtains');
-        const fromNavigation = sessionStorage.getItem('fromNavigation');
+        const fromNavigationToHome = sessionStorage.getItem('fromNavigationToHome');
         
         if (shouldOpenCurtains === 'true') {
             sessionStorage.removeItem('openCurtains'); // Clean up
@@ -85,9 +85,9 @@ class CurtainsTransition {
                     }, 500);
                 });
             }, 100);
-        } else if (fromNavigation === 'true') {
+        } else if (fromNavigationToHome === 'true') {
             // Coming to home page - don't open curtains, let preloader handle it
-            sessionStorage.removeItem('fromNavigation');
+            sessionStorage.removeItem('fromNavigationToHome');
             // Curtains stay hidden, preloader will handle the opening
         }
         // If no flags, curtains stay hidden (display: none)

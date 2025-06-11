@@ -6,6 +6,7 @@
 .container {
   min-height: 100dvh;
 
+
   nav {
     display: flex;
     flex-direction: row;
@@ -21,8 +22,8 @@
     > .logo-element {
       flex: 0 0 auto;
       transition: all 0.3s ease;
-      
-      a img{
+
+      a img {
         height: 6rem;
         width: auto;
       }
@@ -139,7 +140,9 @@
 /* Optional: Add smooth transitions when elements are hidden by JS */
 .logo-element,
 .category-filter {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 /* Optional: Add a class for when search is expanded (controlled by JS) */
@@ -149,7 +152,6 @@
   transform: scale(0.8);
 }
 
-
 h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
@@ -157,115 +159,21 @@ h1 {
   color: #222;
 }
 
+
 /* Main Projects Grid */
 .projects-grid {
+  --gap-size: .6em;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-flow: row dense;
-  width: 100%;
-  min-height: 100vh;
+  width: calc(100% - (var(--gap-size) * 2));
+  /* min-height: 100vh; */
   height: auto;
-  gap: 0.6em;
+  gap: var(--gap-size);
   background-color: black;
   padding-bottom: 2rem;
   transition: min-height 0.3s ease;
   box-sizing: border-box;
-}
-
-/* ====================================
-   GRID CONTROLS
-   ==================================== */
-
-.grid-controls {
-  background: #222;
-  color: white;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  font-family: Raleway, sans-serif;
-}
-
-.grid-controls-inner {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.control-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.control-group label {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  color: #ccc;
-}
-
-.show-count-select,
-.mixing-select {
-  background: #333;
-  color: white;
-  border: 2px solid #555;
-  padding: 0.5rem 1rem;
-  border-radius: 2px;
-  font-family: Raleway, sans-serif;
-  font-size: 0.9rem;
-  transition: border-color 0.3s ease;
-}
-
-.show-count-select:hover,
-.mixing-select:hover {
-  border-color: #777;
-}
-
-.show-count-select:focus,
-.mixing-select:focus {
-  outline: none;
-  border-color: white;
-}
-
-.control-button {
-  background: #444;
-  color: white;
-  border: 2px solid #666;
-  padding: 0.5rem 1rem;
-  border-radius: 2px;
-  font-family: Raleway, sans-serif;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-}
-
-.control-button:hover {
-  background: #555;
-  border-color: #888;
-  transform: translateY(-1px);
-}
-
-.control-button:active {
-  transform: translateY(0);
-}
-
-.items-info {
-  margin-left: auto;
-  font-size: 0.9rem;
-  color: #ccc;
-}
-
-.current-count,
-.total-count,
-.projects-count,
-.squares-count,
-.custom-count {
-  font-weight: 600;
-  color: white;
 }
 
 /* ====================================
@@ -304,11 +212,21 @@ h1 {
 }
 
 @keyframes shake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-5px, 0); }
-  50% { transform: translate(5px, 0); }
-  75% { transform: translate(-5px, 0); }
-  100% { transform: translate(0, 0); }
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-5px, 0);
+  }
+  50% {
+    transform: translate(5px, 0);
+  }
+  75% {
+    transform: translate(-5px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .break-glass-card .broken-glass {
@@ -317,7 +235,8 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("https://gallery.yopriceville.com/downloadfullsize/send/18517") center center no-repeat;
+  background: url("https://gallery.yopriceville.com/downloadfullsize/send/18517")
+    center center no-repeat;
   background-size: cover;
   pointer-events: none;
   display: none;
@@ -332,7 +251,7 @@ h1 {
    FULL WIDTH COMPONENTS
    ==================================== */
 
- .full-width-component {
+.full-width-component {
   grid-column: 1 / -1;
   grid-row: span 1;
   min-height: 200px;
@@ -385,12 +304,24 @@ h1 {
   }
 }
 
-.project-card:nth-child(1) { animation-delay: 0.1s; }
-.project-card:nth-child(2) { animation-delay: 0.2s; }
-.project-card:nth-child(3) { animation-delay: 0.3s; }
-.project-card:nth-child(4) { animation-delay: 0.4s; }
-.project-card:nth-child(5) { animation-delay: 0.5s; }
-.project-card:nth-child(n+6) { animation-delay: 0.6s; }
+.project-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.project-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.project-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.project-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.project-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.project-card:nth-child(n + 6) {
+  animation-delay: 0.6s;
+}
 
 .full-width-component {
   animation: fadeInUp 0.8s ease forwards;
@@ -407,7 +338,7 @@ h1 {
   .hamburger-menu {
     display: none;
   }
-  
+
   .mobile-overlay {
     display: none;
   }
@@ -418,11 +349,11 @@ h1 {
   .hamburger-menu {
     display: none;
   }
-  
+
   .mobile-overlay {
     display: none;
   }
-  
+
   .projects-grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -431,11 +362,9 @@ h1 {
 @media (max-width: 1200px) {
   .projects-grid {
     grid-template-columns: repeat(4, 1fr);
+    --gap-size: 0.6em;
   }
-  
-  .full-width-content {
-  }
-  
+
   .full-width-content h2 {
     font-size: 2rem;
   }
@@ -454,7 +383,7 @@ h1 {
   .container {
     /* padding: 1rem; */
   }
-  
+
   .container nav {
     flex-direction: row;
     justify-content: space-between;
@@ -462,20 +391,20 @@ h1 {
     height: 4rem;
     gap: 0;
   }
-  
+
   .container nav > .logo-element {
     flex-grow: 0;
   }
-  
+
   .container nav > .logo-element a img {
     height: 2.5rem;
     width: auto;
   }
-  
+
   .container nav > .nav-content {
     display: none; /* Hide normal nav content on mobile */
   }
-  
+
   .hamburger-menu {
     display: flex;
   }
@@ -486,17 +415,17 @@ h1 {
 
   .projects-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.4em;
+    --gap-size: 0.4em;
   }
-  
+
   .span-3 {
-    grid-column: span 2 !important;
+    /* grid-column: span 2 !important; */
   }
 
   .break-glass-card {
     min-height: 150px;
   }
-  
+
   .break-glass-card .sign {
     font-size: 1.5rem;
     padding: 15px 30px;
@@ -506,35 +435,15 @@ h1 {
     margin: 0.5rem 0;
     min-height: 180px;
   }
-  
+
   .full-width-content {
     min-height: 180px;
     padding: 2rem 1rem;
   }
-  
+
   .full-width-content h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-  }
-  
-  .newsletter-form {
-    flex-direction: column;
-    max-width: 100%;
-  }
-  
-  .newsletter-input {
-    min-width: 100%;
-  }
-  
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  .grid-controls-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
   }
 
   .items-info {
@@ -546,8 +455,10 @@ h1 {
 @media (max-width: 480px) {
   .projects-grid {
     grid-template-columns: 1fr;
+    --gap-size: 0.4em;
+
   }
-  
+
   .span-2,
   .span-3 {
     grid-column: span 1 !important;
@@ -556,7 +467,7 @@ h1 {
   .break-glass-card {
     min-height: 120px;
   }
-  
+
   .break-glass-card .sign {
     font-size: 1.2rem;
     padding: 10px 20px;
@@ -566,120 +477,117 @@ h1 {
     min-height: 160px;
     margin: 0.25rem 0;
   }
-  
+
   .full-width-content {
     min-height: 160px;
     padding: 1.5rem 0.75rem;
   }
-  
+
   .full-width-content h2 {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
   }
-
-  .grid-controls {
-    padding: 0.75rem;
-  }
-
-  .control-group {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .show-count-select,
-  .mixing-select,
-  .control-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
 }
 
 .full-width-component.crocodile-wrapper {
-            position: static !important;
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            pointer-events: none !important;
-            overflow: visible !important;
-            display: block !important;
-            /* Remove any grid positioning that might interfere */
-            grid-column: 1 / -1 !important;
-            min-height: 300px; /* Set a minimum height for the swamp */
-        }
+  position: static !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  overflow: visible !important;
+  display: block !important;
+  /* Remove any grid positioning that might interfere */
+  grid-column: 1 / -1 !important;
+  min-height: 300px; /* Set a minimum height for the swamp */
+}
 
-        .full-width-component.crocodile-wrapper .full-width-content {
-            display: block !important;
-            position: static !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            justify-content: unset !important;
-            align-items: unset !important;
-            text-align: unset !important;
-            pointer-events: none !important;
-            min-height: auto !important;
-            height: auto !important;
-            width: 100% !important;
-        }
+.full-width-component.crocodile-wrapper .full-width-content {
+  display: block !important;
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  justify-content: unset !important;
+  align-items: unset !important;
+  text-align: unset !important;
+  pointer-events: none !important;
+  min-height: auto !important;
+  height: auto !important;
+  width: 100% !important;
+}
 
-        /* 2. Crocodile container fixes */
-        .crocodile-wrapper .crocodile-container {
-            pointer-events: auto !important;
-            position: relative !important;
-            width: 100% !important;
-            height: 300px !important; /* Ensure adequate height */
-            overflow: hidden !important;
-            border-top: 16px solid black;
-            border-bottom: 16px solid black;
-            background: linear-gradient(to top, #111 0%, #1b2b1b 100%);
-            background-color: #0d120d;
-        }
+/* 2. Crocodile container fixes */
+.crocodile-wrapper .crocodile-container {
+  pointer-events: auto !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 300px !important; /* Ensure adequate height */
+  overflow: hidden !important;
+  border-top: 16px solid black;
+  border-bottom: 16px solid black;
+  background: linear-gradient(to top, #111 0%, #1b2b1b 100%);
+  background-color: #0d120d;
+}
 
-        /* 3. Crocodile wrapper and animation fixes */
-        .crocodile-wrapper .croc-wrapper {
-            position: absolute !important;
-            pointer-events: auto !important;
-            z-index: 10 !important;
-        }
+/* 3. Crocodile wrapper and animation fixes */
+.crocodile-wrapper .croc-wrapper {
+  position: absolute !important;
+  pointer-events: auto !important;
+  z-index: 10 !important;
+}
 
-        /* 4. Individual crocodile fixes */
-        .crocodile-wrapper .crocodile {
-            pointer-events: auto !important;
-            cursor: pointer !important;
-            z-index: 15 !important;
-            user-select: none !important;
-        }
+/* 4. Individual crocodile fixes */
+.crocodile-wrapper .crocodile {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 15 !important;
+  user-select: none !important;
+}
 
-        /* 5. Audio element positioning */
-        .crocodile-wrapper #biteSound {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
+/* 5. Audio element positioning */
+.crocodile-wrapper #biteSound {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
 
-        /* 6. Hide cursor when needed */
-        .hide-cursor,
-        .hide-cursor * {
-            cursor: none !important;
-        }
+/* 6. Hide cursor when needed */
+.hide-cursor,
+.hide-cursor * {
+  cursor: none !important;
+}
 
-        /* 7. Animation keyframes (ensure they're not overridden) */
-        @keyframes walk {
-            0% { left: -150px; }
-            100% { left: 100vw; }
-        }
+/* 7. Animation keyframes (ensure they're not overridden) */
+@keyframes walk {
+  0% {
+    left: -150px;
+  }
+  100% {
+    left: 100vw;
+  }
+}
 
-        @keyframes waddle {
-            0%, 100% { transform: translateY(0) rotate(2deg); }
-            25% { transform: translateY(-2px) rotate(-2deg); }
-            50% { transform: translateY(0) rotate(2deg); }
-            75% { transform: translateY(2px) rotate(-2deg); }
-        }
+@keyframes waddle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(2deg);
+  }
+  25% {
+    transform: translateY(-2px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(0) rotate(2deg);
+  }
+  75% {
+    transform: translateY(2px) rotate(-2deg);
+  }
+}
 
-        /* 8. Paused state fixes */
-        .crocodile-wrapper .croc-wrapper.paused {
-            animation-play-state: paused !important;
-        }
+/* 8. Paused state fixes */
+.crocodile-wrapper .croc-wrapper.paused {
+  animation-play-state: paused !important;
+}
 
-        .crocodile-wrapper .crocodile.paused {
-            animation-play-state: paused !important;
-        }
+.crocodile-wrapper .crocodile.paused {
+  animation-play-state: paused !important;
+}
