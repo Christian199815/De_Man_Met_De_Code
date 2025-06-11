@@ -11,20 +11,20 @@
     flex-direction: row;
     background-color: #212121;
     align-items: center;
-    justify-content: flex-start;
-    /* gap: 2rem; */
-    padding: 0 .5rem ;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0 2rem;
     height: 8rem;
     position: relative;
     transition: all 0.3s ease;
 
     > .logo-element {
-      flex-grow: 1;
+      flex: 0 0 auto;
       transition: all 0.3s ease;
       
       a img{
         height: 6rem;
-        /* aspect-ratio: 1; */
+        width: auto;
       }
     }
 
@@ -33,7 +33,11 @@
       flex-direction: row;
       transition: all 0.3s ease;
       align-items: center;
-      gap: 1rem;
+      gap: 2rem;
+      flex: 1 1 auto;
+      justify-content: flex-end;
+      max-width: none;
+      overflow: visible;
     }
   }
 }
@@ -434,6 +438,14 @@ h1 {
   
   .full-width-content h2 {
     font-size: 2rem;
+  }
+}
+
+/* Large tablet adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .container nav {
+    padding: 0 1.5rem;
+    gap: 1.5rem;
   }
 }
 
