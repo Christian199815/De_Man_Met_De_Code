@@ -66,6 +66,8 @@
             77% 96%,
             72% 99%,
             50% 100%);
+    /* Default closed state */
+    transform: translate(0vw, 0vh);
 }
 
 .curtain-right {
@@ -92,6 +94,8 @@
             23% 96%,
             28% 99%,
             50% 100%);
+    /* Default closed state */
+    transform: translate(0vw, 0vh);
 }
 
 .curtain-light {
@@ -103,13 +107,13 @@
     pointer-events: none;
 }
 
-/* Closed state - curtains cover the screen */
-.curtains-transition.curtains-closed .curtain-left {
-    transform: translate(0vw, 0vh);
+/* IMPORTANT: Closed state - curtains cover the screen (highest specificity) */
+.curtains-transition.curtains-active.curtains-closed .curtain-left {
+    transform: translate(0vw, 0vh) !important;
 }
 
-.curtains-transition.curtains-closed .curtain-right {
-    transform: translate(0vw, 0vh);
+.curtains-transition.curtains-active.curtains-closed .curtain-right {
+    transform: translate(0vw, 0vh) !important;
 }
 
 /* Open state - curtains are off screen */
