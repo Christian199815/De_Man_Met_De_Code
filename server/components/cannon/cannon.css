@@ -135,3 +135,17 @@
         transform: translate(0px, 0px);
     }
 }
+
+@media (max-width: 1513px) {
+
+    .frame .cannon-container .cannon {
+        width: 425px;
+    }
+
+    .frame .cannon-container .cannon-shadow {
+        width: 520px;
+        bottom: -12px;
+        right: 16px;
+    }
+
+}

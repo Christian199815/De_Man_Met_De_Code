@@ -92,3 +92,19 @@
     right: 100px;
     height: 45%;
 }
+
+
+
+
+@media (max-width: 1513px) {
+
+    /* -=-=-=-=-=-=-=-=-=- MOON -=-=-=-=-=-=-=-=-=- */
+    .frame .moon-container {
+        height: 550px;
+    }
+
+    .frame .moon-container .moon {
+        width: 300px;
+    }
+
+}
