@@ -20,6 +20,7 @@ import "../server/components/theatre-slider/theatre-slider.js";
 import '../server/components/stage-lights/stage-light.js';
 import "../server/project-pop.js";
 import "../server/components/cannon/cannon.js";
+import "../server/components/moon/moon.js";
 
 
 const _DebugBool = true;

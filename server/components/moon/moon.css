@@ -1,0 +1,94 @@
+/* -=-=-=-=-=-=-=-=-=- MOON -=-=-=-=-=-=-=-=-=- */
+
+.frame .moon-container {
+    --swing-intensity: 5deg;
+
+    top: 0;
+    right: 30%;
+    z-index: 5;
+    height: 650px;
+    width: 350px;
+
+
+    transform-origin: top;
+    animation: swing 7.5s infinite ease-in-out;
+}
+
+@keyframes swing {
+    0% {
+        rotate: var(--swing-intensity);
+    }
+
+    50% {
+        rotate: calc(var(--swing-intensity) * -1);
+    }
+
+    100% {
+        rotate: var(--swing-intensity);
+    }
+}
+
+@keyframes anti-swing {
+    0% {
+        --angle: calc(180deg - var(--swing-intensity));
+    }
+
+    50% {
+        --angle: calc(180deg + var(--swing-intensity));
+    }
+
+    100% {
+        --angle: calc(180deg - var(--swing-intensity));
+    }
+}
+
+.frame .moon-container .moon {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.frame .moon-container .moon img {
+    width: 100%;
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 180deg;
+    inherits: true;
+}
+
+.frame .moon-container .moon .test-gradient {
+    top: -1px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-image: linear-gradient(var(--angle, 180deg), black 30%, #0000 40%);
+    opacity: .8;
+
+    animation: anti-swing 7.5s infinite ease-in-out;
+
+    mask: url('/public/images/images-responsiveness/moon.png');
+    mask-position: center;
+    mask-mode: alpha;
+    mask-size: contain;
+
+}
+
+.frame .moon-container .cable {
+    position: absolute;
+    height: 40%;
+    width: 2px;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(176, 176, 176, 1) 100%);
+}
+
+.frame .moon-container .cable:nth-of-type(1) {
+    left: 100px;
+}
+
+.frame .moon-container .cable:nth-of-type(2) {
+    right: 100px;
+    height: 45%;
+}

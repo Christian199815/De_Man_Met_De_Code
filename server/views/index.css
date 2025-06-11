@@ -61,6 +61,7 @@ a:active {
     background-color: rgba(255, 255, 255, 0.75);
     border-radius: 50%;
     transition: opacity .33s ease;
+    pointer-events: none;
 }
 
 .pulse::before {
@@ -412,61 +413,6 @@ body {}
     left: 50%;
     translate: -50% -50%;
 }
-
-
-/* -=-=-=-=-=-=-=-=-=- MOON -=-=-=-=-=-=-=-=-=- */
-
-.frame .moon-container {
-    top: 0;
-    right: 30%;
-    z-index: 5;
-    height: 650px;
-    width: 350px;
-
-
-    transform-origin: top;
-    animation: swing 7.5s infinite ease-in-out;
-}
-
-@keyframes swing {
-    0% {
-        rotate: 3deg;
-    }
-
-    50% {
-        rotate: -3deg;
-    }
-
-    100% {
-        rotate: 3deg;
-    }
-}
-
-.frame .moon-container .moon {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-}
-
-.frame .moon-container .cable {
-    position: absolute;
-    height: 40%;
-    width: 2px;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 50%, rgba(176, 176, 176, 1) 100%);
-}
-
-.frame .moon-container .cable:nth-of-type(1) {
-    left: 100px;
-}
-
-.frame .moon-container .cable:nth-of-type(2) {
-    right: 100px;
-    height: 45%;
-}
-
-
 
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */

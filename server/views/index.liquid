@@ -18,7 +18,7 @@
 {% block content %}
 
   <div class="frame">
-    <a href="#" class="logo-container layer-1">
+    <a href="/about" class="logo-container layer-1">
       <div class="hanging-sign">
         <div class="cable"></div>
         <div class="cable"></div>
@@ -45,7 +45,7 @@
 
     <div class="repeating-floor layer-2"></div>
 
-    <a href="#" class="prop-container layer-1">
+    <a href="/projects" class="prop-container layer-1">
       <img class="prop-shadows" src="/public/images/images-responsiveness/prop-shadows.png">
       <img class="props" src="/public/images/images-responsiveness/props.png">
       <h2 href="#" class="nav-text">Bekijk<span class="break"></span>Projecten</h2>
@@ -54,11 +54,7 @@
 
     {% render '../components/cannon/cannon.liquid' %}
 
-    <div class="moon-container layer-1">
-      <div class="cable"></div>
-      <div class="cable"></div>
-      <img class="moon" src="/public/images/images-responsiveness/moon.png">
-    </div>
+    {% render '../components/moon/moon.liquid' %}
 
     <div class="repeating-roof layer-2"></div>
 
