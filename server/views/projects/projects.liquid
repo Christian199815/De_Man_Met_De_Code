@@ -1,17 +1,60 @@
-<!-- Liquid Template with Custom Full Width Components -->
+<!-- Liquid Template with Responsive Navigation -->
 
 {% layout "server/layouts/base.liquid" %}
 
 {% block content %}
 <div class="container">
   <nav>
-    <div class="logo-element"><a href="/"><img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH"></a></div>
+    <div class="logo-element">
+      <a href="/">
+        <img src="/public/images/logo-man-navbar.svg" alt="logo of DMMDH">
+      </a>
+    </div>
+    
+    <div class="nav-content">
       {% render '../../components/category-filter/category-filter.liquid', categories: categories %}
-  <div>
-    <button hidden><img src="" alt="search icon"></button>
-    {% render '../../components/search-bar/search-bar.liquid' %}
-  </div>
+      <div>
+        {% render '../../components/search-bar/search-bar.liquid' %}
+      </div>
+    </div>
+    
+    <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+
+  <!-- Mobile Overlay Menu -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <div class="category-filter">
+      <h2>Categories</h2>
+      <div class="filter-buttons">
+        <div class="radio-group">
+          <input type="radio" id="mobile-filter-all" name="mobile-category-filter" value="all" class="filter-radio" checked>
+          <label for="mobile-filter-all" class="filter-btn" data-category="all">ALL</label>
+        </div>
+        {% for category in categories %}
+        <div class="radio-group">
+          <input type="radio" id="mobile-filter-{{ category | downcase }}" name="mobile-category-filter" value="{{ category }}" class="filter-radio">
+          <label for="mobile-filter-{{ category | downcase }}" class="filter-btn" data-category="{{ category }}">{{ category }}</label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="search-component">
+      <form class="search-form" role="search">
+        <div class="search-container">
+          <div class="search-icon" aria-hidden="true">🔍</div>
+          <input type="text" class="search-input" placeholder="ZOEKEN" aria-label="Search projects">
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Body overlay for mobile menu -->
+  <div class="body-overlay" id="bodyOverlay"></div>
 
   {% render '../../components/text-slider/text-slider.liquid' %}
 
@@ -27,7 +70,6 @@
     {% render '../../components/project-item/project-item.liquid', item: square %}
     {% endfor %}
 
-
     {% comment %} Full Width Component 4: Theatre Slider {% endcomment %}
     <div class="full-width-component theatre-slider-wrapper" data-type="full-width" data-id="theatre-1">
       <div class="full-width-content">
@@ -37,11 +79,13 @@
 
     {% comment %} Full Width Component 5: Crocodile Component {% endcomment %}
     <div class="crocodile-direct-wrapper" data-type="full-width" style="grid-column: 1 / -1;">
-  {% render "../../components/full-width-crocodile/crocodile.liquid" %}
-</div>
+      {% render "../../components/full-width-crocodile/crocodile.liquid" %}
+    </div>
   </div>
 </div>
 
 {% render '../../components/submarine/submarine.liquid' %}
 {% render '../../components/pop-over/pop-over.liquid' %}
+
+
 {% endblock %}
