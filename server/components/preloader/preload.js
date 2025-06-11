@@ -101,29 +101,20 @@ playButton.addEventListener("click", () => {
   }, 1300);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const projectsButton = document.getElementById("projects");
+  if (!projectsButton) return;
 
-
-const projectsButton = document.getElementById("projects"); // Or use a more specific selector
-
-// Handle button click
-projectsButton.addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent default action if it's a link
-    
-    // Remove open animation classes if they exist
-    leftCurtain.classList.remove('curtain-left-animation-open');
-    rightCurtain.classList.remove('curtain-right-animation-open');
-    
-    // Add close animation classes
-    leftCurtain.classList.add('curtain-left-animation-close');
-    rightCurtain.classList.add('curtain-right-animation-close');
-    
-    // Wait for animations to complete, then transition to next page
+  projectsButton.addEventListener("click", function(e) {
+    e.preventDefault();
+    leftCurtain.classList.remove("curtain-left-animation-open");
+    rightCurtain.classList.remove("curtain-right-animation-open");
+    leftCurtain.classList.add("curtain-left-animation-close");
+    rightCurtain.classList.add("curtain-right-animation-close");
     setTimeout(() => {
-        // Replace 'next-page.html' with your actual next page URL
-        window.location.href = '/projects';
-        // Or if you're using a single-page app:
-        // showNextPage();
-    }, 2000); // 2000ms = 2s animation duration
+      window.location.href = "/projects";
+    }, 2000);
+  });
 });
 
 function handleAnimationEnd() {
