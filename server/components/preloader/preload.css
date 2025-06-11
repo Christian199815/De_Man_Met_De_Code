@@ -213,7 +213,7 @@ body {
     }
 @keyframes curtain-right-open {
     0% {
-        transform: translate(vw, 0vh);
+        transform: translate(0vw, 0vh);
     }
 
     100% {
@@ -222,7 +222,7 @@ body {
 }
 
 .curtain-left-animation-close{
-    animation: curtain-left-close 2s var(--custom-easing) forwards;
+    animation: curtain-left-close 1s var(--custom-easing) forwards;
 }
 @keyframes curtain-left-close {
     0% {
@@ -235,7 +235,7 @@ body {
 }
 
 .curtain-right-animation-close {
-    animation: curtain-right-close 2s var(--custom-easing) forwards;
+    animation: curtain-right-close 1s var(--custom-easing) forwards;
     }
 @keyframes curtain-right-close {
     0% {
