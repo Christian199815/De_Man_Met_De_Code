@@ -2,6 +2,8 @@
   navigation: auto;
 }
 .wrapper-preloader {
+    transform-style:preserve-3d;
+    translate: 0 0 17px;
     --curtain-pattern: repeating-linear-gradient(90deg,
             #5a0000 0,
             #a00000 30px,
@@ -23,11 +25,8 @@
     flex-direction: column;
     width: 100vw;
     height: 100vh;
-
     justify-content: center;
     align-items: center;
-
-    background-color: black;
 }
 
 .curtain-left {
