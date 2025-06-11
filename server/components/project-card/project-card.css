@@ -9,37 +9,35 @@
   position: relative;
   overflow: hidden;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  min-height: 200px;
+  width: 100%;
+  height: 100%;
 }
 
 /* ====================================
-   ASPECT RATIO CLASSES
+   ASPECT RATIO CLASSES - USING ASPECT-RATIO PROPERTY
    ==================================== */
 
-.landscape-card, 
+.landscape-card,
 .landscape,
 .project-card[data-aspect-ratio="landscape"] {
   grid-row: span 1 !important;
   grid-column: span 2 !important;
-  /* height: 300px; */
-  min-height: 300px;
+  aspect-ratio: 2 / 1; /* 2:1 ratio */
 }
 
-.portrait-card, 
+.portrait-card,
 .portrait,
 .project-card[data-aspect-ratio="portrait"] {
   grid-row: span 2 !important;
   grid-column: span 1 !important;
-  min-height: 600px;
-  height: auto;
+  aspect-ratio: 1 / 2; /* 1:2 ratio */
 }
 
 .square,
 .project-card[data-aspect-ratio="square"] {
   grid-row: span 1 !important;
   grid-column: span 1 !important;
-  /* height: 300px; */
-  min-height: 300px;
+  aspect-ratio: 1 / 1; /* Perfect 1:1 square */
 }
 
 /* Smart Sizing Classes for Grid Optimizer */
@@ -54,6 +52,8 @@
 .row-span-2 {
   grid-row: span 2 !important;
 }
+
+
 
 /* ====================================
    PROJECT IMAGE
@@ -105,15 +105,16 @@
   z-index: 2;
   width: 100%;
   pointer-events: none;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
   padding: 1rem;
+  padding-top: 2rem;
   box-sizing: border-box;
 }
 
 .project-details h2 {
   color: white;
   margin: 0;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: clamp(1em, 3vw, 1.5em);
   font-weight: 600;
   pointer-events: auto;
@@ -129,16 +130,13 @@
   height: 100%;
 }
 
-.project-production, 
+.project-production,
 .project-date {
   font-size: 0.85rem;
   color: #777;
   margin-bottom: 0.25rem;
 }
 
-/* ====================================
-   CATEGORY BADGE
-   ==================================== */
 /* ====================================
    CATEGORY BADGE - TICKET STYLE
    ==================================== */
@@ -150,7 +148,7 @@
   z-index: 3;
   pointer-events: none;
   transition: transform 0.3s ease;
-  
+
   /* Ticket Style Variables */
   --ticket-color-border: black;
   --ticket-color-card: white;
@@ -158,36 +156,54 @@
   --hapje: 0.5rem;
   --border: 0.3em;
   --padding: 0.5rem 1rem;
-  
+
   /* Reset previous styles */
   border: none;
   background-color: transparent;
   padding: var(--padding);
-  
+
   /* Ticket Style Background */
-  background-image:
-    linear-gradient(var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-    linear-gradient(90deg, var(--ticket-color-border) var(--border), transparent 0 calc(100% - var(--border)), var(--ticket-color-border) 0),
-    radial-gradient(circle at 0 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 100% 0, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 100% 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0),
-    radial-gradient(circle at 0 100%, transparent var(--hapje), var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)), var(--ticket-color-card) 0);
-  
-  background-size:
-    calc(100% - 2 * var(--hapje)) 100%,
-    100% calc(100% - 2 * var(--hapje)),
-    51% 51%,
-    51% 51%,
-    51% 51%,
-    51% 51%;
+  background-image: linear-gradient(
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    linear-gradient(
+      90deg,
+      var(--ticket-color-border) var(--border),
+      transparent 0 calc(100% - var(--border)),
+      var(--ticket-color-border) 0
+    ),
+    radial-gradient(
+      circle at 0 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 0,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    ),
+    radial-gradient(
+      circle at 0 100%,
+      transparent var(--hapje),
+      var(--ticket-color-border) 0 calc(var(--hapje) + var(--border)),
+      var(--ticket-color-card) 0
+    );
+
+  background-size: calc(100% - 2 * var(--hapje)) 100%,
+    100% calc(100% - 2 * var(--hapje)), 51% 51%, 51% 51%, 51% 51%, 51% 51%;
   background-repeat: no-repeat;
-  background-position:
-    center top,
-    left center,
-    left top,
-    right top,
-    right bottom,
-    left bottom;
+  background-position: center top, left center, left top, right top,
+    right bottom, left bottom;
 }
 
 .category p {
@@ -207,45 +223,18 @@
 }
 
 .category.props {
-  --ticket-color-border: #104C1C;
-  --ticket-color-card: #308F3E;
+  --ticket-color-border: #104c1c;
+  --ticket-color-card: #308f3e;
   --ticket-color-text: #012809;
 }
 
 .category.interieur,
 .category.interior {
-  --ticket-color-border: #B89300;
+  --ticket-color-border: #b89300;
   --ticket-color-card: #ffca3a;
   --ticket-color-text: #524100;
 }
 
-/* ====================================
-   RESPONSIVE ADJUSTMENTS
-   ==================================== */
-
-@media (max-width: 768px) {
-  .category {
-    bottom: 40px;
-    right: 15px;
-    --padding: 0.3rem 0.8rem;
-    --hapje: 0.4rem;
-    --border: 0.25em;
-  }
-}
-
-@media (max-width: 480px) {
-  .category {
-    bottom: 30px;
-    right: 10px;
-    --padding: 0.25rem 0.6rem;
-    --hapje: 0.3rem;
-    --border: 0.2em;
-  }
-
-  .category p {
-    font-size: clamp(0.7em, 2vw, 0.9em);
-  }
-}
 /* ====================================
    SPECIAL BADGES
    ==================================== */
@@ -285,7 +274,6 @@
   opacity: 1 !important;
   transform: scale(1) !important;
   filter: none !important;
-  /* pointer-events: auto !important; */
   animation: fadeInFilter 0.4s ease forwards;
 }
 
@@ -309,7 +297,7 @@
    ==================================== */
 
 .project-card.loading {
-  min-height: 300px;
+  min-height: 250px;
 }
 
 .project-card.loading .project-image-wrapper {
@@ -326,58 +314,51 @@
 }
 
 /* ====================================
-   RESPONSIVE DESIGN
+   MOBILE RESPONSIVE OVERRIDES
    ==================================== */
 
-@media (max-width: 1200px) {
-  .landscape-card,
-  .square {
-    height: 280px;
-    min-height: 280px;
-  }
-  
-  .portrait-card {
-    min-height: 560px;
-  }
-}
-
 @media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+  }
+
   .landscape-card {
     grid-column: span 2 !important;
-    height: 200px;
-    min-height: 200px;
   }
-  
+
   .portrait-card {
-    min-height: 400px;
-  }
-  
-  .square {
-    height: 200px;
-    min-height: 200px;
+    grid-row: span 2 !important;
   }
 
   .category {
     bottom: 40px;
     right: 15px;
-    border: 2px solid black;
-    padding: 0.3em;
+    --padding: 0.3rem 0.8rem;
+    --hapje: 0.4rem;
+    --border: 0.25em;
   }
 }
 
 @media (max-width: 480px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 250px;
+  }
+  
   .landscape-card,
   .portrait-card,
   .square {
     grid-column: span 1 !important;
-    height: 250px;
-    min-height: 250px;
+    grid-row: span 1 !important;
   }
 
   .category {
     bottom: 30px;
     right: 10px;
-    padding: 0.25em;
+    --padding: 0.25rem 0.6rem;
+    --hapje: 0.3rem;
+    --border: 0.2em;
   }
 
   .category p {

@@ -4,7 +4,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 9999;
+  z-index: 999999;
   background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
@@ -37,8 +37,8 @@
     grid-area: 1 / 2 / 2 / 6;
     align-self: end;
 
-    font-size: 3rem;
-    /* text-transform: capitalize; */
+    font-family: "franchise", impact, sans-serif;
+    font-size: clamp(3rem, 2.5vw, 4rem);
 
     margin-bottom: 1rem;
   }
@@ -57,10 +57,12 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
-    margin-top: 1.2rem;
+    margin-top: 2rem;
 
-    p {
-      font-size: 1rem;
+    p,
+    span {
+      font-family: "franchise", impact, sans-serif;
+      font-size: 1.2rem;
     }
   }
 }
@@ -70,8 +72,8 @@
 .project-popover-date::before,
 .project-popover-category::before {
   display: block;
-  font-size: 1.1rem;
-  text-transform: capitalize;
+  font-family: "franchise", impact, sans-serif;
+  font-size: 2rem;
 }
 
 .project-popover-production::before {
@@ -92,7 +94,7 @@
 
 .project-popover-img {
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   object-fit: cover;
 }
 

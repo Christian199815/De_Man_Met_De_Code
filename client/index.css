@@ -11,7 +11,7 @@
 /* component styling */
 
 @import "../server/components/category-filter/category-filter.css";
-@import "../server/components/project-sorting/project-sorting.css";
+/* @import "../server/components/project-sorting/project-sorting.css"; */
 @import "../server/components/search-bar/search-bar.css";
 /* @import "../server/components/full-width-card/full-width-card.css"; */
 @import "../server/components/project-card/project-card.css";
@@ -25,4 +25,6 @@
 @import '../server/components/stage-lights/stage-light.css';
 @import "../server/components/cannon/cannon.css";
 @import "../server/components/moon/moon.css";
+@import '../server/components/preloader/preload.css';
+@import '../server/components/hammer-cursor/hammer-cursor.css';
 
