@@ -19,9 +19,9 @@
 
 
 
-    > a {
+    > .logo-element {
     flex-grow: 1;
-    img{
+    a img{
       /* width: clamp(5dvw, 20rem, 2dvw); */
       height: 100%;
       /* aspect-ratio: 1; */
@@ -436,3 +436,148 @@ h1 {
 
 
 }
+
+
+.full-width-component.crocodile-wrapper {
+            position: static !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            pointer-events: none !important;
+            overflow: visible !important;
+            display: block !important;
+            /* Remove any grid positioning that might interfere */
+            grid-column: 1 / -1 !important;
+            min-height: 300px; /* Set a minimum height for the swamp */
+        }
+
+        .full-width-component.crocodile-wrapper .full-width-content {
+            display: block !important;
+            position: static !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            justify-content: unset !important;
+            align-items: unset !important;
+            text-align: unset !important;
+            pointer-events: none !important;
+            min-height: auto !important;
+            height: auto !important;
+            width: 100% !important;
+        }
+
+        /* 2. Crocodile container fixes */
+        .crocodile-wrapper .crocodile-container {
+            pointer-events: auto !important;
+            position: relative !important;
+            width: 100% !important;
+            height: 300px !important; /* Ensure adequate height */
+            overflow: hidden !important;
+            border-top: 16px solid black;
+            border-bottom: 16px solid black;
+            background: linear-gradient(to top, #111 0%, #1b2b1b 100%);
+            background-color: #0d120d;
+        }
+
+        /* 3. Crocodile wrapper and animation fixes */
+        .crocodile-wrapper .croc-wrapper {
+            position: absolute !important;
+            pointer-events: auto !important;
+            z-index: 10 !important;
+        }
+
+        /* 4. Individual crocodile fixes */
+        .crocodile-wrapper .crocodile {
+            pointer-events: auto !important;
+            cursor: pointer !important;
+            z-index: 15 !important;
+            user-select: none !important;
+        }
+
+        /* 5. Audio element positioning */
+        .crocodile-wrapper #biteSound {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        /* 6. Hide cursor when needed */
+        .hide-cursor,
+        .hide-cursor * {
+            cursor: none !important;
+        }
+
+        /* 7. Animation keyframes (ensure they're not overridden) */
+        @keyframes walk {
+            0% { left: -150px; }
+            100% { left: 100vw; }
+        }
+
+        @keyframes waddle {
+            0%, 100% { transform: translateY(0) rotate(2deg); }
+            25% { transform: translateY(-2px) rotate(-2deg); }
+            50% { transform: translateY(0) rotate(2deg); }
+            75% { transform: translateY(2px) rotate(-2deg); }
+        }
+
+        /* 8. Paused state fixes */
+        .crocodile-wrapper .croc-wrapper.paused {
+            animation-play-state: paused !important;
+        }
+
+        .crocodile-wrapper .crocodile.paused {
+            animation-play-state: paused !important;
+        }
+
+/* ====================================
+   NAVBAR - Updated for search expansion
+   ==================================== */
+.container nav {
+  display: flex;
+  flex-direction: row;
+  background-color: #212121;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 .5rem;
+  height: 8rem;
+  position: relative;
+  transition: justify-content 0.3s ease;
+}
+
+.container nav > .logo-element {
+  flex-grow: 1;
+  transition: all 0.3s ease;
+  
+  a img {
+    height: 100%;
+  }
+}
+
+.container nav > div {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.3s ease;
+}
+
+/* Search component stays visible */
+.search-component {
+  flex-shrink: 0;
+}
+
+/* When search is expanded, change nav layout */
+.search-expanded nav {
+  justify-content: flex-end;
+}
+
+/* Optional: Add smooth transitions when elements are hidden by JS */
+.logo-element,
+.category-filter {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Optional: Add a class for when search is expanded (controlled by JS) */
+.search-expanded .logo-element,
+.search-expanded .category-filter {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
