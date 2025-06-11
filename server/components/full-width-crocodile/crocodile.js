@@ -21,8 +21,10 @@ function initializeCrocodiles() {
     return;
   }
 
+
   const NUM_CROCS = Math.floor(Math.random() * 5) + 4;
   const CROCODILE_SRC = "../../public/images/projects/crocodile.png";
+
 
   // Create crocodiles
   for (let i = 0; i < NUM_CROCS; i++) {
@@ -44,13 +46,13 @@ function initializeCrocodiles() {
 
     // Initial direction (start facing left)
     let facingRight = false;
-    wrapper.style.transform = "scaleX(-1)";
-
+    wrapper.style.transform = "rotateY(180deg)";
+    
     // Animation direction change
     wrapper.addEventListener("animationiteration", (e) => {
       if (e.animationName === "walk") {
         facingRight = !facingRight;
-        wrapper.style.transform = facingRight ? "scaleX(1)" : "scaleX(-1)";
+        wrapper.style.transform = facingRight ? "rotateY(0deg)" : "rotateY(180deg)";
       }
     });
 
