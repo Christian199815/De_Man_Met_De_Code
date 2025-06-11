@@ -32,6 +32,37 @@ class CleanGridPool {
     this.init();
   }
 
+  initializeCustomComponents() {
+  this.initializeFullWidthComponents();
+  this.initializeCrocodileComponents(); // Add this line
+  
+  document.dispatchEvent(new CustomEvent('gridRerendered', {
+    detail: { gridInstance: this }
+  }));
+}
+
+// Add this new method to handle crocodile initialization
+initializeCrocodileComponents() {
+  const crocodileContainers = this.container.querySelectorAll('.crocodile-container');
+  
+  crocodileContainers.forEach((container) => {
+    // Check if already initialized to prevent duplicates
+    if (container.querySelector('.croc-wrapper')) {
+      return;
+    }
+    
+    // Trigger crocodile initialization if function exists
+    if (typeof window.initializeCrocodiles === 'function') {
+      window.initializeCrocodiles();
+    } else {
+      // If the function doesn't exist globally, dispatch an event
+      document.dispatchEvent(new CustomEvent('initializeCrocodiles', {
+        detail: { container: container }
+      }));
+    }
+  });
+}
+
   init() {
     if (!this.container) {
       return;
@@ -328,4 +359,295 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('page-loaded');
     }, 100);
   }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('.search-input');
+  const searchContainer = document.querySelector('.search-container');
+  const logoElement = document.querySelector('.logo-element');
+  const categoryFilter = document.querySelector('.category-filter'); // Adjust selector as needed
+  
+  if (!searchInput || !searchContainer) return;
+  
+  function checkSearchWidth() {
+    const viewportWidth = window.innerWidth;
+    const searchWidth = searchContainer.offsetWidth;
+    const widthPercentage = (searchWidth / viewportWidth) * 100;
+    
+    // Hide elements when search reaches 60% of viewport width
+    if (widthPercentage >= 60) {
+      if (logoElement) logoElement.style.display = 'none';
+      if (categoryFilter) categoryFilter.style.display = 'none';
+      document.body.classList.add('search-expanded');
+    } else {
+      if (logoElement) logoElement.style.display = '';
+      if (categoryFilter) categoryFilter.style.display = '';
+      document.body.classList.remove('search-expanded');
+    }
+  }
+  
+  // Check on input events
+  searchInput.addEventListener('input', checkSearchWidth);
+  searchInput.addEventListener('focus', checkSearchWidth);
+  searchInput.addEventListener('blur', checkSearchWidth);
+  
+  // Check on window resize
+  window.addEventListener('resize', checkSearchWidth);
+  
+  // Initial check
+  checkSearchWidth();
+});
+
+// ====================================
+// RESPONSIVE NAVIGATION JAVASCRIPT
+// ====================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    const bodyOverlay = document.getElementById('bodyOverlay');
+    const body = document.body;
+
+    // Get filter and search elements
+    const desktopFilters = document.querySelectorAll('input[name="category-filter"]');
+    const mobileFilters = document.querySelectorAll('input[name="mobile-category-filter"]');
+    const searchInputs = document.querySelectorAll('.search-input');
+
+    // ====================================
+    // MOBILE MENU FUNCTIONS
+    // ====================================
+
+    function toggleMobileMenu() {
+        const isOpen = mobileOverlay.classList.contains('open');
+        
+        if (isOpen) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    }
+
+    function openMobileMenu() {
+        hamburgerMenu.classList.add('open');
+        mobileOverlay.classList.add('open');
+        bodyOverlay.classList.add('active');
+        body.style.overflow = 'hidden';
+        
+        // Add aria attributes for accessibility
+        hamburgerMenu.setAttribute('aria-expanded', 'true');
+        mobileOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeMobileMenu() {
+        hamburgerMenu.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        bodyOverlay.classList.remove('active');
+        body.style.overflow = '';
+        
+        // Update aria attributes
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
+        mobileOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    // ====================================
+    // EVENT LISTENERS
+    // ====================================
+
+    // Mobile menu toggle
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', toggleMobileMenu);
+    }
+
+    // Close menu when clicking overlay
+    if (bodyOverlay) {
+        bodyOverlay.addEventListener('click', closeMobileMenu);
+    }
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileOverlay && mobileOverlay.classList.contains('open')) {
+            closeMobileMenu();
+        }
+    });
+
+    // ====================================
+    // FILTER SYNCHRONIZATION
+    // ====================================
+
+    // Sync desktop to mobile filters
+    desktopFilters.forEach((filter, index) => {
+        filter.addEventListener('change', () => {
+            if (filter.checked && mobileFilters[index]) {
+                mobileFilters[index].checked = true;
+                
+                // Trigger any existing filter functionality
+                const event = new Event('change', { bubbles: true });
+                mobileFilters[index].dispatchEvent(event);
+            }
+        });
+    });
+
+    // Sync mobile to desktop filters
+    mobileFilters.forEach((filter, index) => {
+        filter.addEventListener('change', () => {
+            if (filter.checked && desktopFilters[index]) {
+                desktopFilters[index].checked = true;
+                
+                // Trigger any existing filter functionality
+                const event = new Event('change', { bubbles: true });
+                desktopFilters[index].dispatchEvent(event);
+                
+                // Close mobile menu after selection
+                setTimeout(() => {
+                    closeMobileMenu();
+                }, 300); // Small delay for better UX
+            }
+        });
+    });
+
+    // ====================================
+    // SEARCH SYNCHRONIZATION
+    // ====================================
+
+    searchInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+            const searchValue = e.target.value;
+            
+            // Sync all search inputs
+            searchInputs.forEach(otherInput => {
+                if (otherInput !== e.target) {
+                    otherInput.value = searchValue;
+                }
+            });
+            
+            // Trigger any existing search functionality
+            const event = new Event('input', { bubbles: true });
+            searchInputs.forEach(otherInput => {
+                if (otherInput !== e.target) {
+                    otherInput.dispatchEvent(event);
+                }
+            });
+        });
+
+        // Close mobile menu when search is focused (optional UX enhancement)
+        input.addEventListener('focus', () => {
+            if (input.closest('.mobile-overlay')) {
+                // Don't close immediately when focusing mobile search
+                return;
+            }
+        });
+    });
+
+    // ====================================
+    // WINDOW RESIZE HANDLER
+    // ====================================
+
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        // Debounce resize events
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            // Close mobile menu if window becomes large enough
+            if (window.innerWidth > 768 && mobileOverlay && mobileOverlay.classList.contains('open')) {
+                closeMobileMenu();
+            }
+        }, 250);
+    });
+
+    // ====================================
+    // ACCESSIBILITY ENHANCEMENTS
+    // ====================================
+
+    // Trap focus within mobile overlay when open
+    function trapFocus(element) {
+        const focusableElements = element.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstFocusableElement = focusableElements[0];
+        const lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        element.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusableElement) {
+                        lastFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusableElement) {
+                        firstFocusableElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+    }
+
+    if (mobileOverlay) {
+        trapFocus(mobileOverlay);
+    }
+
+    // ====================================
+    // INITIALIZATION
+    // ====================================
+
+    // Set initial aria attributes
+    if (hamburgerMenu) {
+        hamburgerMenu.setAttribute('aria-expanded', 'false');
+        hamburgerMenu.setAttribute('aria-controls', 'mobileOverlay');
+    }
+
+    if (mobileOverlay) {
+        mobileOverlay.setAttribute('aria-hidden', 'true');
+        mobileOverlay.setAttribute('role', 'dialog');
+        mobileOverlay.setAttribute('aria-modal', 'true');
+        mobileOverlay.setAttribute('aria-label', 'Navigation menu');
+    }
+
+    // ====================================
+    // INTEGRATION WITH EXISTING FUNCTIONALITY
+    // ====================================
+
+    // If you have existing category filter functionality, make sure it works with both sets of filters
+    function handleCategoryChange(selectedCategory) {
+        // Update both desktop and mobile filters
+        desktopFilters.forEach(filter => {
+            filter.checked = filter.value === selectedCategory;
+        });
+        
+        mobileFilters.forEach(filter => {
+            filter.checked = filter.value === selectedCategory;
+        });
+        
+        // Call your existing filter logic here
+        if (window.filterProjects) {
+            window.filterProjects(selectedCategory);
+        }
+    }
+
+    // If you have existing search functionality, make sure it works with both search inputs
+    function handleSearchInput(searchTerm) {
+        // Update both search inputs
+        searchInputs.forEach(input => {
+            input.value = searchTerm;
+        });
+        
+        // Call your existing search logic here
+        if (window.searchProjects) {
+            window.searchProjects(searchTerm);
+        }
+    }
+
+    // Export functions for external use if needed
+    window.responsiveNav = {
+        openMobileMenu,
+        closeMobileMenu,
+        toggleMobileMenu,
+        handleCategoryChange,
+        handleSearchInput
+    };
+
+    console.log('Responsive navigation initialized successfully');
 });

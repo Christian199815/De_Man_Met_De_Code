@@ -8,11 +8,12 @@ margin: 0;} */
     display: flex;
     justify-content: space-evenly;
     position: absolute;
-    top: 20%;
+    top: 300px ;
     left: 0;
     width: 100vw;
     height: 50px;
     background-color: transparent;
+    z-index: 3;
 }
 
 .lights {
@@ -165,4 +166,14 @@ margin: 0;} */
     .lights:nth-child(8) {
         display: block;
     }
+}
+
+
+
+@media (max-width: 800px) {
+
+    #rails {
+        top: 175px ;
+    }
+
 }

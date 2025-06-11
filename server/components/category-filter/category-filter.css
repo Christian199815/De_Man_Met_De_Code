@@ -16,6 +16,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 600;
+  display: none; /* Hide title in nav by default */
 }
 
 /* ====================================
@@ -24,10 +25,11 @@
 
 .filter-buttons {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 1rem;
-  justify-content: flex-start;
-  margin-right: 2em;
+  justify-content: center;
+  margin: 0;
+  align-items: center;
 }
 
 .radio-group {
@@ -49,12 +51,13 @@
   --hapje: max(.4em, 1vmin);
   --border: .4em;
   --content: attr(data-category);
-  --padding: 1rem 2rem;
+  --padding: clamp(0.6rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+  --font-size: clamp(0.7rem, 1.8vw, 0.9rem);
 
   position: relative;
   text-transform: uppercase;
   border: none;
-  font-size: 0.9rem;
+  font-size: var(--font-size);
   font-weight: 600;
   color: transparent;
   padding: var(--padding);
@@ -64,6 +67,7 @@
   letter-spacing: 0.5px;
   user-select: none;
   text-align: center;
+  cursor: pointer;
 }
 
 .filter-btn::before,
@@ -76,7 +80,7 @@
   padding: var(--padding);
   transform-origin: bottom center;
   transition: transform 0.3s ease;
-  font-size: 0.9rem;
+  font-size: var(--font-size);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -213,9 +217,85 @@
 }
 
 /* ====================================
+   MOBILE OVERLAY SPECIFIC STYLES
+   ==================================== */
+
+/* Mobile overlay filter styles */
+.mobile-overlay .category-filter {
+  background: transparent;
+}
+
+.mobile-overlay .category-filter h2 {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.mobile-overlay .filter-buttons {
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  width: 100%;
+  margin-right: 0;
+}
+
+.mobile-overlay .filter-btn {
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+}
+
+/* ====================================
    RESPONSIVE DESIGN
    ==================================== */
 
+/* Desktop - maintain original size */
+@media (min-width: 1025px) {
+  .filter-btn {
+    --padding: 0.8rem 1.8rem;
+    --font-size: 0.85rem;
+  }
+  
+  .filter-buttons {
+    gap: 1rem;
+    margin: 0;
+  }
+}
+
+/* Large tablet - slight reduction */
+@media (max-width: 1024px) and (min-width: 901px) {
+  .filter-buttons {
+    gap: 0.8rem;
+    margin: 0;
+    flex-wrap: nowrap;
+  }
+  
+  .filter-btn {
+    --padding: 0.7rem 1.4rem;
+    --font-size: 0.75rem;
+  }
+}
+
+/* Medium tablet - more reduction */
+@media (max-width: 900px) and (min-width: 769px) {
+  .filter-buttons {
+    gap: 0.6rem;
+    margin: 0;
+    flex-wrap: nowrap;
+  }
+  
+  .filter-btn {
+    --padding: 0.6rem 1rem;
+    --font-size: 0.7rem;
+  }
+}
+
+/* Small tablet and mobile - original mobile styles */
 @media (max-width: 768px) {
   .category-filter {
     padding: 1rem;
@@ -227,28 +307,25 @@
   }
   
   .filter-btn {
-    --padding: 0.8rem 1.5rem;
-    font-size: 0.8rem;
-  }
-  
-  .filter-btn::before,
-  .filter-btn::after {
-    font-size: 0.8rem;
+    --padding: clamp(0.7rem, 2vw, 0.8rem) clamp(1.2rem, 3vw, 1.5rem);
+    --font-size: clamp(0.75rem, 1.8vw, 0.8rem);
   }
 }
 
 @media (max-width: 480px) {
   .filter-btn {
-    --padding: 0.6rem 1.2rem;
-    font-size: 0.75rem;
-  }
-  
-  .filter-btn::before,
-  .filter-btn::after {
-    font-size: 0.75rem;
+    --padding: clamp(0.5rem, 2vw, 0.6rem) clamp(1rem, 3vw, 1.2rem);
+    --font-size: clamp(0.65rem, 1.8vw, 0.75rem);
   }
   
   .filter-buttons {
     gap: 0.8rem;
+  }
+  
+  /* Mobile overlay adjustments */
+  .mobile-overlay .filter-btn {
+    width: 90%;
+    --padding: 0.8rem 1.5rem;
+    --font-size: 0.9rem;
   }
 }

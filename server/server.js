@@ -288,6 +288,12 @@ app.get("/", async (req, res) => {
     }));
 });
 
+app.get("/about", async (req, res) => {
+    return res.send(renderTemplate("server/views/about/about.liquid", {
+        title: "About",
+    }));
+});
+
 // Main projects route - pass data to Liquid for HTML generation
 app.get('/projects', async (req, res) => {
     try {

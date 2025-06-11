@@ -1,370 +1,589 @@
-body, a{
-    cursor: url("/images/cursor/hammer-cursor-normal.svg") 48 48, auto;
+html,
+body,
+*,
+*::before,
+*::after {
+  cursor: url("/images/cursor/hamer-Idle.png") 32 40, auto !important;
 }
 
-body:active, a:active{
-cursor: url("/images/cursor/hammer-cursor-active.svg") 48 48, auto;
+button:hover,
+a:hover,
+.lights:hover {
+  cursor: url("/images/cursor/hover-hover.png") 32 40, auto !important;
 }
 
-
-/* PROPS - FIXED VERSION WITH ANCHOR AROUND PROP-CONTAINER */
-.frame a {
-    position: absolute;
-    bottom: -5px;
-    right: 8%;
-    width: 400px; /* ADDED: Explicit width */
-    height: 400px;
-    z-index: 100;
-    display: block; /* Ensure anchor behaves as block element */
-    text-decoration: none; /* Remove default link styling */
-    color: inherit; /* Inherit text color */
+*:active {
+  cursor: url("/images/cursor/hamer-active.png") 35 55, auto !important;
 }
 
-.frame a .prop-container {
-    position: relative; /* Changed from absolute since anchor is now positioned */
-    width: 100%; /* Fill the anchor container */
-    height: 100%; /* Fill the anchor container */
+@property --gradient-position {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
 }
-
-.frame a .prop-container h2 {
-    position: absolute;
-    top: 100px;
-    left: -50px;
-    font-family: system-ui;
-    color: white;
-    font-weight: 800;
-    text-align: right;
-    white-space: nowrap;
-    font-size: 3rem;
-    opacity: 0;
-    scale: 0.6;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 4px 10px #000);
-    pointer-events: none;
-    width: 300px; /* ADDED: Explicit width for text container */
-}
-
-.frame a:hover .prop-container h2 {
-    top: 20px;
-    opacity: 1;
-    scale: 1;
-    left: -180px;
-}
-
-.frame a .prop-container .props {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    height: 400px;
-    width: 400px; /* ADDED: Explicit width */
-    object-fit: contain; /* ADDED: For proper image scaling */
-}
-
-.frame a .prop-container .props:hover {
-    filter: url("#border-text");
-}
-
-.frame a .prop-container .prop-shadows {
-    position: absolute;
-    top: 89%;
-    translate: -32.5% -50%;
-    height: 160px;
-    width: 300px; /* ADDED: Explicit width */
-    object-fit: contain; /* ADDED: For proper image scaling */
-}/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* LATER WEH HALEN ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ */
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* LATER WEH HALEN ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-
-
-
-
-
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* UTILITY CLASSES */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 .break {
-    display: block;
+  display: block;
 }
 
 .visually-hidden {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* GENERAL CLASSES */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+/* -=-=-=-=-=-=-=-=-=- TEXT -=-=-=-=-=-=-=-=-=- */
+.nav-text {
+  position: absolute;
+  font-family: system-ui;
+  color: white;
+  font-weight: 800;
+  white-space: nowrap;
+  font-size: 3rem;
+  opacity: 0;
+  scale: 0.6;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 10px #000);
+  pointer-events: none;
+}
+
+/* -=-=-=-=-=-=-=-=-=- PULSE -=-=-=-=-=-=-=-=-=- */
+.pulse {
+  position: absolute;
+  height: 1.25rem;
+  aspect-ratio: 1;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 50%;
+  transition: opacity 0.33s ease;
+  pointer-events: none;
+}
+
+.pulse::before {
+  position: absolute;
+  content: "";
+  height: 150%;
+  border-radius: 50%;
+  aspect-ratio: 1;
+  outline: 1.5px white solid;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  animation: pulsing-animation 2s ease-out infinite;
+  opacity: 0.5;
+}
+
+.pulse.delayed::before {
+  animation: pulsing-animation 2s ease-out -1s infinite;
+}
+
+@keyframes pulsing-animation {
+  0% {
+    scale: 1;
+    opacity: 1;
+  }
+
+  100% {
+    scale: 2;
+    opacity: 0;
+  }
+}
+
+.logo-container:has(:hover) .pulse,
+.logo-container:has(:focus-visible) .pulse {
+  opacity: 0;
+}
+
+.prop-container:has(:hover) .pulse,
+.prop-container:has(:focus-visible) .pulse {
+  opacity: 0;
+}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* SET UP */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+body {
+}
 
 .frame {
-    position: relative;
-    height: 100dvh;
-    width: 100vw;
-    background-color: black;
+  position: relative;
+  height: 100dvh;
+  width: 100vw;
+  background-color: black;
 
-    perspective: 40em;
-    perspective-origin: var(--value) center;
-    transform-style: preserve-3d;
+  perspective: 40em;
+  perspective-origin: var(--value) center;
+  transform-style: preserve-3d;
 }
 
 .frame * {
-    transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
-.frame>* {
-    position: absolute;
+.frame > * {
+  position: absolute;
 }
 
+.frame img {
+  max-width: auto !important;
+}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* FRAME PIECES */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+.frame .top-left,
+.frame .top-right,
+.frame .bottom-left,
+.frame .bottom-right,
+.frame .audience,
+.frame .repeating-wall-left,
+.frame .repeating-wall-right,
+.frame .repeating-cage,
+.frame .repeating-floor,
+.frame .repeating-roof,
+.frame .moon-container {
+  pointer-events: none;
+  user-select: none;
+}
+
 /* TOP LEFT */
 .frame .top-left {
-    top: 0;
-    left: 0;
-    z-index: 10;
-    height: 370px;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: 370px;
 }
 
-/* BOTTOM LEFT */
+/* -=-=-=-=-=-=-=-=-=- BOTTOM LEFT -=-=-=-=-=-=-=-=-=- */
 .frame .bottom-left {
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    height: 230px;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  height: 230px;
 }
 
-/* LEFT WALL */
+/* -=-=-=-=-=-=-=-=-=- LEFT WALL -=-=-=-=-=-=-=-=-=- */
 .frame .repeating-wall-left {
-    top: 0;
-    left: 0;
-    z-index: 9;
-    background-image: url(/public/images/images-responsiveness/repeating-wall-left.webp);
-    background-repeat: repeat-y;
-    background-size: 155px;
-    height: 100%;
-    width: 155px;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background-image: url(/public/images/images-responsiveness/repeating-wall-left.webp);
+  background-repeat: repeat-y;
+  background-size: 155px;
+  height: 100%;
+  width: 155px;
 }
 
-/* TOP RIGHT */
+/* -=-=-=-=-=-=-=-=-=- TOP RIGHT -=-=-=-=-=-=-=-=-=- */
 .frame .top-right {
-    top: 0;
-    right: 0;
-    z-index: 10;
-    height: 355px;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  height: 355px;
 }
 
-/* BOTTOM RIGHT */
+/* -=-=-=-=-=-=-=-=-=- BOTTOM RIGHT -=-=-=-=-=-=-=-=-=- */
 .frame .bottom-right {
-    bottom: 0;
-    right: 0;
-    z-index: 10;
-    height: 240px;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  height: 240px;
 }
 
-/* RIGHT WALL */
+/* -=-=-=-=-=-=-=-=-=- RIGHT WALL -=-=-=-=-=-=-=-=-=- */
 .frame .repeating-wall-right {
-    top: 0;
-    right: 0;
-    z-index: 9;
-    background-image: url(/public/images/images-responsiveness/repeating-wall-right.webp);
-    background-repeat: repeat-y;
-    background-size: 155px;
-    height: 100%;
-    width: 155px;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  background-image: url(/public/images/images-responsiveness/repeating-wall-right.webp);
+  background-repeat: repeat-y;
+  background-size: 155px;
+  height: 100%;
+  width: 155px;
 }
 
-/* CAGE */
+/* -=-=-=-=-=-=-=-=-=- CAGE -=-=-=-=-=-=-=-=-=- */
 .frame .repeating-cage {
-    top: 80px;
-    left: 0;
-    z-index: 5;
-    height: 300px;
-    width: 100%;
-    background-image: url(/public/images/images-responsiveness/repeating-cage.webp);
-    background-repeat: repeat-x;
-    background-position: -20% 0;
-    background-size: 1150px;
+  top: 80px;
+  left: 0;
+  z-index: 5;
+  height: 270px;
+  width: 100%;
+  background-image: url(/public/images/images-responsiveness/repeating-cage.webp);
+  background-repeat: repeat-x;
+  background-position: -100% 0;
+  background-size: 1150px;
 }
 
-/* ROOF */
+/* -=-=-=-=-=-=-=-=-=- ROOF -=-=-=-=-=-=-=-=-=- */
 .frame .repeating-roof {
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background-image: url(/public/images/images-responsiveness/repeating-roof.webp);
-    background-repeat: repeat-x;
-    background-position: 20% 0;
-    width: 100%;
-    height: 105px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-image: url(/public/images/images-responsiveness/repeating-roof.webp);
+  background-repeat: repeat-x;
+  background-position: 100% 0;
+  width: 100%;
+  height: 105px;
+  background-size: 450px;
 }
 
-/* AUDIENCE */
+/* -=-=-=-=-=-=-=-=-=- AUDIENCE -=-=-=-=-=-=-=-=-=- */
 .frame .audience {
-    min-width: 100vw;
-    height: 80%;
-    bottom: 50px;
-    left: 0;
+  min-width: 100vw;
+  height: 80%;
+  bottom: 50px;
+  left: 0;
 }
 
 .frame .audience img {
-    height: 90%;
-    margin-inline: auto;
+  height: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  object-fit: cover;
+  object-position: center;
 }
 
-/* FLOOR */
+/* -=-=-=-=-=-=-=-=-=- FLOOR -=-=-=-=-=-=-=-=-=- */
 .frame .repeating-floor {
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    background-image: url(/public/images/images-responsiveness/repeating-floor.webp);
-    background-repeat: repeat;
-    width: 100%;
-    height: 80px;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-image: url(/public/images/images-responsiveness/repeating-floor.webp);
+  background-repeat: repeat;
+  width: 100%;
+  height: 80px;
 }
 
-/* PROPS - FIXED VERSION WITH ANCHOR LINK */
-.frame a.layer-1 {
-    position: absolute;
-    bottom: 10px;
-    right: 22%;
-    width: 400px; /* ADDED: Explicit width */
-    height: 400px;
-    z-index: 100;
-    display: block; /* Ensure anchor behaves as block element */
-    text-decoration: none; /* Remove default link styling */
-    color: inherit; /* Inherit text color */
+/* -=-=-=-=-=-=-=-=-=- PROPS -=-=-=-=-=-=-=-=-=- */
+.frame .prop-container {
+  position: absolute;
+  bottom: 10px;
+  right: 100px;
+  z-index: 10;
 }
 
-.frame a.layer-1 .prop-container {
-    position: relative; /* Changed from absolute since anchor is now positioned */
-    width: 100%; /* Fill the anchor container */
-    height: 100%; /* Fill the anchor container */
+.frame .prop-container .nav-text {
+  top: 20%;
+  left: 40%;
+  text-align: right;
 }
 
-.frame a.layer-1 .prop-container h2 {
-    position: absolute;
-    top: 100px;
-    left: -50px;
-    font-family: system-ui;
-    color: white;
-    font-weight: 800;
-    text-align: right;
-    white-space: nowrap;
-    font-size: 3rem;
-    opacity: 0;
-    scale: 0.6;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 4px 10px #000);
-    pointer-events: none;
-    width: 300px; /* ADDED: Explicit width for text container */
+.frame .prop-container:hover .nav-text,
+.frame .prop-container:focus-visible .nav-text {
+  top: 10%;
+  opacity: 1;
+  scale: 1;
+  left: 30%;
+  translate: -50%;
 }
 
-.frame a.layer-1:hover .prop-container h2 {
-    top: 20px;
-    opacity: 1;
-    scale: 1;
-    left: -180px;
+.frame .prop-container .props {
+  /* niks */
 }
 
-.frame a.layer-1 .prop-container .props {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    height: 400px;
-    width: 400px; /* ADDED: Explicit width */
-    object-fit: contain; /* ADDED: For proper image scaling */
+.frame .prop-container .props:hover,
+.frame .prop-container .props:focus-visible {
+  filter: url("#border-text");
 }
 
-.frame a.layer-1 .prop-container .props:hover {
-    filter: url("#border-text");
+.frame .prop-container .prop-shadows {
+  position: absolute;
+  bottom: -35px;
+  right: -210px;
 }
 
-.frame a.layer-1 .prop-container .prop-shadows {
-    position: absolute;
-    top: 89%;
-    translate: -32.5% -50%;
-    height: 160px;
-    width: 300px; /* ADDED: Explicit width */
-    object-fit: contain; /* ADDED: For proper image scaling */
+.frame .prop-container .pulse {
+  top: 50%;
+  right: 40%;
 }
 
+/* -=-=-=-=-=-=-=-=-=- LOGO -=-=-=-=-=-=-=-=-=- */
 
+.frame .logo-container {
+  top: 0;
+  left: 300px;
+  z-index: 10;
+  height: 600px;
+  width: 200px;
+}
 
+.frame .logo-container .hanging-sign {
+  height: 100%;
+  width: 100%;
+}
+
+.frame .hanging-sign:hover,
+.frame .hanging-sign:focus-visible {
+  filter: url("#border-text");
+}
+
+.frame .logo-container .hanging-sign .logo {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+}
+
+.frame .logo-container .hanging-sign .logo .gradient {
+  position: absolute;
+
+  background: linear-gradient(
+    145deg,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(255, 255, 255, 1) 45%,
+    rgba(255, 255, 255, 1) 55%,
+    rgba(0, 0, 0, 0) 55%
+  );
+  background-size: 400%;
+  background-position: var(--gradient-position);
+  animation: gradient-animation 5s ease infinite;
+
+  mask: url("/public/images/images-responsiveness/hanging-logo.png");
+  mask-position: center;
+  mask-mode: alpha;
+  mask-size: contain;
+
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  mix-blend-mode: overlay;
+}
+
+@keyframes gradient-animation {
+  0% {
+    --gradient-position: 0%;
+  }
+
+  30% {
+    --gradient-position: 100%;
+  }
+}
+
+.frame .logo-container .hanging-sign .logo img {
+  width: 100%;
+}
+
+.frame .logo-container .hanging-sign .cable {
+  position: absolute;
+  z-index: 2;
+  width: 2px;
+  height: 80%;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(176, 176, 176, 1) 100%
+  );
+}
+
+.frame .logo-container .hanging-sign .cable:nth-of-type(1) {
+  left: 20%;
+}
+
+.frame .logo-container .hanging-sign .cable:nth-of-type(2) {
+  left: 80%;
+}
+
+.frame .logo-container .nav-text {
+  bottom: 20%;
+  right: 0;
+  text-align: left;
+}
+
+.frame .logo-container:hover .nav-text,
+.frame .logo-container:focus-visible .nav-text {
+  bottom: 12%;
+  right: -180px;
+  opacity: 1;
+  scale: 1;
+}
+
+.frame .logo-container .pulse {
+  bottom: 15%;
+  left: 50%;
+  translate: -50% -50%;
+}
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* LAYER DEPTH */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 .layer-1 {
-    translate: 0 0 16px;
+  translate: 0 0 16px;
 }
 
 .layer-2 {
-    translate: 0 0 12px;
+  translate: 0 0 12px;
 }
 
 .layer-3 {
-    translate: 0 0 5px;
+  translate: 0 0 5px;
 }
 
+@media (max-width: 800px) {
+  /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  /* FRAME PIECES */
+  /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* RESPONSIVE ADJUSTMENTS FOR PROP CONTAINER */
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  /* TOP LEFT */
+  .frame .top-left {
+    top: 0;
+    left: -40px;
+    height: calc(370px / 2);
+  }
 
-@media (max-width: 1200px) {
-    .frame a {
-        right: 15%; /* Move further left on smaller screens */
-        bottom: 20px; /* Move slightly higher */
-        width: 350px; /* Slightly smaller */
-    }
-    
-    .frame a .prop-container .props {
-        width: 350px;
-        height: 350px;
-    }
-    
-    .frame a .prop-container .prop-shadows {
-        width: 250px;
-    }
-}
+  /* -=-=-=-=-=-=-=-=-=- BOTTOM LEFT -=-=-=-=-=-=-=-=-=- */
+  .frame .bottom-left {
+    bottom: 0;
+    left: -40px;
+    height: calc(230px / 2);
+  }
 
-@media (max-width: 768px) {
-    .frame a {
-        right: 10%; /* Even further left on mobile */
-        bottom: 30px;
-        width: 300px; /* Smaller for mobile */
-        transform: scale(0.8); /* Scale down the entire container */
-    }
-    
-    .frame a .prop-container .props {
-        width: 300px;
-        height: 300px;
-    }
-    
-    .frame a .prop-container .prop-shadows {
-        width: 200px;
-    }
-    
-    .frame a .prop-container h2 {
-        font-size: 2.5rem; /* Smaller text on mobile */
-        width: 250px;
-    }
+  /* -=-=-=-=-=-=-=-=-=- LEFT WALL -=-=-=-=-=-=-=-=-=- */
+  .frame .repeating-wall-left {
+    top: 0;
+    left: -40px;
+    background-size: calc(155px / 2);
+    height: 100%;
+    width: calc(155px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- TOP RIGHT -=-=-=-=-=-=-=-=-=- */
+  .frame .top-right {
+    top: 0;
+    right: -40px;
+    height: calc(370px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- BOTTOM RIGHT -=-=-=-=-=-=-=-=-=- */
+  .frame .bottom-right {
+    bottom: 0;
+    right: -40px;
+    height: calc(240px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- RIGHT WALL -=-=-=-=-=-=-=-=-=- */
+  .frame .repeating-wall-right {
+    top: 0;
+    right: -40px;
+    background-size: calc(155px / 2);
+    height: 100%;
+    width: calc(155px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- CAGE -=-=-=-=-=-=-=-=-=- */
+  .frame .repeating-cage {
+    top: calc(80px / 2);
+    left: 0;
+    background-size: calc(1150px / 2);
+    height: calc(300px / 2);
+    width: 100%;
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- ROOF -=-=-=-=-=-=-=-=-=- */
+  .frame .repeating-roof {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(105px / 2);
+    background-size: calc(450px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- AUDIENCE -=-=-=-=-=-=-=-=-=- */
+  .frame .audience {
+    min-width: 100vw;
+    height: 80%;
+    bottom: 30px;
+    left: 0;
+  }
+
+  .frame .audience img {
+    height: 90%;
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- FLOOR -=-=-=-=-=-=-=-=-=- */
+  .frame .repeating-floor {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(80px / 2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- PROPS -=-=-=-=-=-=-=-=-=- */
+  .frame .prop-container {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    z-index: 100;
+  }
+
+  .frame .prop-container .props {
+    width: calc(500px / 1.2);
+    right: 0;
+    bottom: 0;
+  }
+
+  .frame .prop-container .prop-shadows {
+    position: absolute;
+    width: calc(660px / 1.2);
+    right: calc(-180px / 1.2);
+    bottom: calc(-30px / 1.2);
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- CANNON + MOON -=-=-=-=-=-=-=-=-=- */
+
+  .frame .cannon-container {
+    display: none !important;
+  }
+
+  .frame .moon-container {
+    display: none !important;
+  }
+
+  /* -=-=-=-=-=-=-=-=-=- LOGO -=-=-=-=-=-=-=-=-=- */
+  .frame .logo-container {
+    top: 0;
+    left: 150px;
+    z-index: 100;
+    height: 500px;
+    width: 150px;
+  }
+
+  .frame .logo-container .hanging-sign .cable {
+    position: absolute;
+    z-index: 2;
+    width: 2px;
+    height: 80%;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 1) 50%,
+      rgba(176, 176, 176, 1) 100%
+    );
+  }
+
+  .frame .logo-container:hover .nav-text,
+  .frame .logo-container:focus-visible .nav-text {
+    bottom: 8%;
+    right: -180px;
+    opacity: 1;
+    scale: 1;
+  }
 }

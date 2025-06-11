@@ -16,9 +16,10 @@
     "start": "node server/server.js",
     "predev": "npm run clean && npm run build",
     "dev": "npm-run-all --parallel dev:*",
-    "dev:client": "chokidar 'client/**/*' -c 'npm run build:client'",
-    "dev:css": "chokidar 'server/**/*.css' -c 'npm run build:client'",
-    "dev:server": "nodemon server/server.js",
+  "dev:client": "chokidar 'client/**/*' -c 'npm run build:client'",
+  "dev:css": "chokidar 'server/**/*.css' -c 'npm run build:client'",
+  "dev:server-files": "chokidar 'server/**/*.js' -c 'npm run build'",
+  "dev:server": "nodemon server/server.js",
     "prebuild": "npm run clean",
     "build": "npm-run-all build:*",
     "build:client": "vite build && cpy 'client/public/**/*' dist"
