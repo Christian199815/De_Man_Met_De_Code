@@ -1,0 +1,222 @@
+/* Curtains Transition Styles */
+.curtains-transition {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+    display: none; /* Hidden by default */
+    transform-style: preserve-3d;
+    translate: 0 0 17px;
+    --curtain-pattern: repeating-linear-gradient(90deg,
+            #5a0000 0,
+            #a00000 30px,
+            #cc0000 40px,
+            #720000 60px,
+            #2d0000 80px,
+            #420000 112px,
+            #5a0000 120px,
+            #a00000 124px,
+            #a00000 132px,
+            #5a0000 140px,
+            #7b0000 164px,
+            #a00000 175px,
+            #a00000 180px,
+            #a00000 200px,
+            #7a0000 205px,
+            #5a0000 220px);
+    --custom-easing: cubic-bezier(0.140, 0.935, 0.240, 0.940);
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Show curtains when they need to be visible */
+.curtains-transition.curtains-active {
+    display: flex;
+}
+
+.curtain-left {
+    position: absolute;
+    top: 0;
+    left: -1px;
+    background-image: var(--curtain-pattern);
+    box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
+    width: 51vw;
+    height: 200vh;
+    z-index: 3;
+    clip-path: polygon(0% 100%,
+            0% 0%,
+            100% 0%,
+            100% 50%,
+            98% 57%,
+            97% 63%,
+            95% 68%,
+            93% 74%,
+            91% 79%,
+            88% 83%,
+            86% 86%,
+            84% 89%,
+            81% 94%,
+            77% 96%,
+            72% 99%,
+            50% 100%);
+}
+
+.curtain-right {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: -1vw;
+    background-image: var(--curtain-pattern);
+    width: 51vw;
+    height: 200vh;
+    z-index: 3; 
+    clip-path: polygon(100% 100%,
+            100% 0%,
+            0% 0%, 0% 50%,
+            2% 57%,
+            3% 63%,
+            5% 68%,
+            7% 74%,
+            9% 79%,
+            12% 83%,
+            14% 86%,
+            16% 89%,
+            19% 94%,
+            23% 96%,
+            28% 99%,
+            50% 100%);
+}
+
+.curtain-light {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Closed state - curtains cover the screen */
+.curtains-transition.curtains-closed .curtain-left {
+    transform: translate(0vw, 0vh);
+}
+
+.curtains-transition.curtains-closed .curtain-right {
+    transform: translate(0vw, 0vh);
+}
+
+/* Open state - curtains are off screen */
+.curtains-transition.curtains-open .curtain-left {
+    transform: translate(-51vw, -100vh);
+}
+
+.curtains-transition.curtains-open .curtain-right {
+    transform: translate(51vw, -100vh);
+}
+
+/* Animation classes for smooth transitions */
+.curtains-transition.curtains-closing .curtain-left {
+    animation: curtain-left-close 2s var(--custom-easing) forwards;
+}
+
+.curtains-transition.curtains-closing .curtain-right {
+    animation: curtain-right-close 2s var(--custom-easing) forwards;
+}
+
+.curtains-transition.curtains-opening .curtain-left {
+    animation: curtain-left-open 2s var(--custom-easing) forwards;
+}
+
+.curtains-transition.curtains-opening .curtain-right {
+    animation: curtain-right-open 2s var(--custom-easing) forwards;
+}
+
+/* Keyframes - exact copy from preloader */
+.curtain-left-animation-peak{
+    animation: curtain-left-peak 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-peak {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(-2vw, 0vh);
+    }
+}
+
+.curtain-right-animation-peak {
+    animation: curtain-right-peak 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-peak {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(2vw, 0vh);
+    }
+}
+
+.curtain-left-animation-open{
+    animation: curtain-left-open 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-open {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(-51vw, -100vh);
+    }
+}
+
+.curtain-right-animation-open {
+    animation: curtain-right-open 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-open {
+    0% {
+        transform: translate(0vw, 0vh);
+    }
+
+    100% {
+        transform: translate(51vw, -100vh);
+    }
+}
+
+.curtain-left-animation-close{
+    animation: curtain-left-close 2s var(--custom-easing) forwards;
+}
+@keyframes curtain-left-close {
+    0% {
+        transform: translate(-51vw, -100vh);
+    }
+
+    100% {
+        transform: translate(0vw, 0vh);
+    }
+}
+
+.curtain-right-animation-close {
+    animation: curtain-right-close 2s var(--custom-easing) forwards;
+    }
+@keyframes curtain-right-close {
+    0% {
+        transform: translate(51vw, -100vh);
+    }
+
+    100% {
+        transform: translate(0vw, 0vh);
+    }
+}
+
+.none {
+    display: none !important;
+}

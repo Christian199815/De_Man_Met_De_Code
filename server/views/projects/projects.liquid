@@ -3,8 +3,8 @@
 {% layout "server/layouts/base.liquid" %}
 
 {% block content %}
-  <div class="curtain-left curtain-left-animation-open"></div>
-  <div class="curtain-right curtain-right-animation-open"></div> 
+  {% comment %} <div class="curtain-left curtain-left-animation-open"></div> {% endcomment %}
+  {% comment %} <div class="curtain-right curtain-right-animation-open"></div>  {% endcomment %}
 <div class="container">
   <nav>
     <div class="logo-element">
@@ -88,6 +88,7 @@
 
 {% render '../../components/submarine/submarine.liquid' %}
 {% render '../../components/pop-over/pop-over.liquid' %}
+{% render '../../components/curtains/curtains.liquid'%}
 
 
 {% endblock %}

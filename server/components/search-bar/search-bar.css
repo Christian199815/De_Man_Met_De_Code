@@ -174,7 +174,7 @@
   justify-content: flex-start;
   height: 4rem;
   --input-width: 100%;
-  width: 100%;
+  min-width: 100%;
   display: flex;
   align-items: center;
   padding: 0.5rem 0.6rem;
@@ -318,14 +318,14 @@
   .mobile-overlay .search-input {
     font-size: 1.2rem;
     width: 100%;
-    /* min-width: 100%; */
+    min-width: 100%;
     text-align: center;
-    padding: 0.2rem 0;
+    padding: 0.5rem 0;
   }
   
   .mobile-overlay .search-container {
     --input-width: 100%;
-    width: 100%;
+    min-width: 100%;
     height: 4rem;
     padding: 0.5rem 0.6rem;
   }
@@ -353,14 +353,9 @@
    PERFORMANCE OPTIMIZATIONS
    ==================================== */
 
-/* Use GPU acceleration for smooth transitions */
-.project-card,
+/* Simplified performance optimizations - removed potential conflicts */
 .search-container {
-  will-change: transform, opacity;
+  will-change: auto;
 }
 
-/* Reduce repaints during search */
-.search-container.searching .project-card {
-  backface-visibility: hidden;
-  perspective: 1000px;
-}
+/* Removed the problematic search container styling that might interfere with grid */

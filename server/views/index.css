@@ -123,7 +123,7 @@
 /* FRAME PIECES */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-.frame .top-left,
+/* .frame .top-left,
 .frame .top-right,
 .frame .bottom-left,
 .frame .bottom-right,
@@ -138,7 +138,7 @@
 .frame .prop-container {
     pointer-events: none;
     user-select: none;
-}
+} */
 
 /* TOP LEFT */
 .frame .top-left {
