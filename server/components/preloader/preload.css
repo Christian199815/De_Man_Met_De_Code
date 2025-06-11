@@ -1,8 +1,7 @@
 @view-transition {
   navigation: auto;
 }
-body {
-    overflow: hidden;
+.wrapper-preloader {
     --curtain-pattern: repeating-linear-gradient(90deg,
             #5a0000 0,
             #a00000 30px,
@@ -21,14 +20,12 @@ body {
             #7a0000 205px,
             #5a0000 220px);
     --custom-easing: cubic-bezier(0.140, 0.935, 0.240, 0.940);
-    display: flex;
     flex-direction: column;
     width: 100vw;
     height: 100vh;
 
     justify-content: center;
     align-items: center;
-
 
     background-color: black;
 }
