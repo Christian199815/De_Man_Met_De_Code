@@ -6,6 +6,7 @@ console.log("Hello, world!");
 // Views
 import "../server/views/projects/projects.js";
 import "../server/views/index.js";
+import "../server/views/about/about.js";
 
 // Components
 import "../server/components/category-filter/category-filter.js";

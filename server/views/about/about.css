@@ -1,0 +1,71 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing:border-box;
+  font-family:sans-serif;
+}
+
+body{
+  display: flex;
+  width:100vw;
+  height:100vh;
+}
+
+aside {
+  width:10%;
+  max-width:4rem;
+  height:100%;
+  background-color:yellow;
+}
+
+aside h3 {
+  width:100%;
+  text-align:center;
+  padding-bottom: 2rem;
+}
+
+aside h3:first-of-type {
+  padding-top: 2rem;
+}
+
+main {
+  width: 90%;
+  flex-grow:1;
+  height:100%;
+  background-color:teal;
+  padding: 1rem;
+}
+
+main section.staff {
+  width: 100vw;
+  display: flex;
+  background-color:blue;
+}
+
+main section.staff .employee{
+  width:30%;
+  aspect-ratio:1;
+  gap:1rem;
+  background-color:orange;
+}
+
+/* main .staff {} */
+
+main .about {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: center;
+  background-color:red;
+  gap:3rem;
+}
+
+main .about .text {
+  width:100%;
+  max-width:60ch;
+  
+}
+main .about .iframe {
+  width:50%;
+}
+
+
