@@ -22,7 +22,9 @@ import "../server/project-pop.js";
 import "../server/components/cannon/cannon.js";
 import "../server/components/moon/moon.js";
 
-import '../server/components/hammer-cursor/hammer-cursor.js';
+import '../server/components/curtains/curtains.js';
+
+// import '../server/components/hammer-cursor/hammer-cursor.js';
 
 const _DebugBool = true;
 const _fileName = "server";

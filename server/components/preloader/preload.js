@@ -1,34 +1,127 @@
 // Preloader functionality
-const playButton = document.getElementById("enterSite");
 const leftCurtain = document.querySelector(".curtain-left");
 const rightCurtain = document.querySelector(".curtain-right");
 const peterPannekoek = document.querySelector(".peter-container");
 const audio = document.getElementById("peterAudio");
 const bottomHead = document.querySelector(".bottomhead");
+const enterButton = document.getElementById("enterSite");
 let mouthInterval;
 
-// Disable button initially
-let isReady = false;
-
-// Function to update button based on state
-function updateButton() {
-    if (isReady) {
-        playButton.innerHTML = "site betreden";
-        playButton.disabled = false;
-    } else {
-        playButton.innerHTML = "podium wordt opgebouwd";
-        playButton.disabled = true;
+// Check if this is the first visit
+const isFirstVisit = !sessionStorage.getItem('hasVisited');
+if (isFirstVisit) {
+    sessionStorage.setItem('hasVisited', 'true');
+} else {
+    // Hide peter-container AND button if not first visit
+    if (peterPannekoek) {
+        peterPannekoek.style.display = 'none';
+    }
+    if (enterButton) {
+        enterButton.classList.add("none");
     }
 }
 
 // Wait for all content to load
 window.addEventListener('load', () => {
-    isReady = true;
-    updateButton();
+    // Check if coming from navigation to home page
+    const fromNavigation = sessionStorage.getItem('fromNavigation');
     
+    if (fromNavigation === 'true') {
+        sessionStorage.removeItem('fromNavigation');
+        // Hide button when coming from navigation
+        if (enterButton) {
+            enterButton.classList.add("none");
+        }
+        // Start with curtains closed, then open them with preloader curtains
+        leftCurtain.classList.add("curtain-left-animation-close");
+        rightCurtain.classList.add("curtain-right-animation-close");
+        
+        setTimeout(() => {
+            leftCurtain.classList.remove("curtain-left-animation-close");
+            rightCurtain.classList.remove("curtain-right-animation-close");
+            leftCurtain.classList.add("curtain-left-animation-open");
+            rightCurtain.classList.add("curtain-right-animation-open");
+            
+            // Hide the preloader wrapper after curtains open
+            setTimeout(() => {
+                const wrapperPreloader = document.querySelector(".wrapper-preloader");
+                if (wrapperPreloader) {
+                    wrapperPreloader.style.display = "none";
+                }
+            }, 2000);
+        }, 100);
+        return; // Skip the normal first visit logic
+    }
+    
+    // Normal logic for direct visits to home page
     // Add peek animation classes to curtains
     leftCurtain.classList.add("curtain-left-animation-peak");
     rightCurtain.classList.add("curtain-right-animation-peak");
+    
+    if (isFirstVisit && peterPannekoek) {
+        // Auto-play peter animation on first visit
+        setTimeout(() => {
+            peterPannekoek.classList.add("peter-animation");
+            
+            // Hide button instantly when animation starts
+            if (enterButton) {
+                enterButton.classList.add("none");
+            }
+            
+            setTimeout(() => {
+                audio.play().catch(error => {
+                    console.error('Failed to play audio:', error);
+                });
+
+                // Start mouth movement
+                mouthInterval = setInterval(() => {
+                    const randomOffset = Math.random() * 35;
+                    bottomHead.style.transform = `translateY(${randomOffset}px)`;
+                }, 100);
+
+                // When audio ends, open curtains and hide preloader
+                audio.addEventListener("ended", () => {
+                    clearInterval(mouthInterval);
+                    bottomHead.style.transform = "translateY(0)";
+                    peterPannekoek.classList.add("none");
+                    
+                    // Open curtains automatically
+                    leftCurtain.classList.remove("curtain-left-animation-peak");
+                    rightCurtain.classList.remove("curtain-right-animation-peak");
+                    leftCurtain.classList.add("curtain-left-animation-open");
+                    rightCurtain.classList.add("curtain-right-animation-open");
+                    
+                    // Hide the preloader wrapper after curtains open
+                    setTimeout(() => {
+                        const wrapperPreloader = document.querySelector(".wrapper-preloader");
+                        if (wrapperPreloader) {
+                            wrapperPreloader.style.display = "none";
+                        }
+                    }, 2000);
+                }, { once: true });
+            }, 1300);
+        }, 1000); // Small delay after page load
+    } else {
+        // For returning visitors, hide button and just open curtains after a delay
+        if (enterButton) {
+            enterButton.classList.add("none");
+        }
+        
+        setTimeout(() => {
+            leftCurtain.classList.remove("curtain-left-animation-peak");
+            rightCurtain.classList.remove("curtain-right-animation-peak");
+            leftCurtain.classList.add("curtain-left-animation-open");
+            rightCurtain.classList.add("curtain-right-animation-open");
+            
+            // Hide the preloader wrapper after curtains open
+            setTimeout(() => {
+                const wrapperPreloader = document.querySelector(".wrapper-preloader");
+                if (wrapperPreloader) {
+                    wrapperPreloader.style.display = "none";
+                }
+            }, 2000);
+        }, 1000);
+    }
 });
 
 // Mouse tracking functionality
@@ -61,76 +154,3 @@ document.addEventListener('mousemove', (event) => {
     eye.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
   });
 });
-
-// Button click functionality
-playButton.addEventListener("click", () => {
-  // Prevent multiple clicks
-  if (playButton.disabled) return;
-  
-  // Start visual animations immediately
-  leftCurtain.classList.remove("curtain-left-animation-peak"); // Remove peek
-  rightCurtain.classList.remove("curtain-right-animation-peak"); // Remove peek
-  leftCurtain.classList.add("curtain-left-animation-open");
-  rightCurtain.classList.add("curtain-right-animation-open");
-  peterPannekoek.classList.add("peter-animation");
-  playButton.classList.add("none");
-  
-  setTimeout(() => {
-    audio.play().catch(error => {
-      console.error('Failed to play audio:', error);
-    });
-
-    // Start mouth movement
-    mouthInterval = setInterval(() => {
-      const randomOffset = Math.random() * 35;
-      bottomHead.style.transform = `translateY(${randomOffset}px)`;
-    }, 100);
-
-    // Stop mouth movement when audio ends
-    audio.addEventListener("ended", () => {
-      clearInterval(mouthInterval);
-      bottomHead.style.transform = "translateY(0)";
-      peterPannekoek.classList.add("none");
-    }, { once: true });
-  }, 1300);
-});
-
-
-
-const projectsButton = document.getElementById("projects"); // Or use a more specific selector
-
-// Handle button click
-projectsButton.addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent default action if it's a link
-    
-    // Remove open animation classes if they exist
-    leftCurtain.classList.remove('curtain-left-animation-open');
-    rightCurtain.classList.remove('curtain-right-animation-open');
-    
-    // Add close animation classes
-    leftCurtain.classList.add('curtain-left-animation-close');
-    rightCurtain.classList.add('curtain-right-animation-close');
-    
-    // Wait for animations to complete, then transition to next page
-    setTimeout(() => {
-        // Replace 'next-page.html' with your actual next page URL
-        window.location.href = 'http://localhost:3000/projects';
-        // Or if you're using a single-page app:
-        // showNextPage();
-    }, 2000); // 2000ms = 2s animation duration
-});
-
-// Alternative: Listen for animation end events (more precise)
-function handleAnimationEnd() {
-    let animationsCompleted = 0;
-    
-    function onAnimationEnd() {
-        animationsCompleted++;
-        if (animationsCompleted === 2) { // Both curtains finished
-            window.location.href = 'next-page.html';
-        }
-    }
-    
-    leftCurtain.addEventListener('animationend', onAnimationEnd, { once: true });
-    rightCurtain.addEventListener('animationend', onAnimationEnd, { once: true });
-}

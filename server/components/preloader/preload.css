@@ -302,3 +302,7 @@
 		right bottom,
 		left bottom;
 }
+
+.none {
+    display: none !important;
+}
