@@ -17,6 +17,8 @@
 {% block content %}
     
     <div class="frame">
+    {%render '../components/preloader/preload.liquid'%}
+    {% render '../components/stage-lights/stage-light.liquid' %}
         <div class="audience layer-3">
             <img src="/public/images/images-responsiveness/audience.webp">
         </div>
@@ -43,8 +45,8 @@
         <img class="bottom-right layer-2" src="/public/images/images-responsiveness/frame-bottom-right.webp">
         <img class="top-right layer-2" src="/public/images/images-responsiveness/frame-top-right.webp">
     </div>
-{% render '../components/stage-lights/stage-light.liquid' %}
-{%render '../components/preloader/preload.liquid'%}
+
+
 
     <svg class="visually-hidden" width="10" height="10" xmlns="http://www.w3.org/2000/svg">
         <defs>
