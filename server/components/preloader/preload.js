@@ -136,12 +136,12 @@ if (isFirstVisit) {
         }
         
         // Optional: Auto-start after delay if user doesn't click
-        setTimeout(() => {
-            if (playButton && !playButton.classList.contains("none") && !playButton.disabled) {
-                console.log('⏰ Auto-starting preloader sequence after 8 seconds');
-                startPreloaderSequence();
-            }
-        }, 8000);
+        // setTimeout(() => {
+        //     if (playButton && !playButton.classList.contains("none") && !playButton.disabled) {
+        //         console.log('⏰ Auto-starting preloader sequence after 8 seconds');
+        //         startPreloaderSequence();
+        //     }
+        // }, 8000);
     });
     
     // Button click functionality
