@@ -9,10 +9,10 @@ if (!cursor) {
 // Mouse move function with null check
 function moveCursor(e) {
     if (!cursor || !e) return; // Safety checks
-    
+
     var x = e.clientX;
     var y = e.clientY;
-    
+
     // Additional safety check for event properties
     if (typeof x === 'number' && typeof y === 'number') {
         cursor.style.left = `${x}px`;
@@ -28,7 +28,7 @@ if (cursor) {
 }
 
 // Get all hoverable elements with null check
-var hoverElements = document.querySelectorAll('a, button, .lights, .project-image-wrapper');
+var hoverElements = document.querySelectorAll('a, button, .lights, .project-image-wrapper, .cannon-container,  .hamburger-menu, .filter-btn, .search-input');
 var hover = Array.from(hoverElements);
 
 // Log if no hoverable elements found
@@ -46,13 +46,14 @@ if (cursor && hover && hover.length > 0) {
             console.warn('Null element found in hover array');
             return;
         }
-        
-        el.addEventListener('mousemove', function() {
-            if (cursor) { // Additional safety check
+
+        el.addEventListener('mouseenter', function () {
+            if (cursor) {
                 cursor.classList.add('hover-cursor');
             }
         });
-        
+
+
         // To remove the class when it doesn't hover the element
         el.addEventListener('mouseleave', function () {
             if (cursor) { // Additional safety check
