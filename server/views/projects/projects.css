@@ -379,9 +379,9 @@ h1 {
 
 /* Mobile - hamburger menu implementation */
 @media (max-width: 768px) {
-  .container {
-    /* padding: 1rem; */
-  }
+  /* .container {
+    padding: 1rem;
+  } */
 
   .container nav {
     flex-direction: row;
@@ -417,9 +417,9 @@ h1 {
     --gap-size: 0.4em;
   }
 
-  .span-3 {
-    /* grid-column: span 2 !important; */
-  }
+  /* .span-3 {
+    grid-column: span 2 !important;
+  } */
 
   .break-glass-card {
     min-height: 150px;
