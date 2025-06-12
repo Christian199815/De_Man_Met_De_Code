@@ -169,11 +169,16 @@ margin: 0;} */
 }
 
 
+@media (max-width: 1513px) {
+    #rails {
+        top: 245px;
+    }
+}
+
 
 @media (max-width: 800px) {
 
     #rails {
-        top: 175px ;
+        top: 145px ;
     }
-
 }

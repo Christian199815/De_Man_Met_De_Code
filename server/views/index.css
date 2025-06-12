@@ -29,11 +29,11 @@
 /* -=-=-=-=-=-=-=-=-=- TEXT -=-=-=-=-=-=-=-=-=- */
 .nav-text {
     position: absolute;
-    font-family: system-ui;
+    font-family: "franchise", impact, sans-serif;
     color: white;
     font-weight: 800;
     white-space: nowrap;
-    font-size: 3rem;
+    font-size: 4rem;
     opacity: 0;
     scale: 0.6;
     transition: all 0.3s ease;
@@ -231,8 +231,9 @@
 }
 
 .frame .audience img {
-    height: 100%;
     max-width: 100%;
+    display: block;
+    height: 100%;
     margin-inline: auto;
     object-fit: cover;
     object-position: center;
@@ -258,17 +259,17 @@
 }
 
 .frame .prop-container .nav-text {
-    top: 20%;
-    left: 40%;
+    top: 30%;
+    left: 50%;
     text-align: right;
 }
 
 .frame .prop-container:hover .nav-text,
 .frame .prop-container:focus-visible .nav-text {
-    top: 10%;
+    top: 20%;
     opacity: 1;
     scale: 1;
-    left: 30%;
+    left: 35%;
     translate: -50%;
 }
 
@@ -379,15 +380,15 @@
 }
 
 .frame .logo-container .nav-text {
-    bottom: 20%;
+    bottom: 11%;
     right: 0;
     text-align: left;
 }
 
 .frame .logo-container:hover .nav-text,
 .frame .logo-container:focus-visible .nav-text {
-    bottom: 12%;
-    right: -180px;
+    bottom: 11%;
+    right: -155px;
     opacity: 1;
     scale: 1;
 }
@@ -629,8 +630,15 @@
     .frame .logo-container:hover .nav-text,
     .frame .logo-container:focus-visible .nav-text {
         bottom: 8%;
-        right: -180px;
+        right: -150px;
         opacity: 1;
         scale: 1;
+    }
+
+
+    .frame .logo-container .pulse {
+        bottom: 17%;
+        left: 50%;
+        translate: -50% -50%;
     }
 }
