@@ -24,7 +24,7 @@
       transition: all 0.3s ease;
 
       a img {
-        height: 6rem;
+        height: 100%;
         width: auto;
       }
     }
