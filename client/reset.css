@@ -9,8 +9,8 @@
   box-sizing: border-box;
 }
 
-*:focus {
-  outline: .5rem solid #ff0000; /* or any color */
+*:focus-visible {
+  outline: .5rem solid #ff0000;
   scale: 1.05;
   transition: 150ms scale;
 }
