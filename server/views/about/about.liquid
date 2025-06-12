@@ -5,10 +5,10 @@
 <div class="wrapper-about">
     <aside>
 
-    </aside> 
+    </aside>
     <main>
         <div class="about-nav"> <a class="a-ticket ticket-color" href="/">Terug naar projecten</a></div>
-        
+
         <div class="employee-wrapper">
             <div class="employee">
                 <div class="image">
@@ -46,10 +46,12 @@
             </div>
             <div class="employee">
                 <div class="image">
-                    <img class="orange-magnet ontop" src="/public/images/scribbles/tape-orange.webp" alt="oranje magneet">
+                    <img class="orange-magnet ontop" src="/public/images/scribbles/tape-orange.webp"
+                        alt="oranje magneet">
                     <img class="tape ontop" src="/public/images/scribbles/tape-3.webp" alt="tape">
-                    <img class="hammer ontop" src="/public/images/scribbles/hammer.svg" alt="hamertje">
-                    <img src="/public/images/crew/maarten.webp" alt="Het team die de site gemaakt heeft">
+                    {% comment %} <img class="hammer ontop" src="/public/images/scribbles/hammer.svg" alt="hamertje">
+                    {% endcomment %}
+                    <img src="/public/images/crew/mannen-met-de-code.webp" alt="Het team die de site gemaakt heeft">
                 </div>
                 <div class="text">
                     <h2 class="about-h2">De Man met de Code</h2>
@@ -62,11 +64,12 @@
                 <h1 class="about-h1">Over de Man(nen)</h1>
                 <p class="about-p">De mannen met de hamer zijn sinds 2000 jullie betrouwbare meedenkende bouwers en
                     ontwerpers. Ons hart ligt bij decor rekwisieten en interieur. Wij werken voornamelijk met hout en
-                    staal en hebben onze eigen poule van specialisten en decorateurs. Wij zorgen er samen voor dat jullie
+                    staal en hebben onze eigen poule van specialisten en decorateurs. Wij zorgen er samen voor dat
+                    jullie
                     project van A tot Z wordt gerealiseerd en naar wens wordt opgeleverd. Graag ontvangen wij jullie in
                     onze werkplaats op een geweldige lokatie in Diemen om jullie projecten door te nemen. </p>
-                    
-                    <h4>U vraagt -wij hameren.</h4>
+
+                <h4>U vraagt -wij hameren.</h4>
             </div>
             <div class="maps">
                 <iframe
@@ -82,6 +85,6 @@
     </main>
 </div>
 
-{% render '../../components/curtains/curtains.liquid'  %}
+{% render '../../components/curtains/curtains.liquid' %}
 
 {% endblock %}
