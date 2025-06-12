@@ -9,6 +9,12 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: .5rem solid #ff0000; /* or any color */
+  scale: 1.05;
+  transition: 150ms scale;
+}
+
 html {
   hanging-punctuation: first last;
   color-scheme: light dark; /* optional */
