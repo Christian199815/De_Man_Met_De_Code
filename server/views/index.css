@@ -123,7 +123,7 @@
 /* FRAME PIECES */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* .frame .top-left,
+.frame .top-left,
 .frame .top-right,
 .frame .bottom-left,
 .frame .bottom-right,
@@ -133,12 +133,10 @@
 .frame .repeating-cage,
 .frame .repeating-floor,
 .frame .repeating-roof,
-.frame .moon-container,
-.frame .cannon-container,
-.frame .prop-container {
+.frame .moon-container {
     pointer-events: none;
     user-select: none;
-} */
+}
 
 /* TOP LEFT */
 .frame .top-left {
