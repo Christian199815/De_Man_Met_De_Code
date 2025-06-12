@@ -28,6 +28,28 @@
     height: 100vh;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    background: transparent;
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Show preloader when enabled */
+body .wrapper-preloader.preloader-enabled {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hide preloader when completed */
+body .wrapper-preloader.preloader-completed {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
 }
 
 .curtain-left {
@@ -38,7 +60,7 @@
     box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
     width: 51vw;
     height: 200vh;
-    z-index: 3;
+    z-index: 5;
     clip-path: polygon(0% 100%,
             0% 0%,
             100% 0%,
@@ -65,7 +87,7 @@
     background-image: var(--curtain-pattern);
     width: 51vw;
     height: 200vh;
-    z-index: 3; 
+    z-index: 5;
     clip-path: polygon(100% 100%,
             100% 0%,
             0% 0%, 0% 50%,
@@ -88,23 +110,22 @@
     top: 50%;
     left: 50%;
     position: absolute;
-    width: 40vmin;
+    width: 80vmin;
     aspect-ratio: 1 / 1.4;
     transform: translate(-50%, -50%) scale(0.4);
     transform-origin: center;
-    opacity: 0;
+    opacity: 1;
     visibility: visible;
-    z-index: 4;
+    z-index: 1;
 }
 
-/* Peter animation - makes it visible and scales up */
 .peter-animation {
     animation: fade-in 1s ease-out 300ms forwards;
 }
 
 @keyframes fade-in {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: translate(-50%, -50%) scale(0.4);
     }
     to {
@@ -113,7 +134,6 @@
     }
 }
 
-/* Peter container elements */
 .peter-container *,
 .eye-white,
 .eye-yellow {
@@ -168,12 +188,12 @@
     width: 100vw;
     height: 100vh;
     background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
-    z-index: 2;
+    z-index: 4;
     pointer-events: none;
 }
 
 .none {
-    display: none !important;
+    display: none;
 }
 
 /* Curtain animations */
@@ -276,7 +296,7 @@
     transform: translate(-50%, -50%);
     
     text-transform: uppercase;
-    z-index: 5;
+    z-index: 6;
     border: none;
     font-size: 1rem;
     font-weight: 600;
@@ -309,3 +329,5 @@
         right bottom,
         left bottom;
 }
+
+/* No body styling - removed completely */

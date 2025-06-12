@@ -5,6 +5,7 @@
 @import "../server/layouts/base.css";
 @import '../server/components/curtains/curtains.css';
 @import '../server/components/hammer-cursor/hammer-cursor.css';
+/* @import 'accesibility.css'; */
 
 
 /* Home route */

@@ -23,7 +23,7 @@ a, button, input, textarea, select,
   background-repeat: no-repeat;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9999999999 !important;
 }
 
 .hover-cursor {
