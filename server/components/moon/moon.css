@@ -59,7 +59,7 @@
     inherits: true;
 }
 
-.frame .moon-container .moon .test-gradient {
+.frame .moon-container .moon .moon-gradient {
     top: -1px;
     left: 0;
     height: 100%;
