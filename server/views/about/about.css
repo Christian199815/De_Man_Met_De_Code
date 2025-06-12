@@ -229,8 +229,8 @@ aside h3:first-of-type {
   /* hammer */
   position: absolute;
   top: 10%;
-  left: 10%;
-  rotate: -20deg;
+  left: -10%;
+  rotate: 5deg;
   height: 90%;
   width: auto;
   object-fit: contain;
@@ -242,6 +242,7 @@ aside h3:first-of-type {
   right: 0%;
   rotate: 5deg;
   width: 30%;
+  transform: rotate(30deg);
 }
 
 .about {
