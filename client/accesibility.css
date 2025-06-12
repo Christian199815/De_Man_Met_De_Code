@@ -1,0 +1,150 @@
+/* Universal Focus State Override */
+
+/* Reset all existing focus styles first */
+*:focus,
+*:focus-visible,
+*:focus-within {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: initial !important;
+}
+
+/* Main focus style for all interactive elements */
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[role="option"]:focus-visible,
+[contenteditable]:focus-visible,
+summary:focus-visible,
+details:focus-visible {
+  outline: 8px solid #ff0000 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 0 2px rgba(215, 18, 15, 0.2) !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Alternative high-contrast version */
+.high-contrast button:focus-visible,
+.high-contrast input:focus-visible,
+.high-contrast textarea:focus-visible,
+.high-contrast select:focus-visible,
+.high-contrast a:focus-visible,
+.high-contrast [tabindex]:focus-visible,
+.high-contrast [role="button"]:focus-visible,
+.high-contrast [role="link"]:focus-visible,
+.high-contrast [role="tab"]:focus-visible,
+.high-contrast [role="menuitem"]:focus-visible,
+.high-contrast [role="option"]:focus-visible,
+.high-contrast [contenteditable]:focus-visible,
+.high-contrast summary:focus-visible,
+.high-contrast details:focus-visible {
+  outline: 6px solid #ffff00 !important;
+  outline-offset: 3px !important;
+  background-color: rgba(255, 255, 0, 0.1) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.3) !important;
+}
+
+/* Ensure focus is visible even on elements with existing borders */
+input[type="text"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="password"]:focus-visible,
+input[type="search"]:focus-visible,
+input[type="tel"]:focus-visible,
+input[type="url"]:focus-visible,
+input[type="number"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  border: 2px solid #007acc !important;
+  outline: 2px solid #007acc !important;
+  outline-offset: 1px !important;
+}
+
+/* Special handling for custom components */
+[data-focusable]:focus-visible,
+.focusable:focus-visible {
+  outline: 4px solid #007acc !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2) !important;
+}
+
+/* Focus within containers (for composite widgets) */
+[role="tablist"]:focus-within,
+[role="menubar"]:focus-within,
+[role="menu"]:focus-within,
+.focus-container:focus-within {
+  outline: 2px solid rgba(0, 122, 204, 0.5) !important;
+  outline-offset: 1px !important;
+}
+
+/* Ensure visibility on dark backgrounds */
+[data-theme="dark"] button:focus-visible,
+[data-theme="dark"] input:focus-visible,
+[data-theme="dark"] textarea:focus-visible,
+[data-theme="dark"] select:focus-visible,
+[data-theme="dark"] a:focus-visible,
+[data-theme="dark"] [tabindex]:focus-visible,
+.dark button:focus-visible,
+.dark input:focus-visible,
+.dark textarea:focus-visible,
+.dark select:focus-visible,
+.dark a:focus-visible,
+.dark [tabindex]:focus-visible {
+  outline: 4px solid #66b3ff !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px rgba(102, 179, 255, 0.3) !important;
+}
+
+/* Remove focus from non-interactive elements when clicked */
+div:focus,
+span:focus,
+p:focus,
+h1:focus,
+h2:focus,
+h3:focus,
+h4:focus,
+h5:focus,
+h6:focus {
+  outline: none !important;
+}
+
+/* Utility class to disable focus styles when needed */
+.no-focus:focus,
+.no-focus:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Custom focus indicator for specific use cases */
+.custom-focus:focus-visible {
+  outline: 3px dashed #ff6b6b !important;
+  outline-offset: 4px !important;
+  animation: focusPulse 1.5s infinite !important;
+}
+
+@keyframes focusPulse {
+  0%, 100% { outline-color: #ff6b6b; }
+  50% { outline-color: #ff9f9f; }
+}
+
+/* Ensure focus works with CSS transforms */
+*:focus-visible {
+  transform-style: preserve-3d !important;
+  backface-visibility: visible !important;
+}
+
+/* Print styles - remove focus indicators when printing */
+@media print {
+  *:focus,
+  *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}

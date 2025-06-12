@@ -1,13 +1,18 @@
-/* Curtains Transition Styles */
-.curtains-transition {
+/* Curtains Transition - Fixed to match your HTML structure */
+
+/* Prevent flash - hide page content initially when transitioning */
+body.transitioning {
+    visibility: hidden;
+}
+
+#curtainsTransition {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    z-index: 9999;
+    z-index: 9998;
     pointer-events: none;
-    overflow: hidden;
     display: none; /* Hidden by default */
     transform-style: preserve-3d;
     translate: 0 0 17px;
@@ -30,26 +35,30 @@
             #5a0000 220px);
     --custom-easing: cubic-bezier(0.140, 0.935, 0.240, 0.940);
     flex-direction: column;
-    width: 100vw;
-    height: 100vh;
     justify-content: center;
     align-items: center;
 }
 
-/* Show curtains when they need to be visible */
-.curtains-transition.curtains-active {
+#curtainsTransition.curtains-active {
     display: flex;
+    pointer-events: all;
 }
 
+/* CSS-first approach - curtains start closed when active to prevent flash */
+#curtainsTransition.curtains-active .curtain-left,
+#curtainsTransition.curtains-active .curtain-right {
+    transform: translate(0vw, 0vh); /* Start closed by default */
+}
+
+/* Curtain styling - no box shadow, extra height to prevent glitches */
 .curtain-left {
     position: absolute;
-    top: 0;
+    top: -10px; /* Start slightly above viewport */
     left: -1px;
     background-image: var(--curtain-pattern);
-    box-shadow: inset -10px 0 20px rgba(0, 0, 0, 0.5);
     width: 51vw;
-    height: 200vh;
-    z-index: 3;
+    height: 110vh; /* Increased height to prevent bottom gaps */
+    z-index: 5;
     clip-path: polygon(0% 100%,
             0% 0%,
             100% 0%,
@@ -71,14 +80,13 @@
 }
 
 .curtain-right {
-    overflow: hidden;
     position: absolute;
-    top: 0;
+    top: -10px; /* Start slightly above viewport */
     right: -1vw;
     background-image: var(--curtain-pattern);
     width: 51vw;
-    height: 200vh;
-    z-index: 3; 
+    height: 110vh; /* Increased height to prevent bottom gaps */
+    z-index: 5;
     clip-path: polygon(100% 100%,
             100% 0%,
             0% 0%, 0% 50%,
@@ -103,124 +111,81 @@
     width: 100vw;
     height: 100vh;
     background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
-    z-index: 2;
+    z-index: 4;
     pointer-events: none;
 }
 
-/* IMPORTANT: Closed state - curtains cover the screen (highest specificity) */
-.curtains-transition.curtains-active.curtains-closed .curtain-left {
-    transform: translate(0vw, 0vh) !important;
+/* Container state animations */
+
+/* Closed state - curtains cover the screen */
+#curtainsTransition.curtains-closed .curtain-left {
+    transform: translate(0vw, 0vh);
 }
 
-.curtains-transition.curtains-active.curtains-closed .curtain-right {
-    transform: translate(0vw, 0vh) !important;
+#curtainsTransition.curtains-closed .curtain-right {
+    transform: translate(0vw, 0vh);
 }
 
-/* Open state - curtains are off screen */
-.curtains-transition.curtains-open .curtain-left {
-    transform: translate(-51vw, -100vh);
-}
-
-.curtains-transition.curtains-open .curtain-right {
-    transform: translate(51vw, -100vh);
-}
-
-/* Animation classes for smooth transitions */
-.curtains-transition.curtains-closing .curtain-left {
+/* Closing animation */
+#curtainsTransition.curtains-closing .curtain-left {
     animation: curtain-left-close 2s var(--custom-easing) forwards;
 }
 
-.curtains-transition.curtains-closing .curtain-right {
+#curtainsTransition.curtains-closing .curtain-right {
     animation: curtain-right-close 2s var(--custom-easing) forwards;
 }
 
-.curtains-transition.curtains-opening .curtain-left {
+/* Opening animation */
+#curtainsTransition.curtains-opening .curtain-left {
     animation: curtain-left-open 2s var(--custom-easing) forwards;
 }
 
-.curtains-transition.curtains-opening .curtain-right {
+#curtainsTransition.curtains-opening .curtain-right {
     animation: curtain-right-open 2s var(--custom-easing) forwards;
 }
 
-/* Keyframes - exact copy from preloader */
-.curtain-left-animation-peak{
-    animation: curtain-left-peak 2s var(--custom-easing) forwards;
+/* Open state - curtains off screen */
+#curtainsTransition.curtains-open .curtain-left {
+    transform: translate(-52vw, -105vh);
 }
-@keyframes curtain-left-peak {
+
+#curtainsTransition.curtains-open .curtain-right {
+    transform: translate(52vw, -105vh);
+}
+
+/* Keyframes - adjusted for better coverage */
+@keyframes curtain-left-close {
     0% {
+        transform: translate(-52vw, -105vh);
+    }
+    100% {
         transform: translate(0vw, 0vh);
     }
-
-    100% {
-        transform: translate(-2vw, 0vh);
-    }
 }
 
-.curtain-right-animation-peak {
-    animation: curtain-right-peak 2s var(--custom-easing) forwards;
-    }
-@keyframes curtain-right-peak {
+@keyframes curtain-right-close {
     0% {
+        transform: translate(52vw, -105vh);
+    }
+    100% {
         transform: translate(0vw, 0vh);
     }
-
-    100% {
-        transform: translate(2vw, 0vh);
-    }
 }
 
-.curtain-left-animation-open{
-    animation: curtain-left-open 2s var(--custom-easing) forwards;
-}
 @keyframes curtain-left-open {
     0% {
         transform: translate(0vw, 0vh);
     }
-
     100% {
-        transform: translate(-51vw, -100vh);
+        transform: translate(-52vw, -105vh);
     }
 }
 
-.curtain-right-animation-open {
-    animation: curtain-right-open 2s var(--custom-easing) forwards;
-    }
 @keyframes curtain-right-open {
     0% {
         transform: translate(0vw, 0vh);
     }
-
     100% {
-        transform: translate(51vw, -100vh);
+        transform: translate(52vw, -105vh);
     }
-}
-
-.curtain-left-animation-close{
-    animation: curtain-left-close 2s var(--custom-easing) forwards;
-}
-@keyframes curtain-left-close {
-    0% {
-        transform: translate(-51vw, -100vh);
-    }
-
-    100% {
-        transform: translate(0vw, 0vh);
-    }
-}
-
-.curtain-right-animation-close {
-    animation: curtain-right-close 2s var(--custom-easing) forwards;
-    }
-@keyframes curtain-right-close {
-    0% {
-        transform: translate(51vw, -100vh);
-    }
-
-    100% {
-        transform: translate(0vw, 0vh);
-    }
-}
-
-.none {
-    display: none !important;
 }
