@@ -284,13 +284,13 @@ app.use((req, res, next) => {
 // Home route
 app.get("/", async (req, res) => {
     return res.send(renderTemplate("server/views/index.liquid", {
-        title: "Home",
+        title: "De Man Met De Hamer - Theater",
     }));
 });
 
 app.get("/about", async (req, res) => {
     return res.send(renderTemplate("server/views/about/about.liquid", {
-        title: "About",
+        title: "De Man Met De Hamer - Over de man",
     }));
 });
 
@@ -300,7 +300,7 @@ app.get('/projects', async (req, res) => {
         
         const allData = await loadAllData();
         return res.send(renderTemplate('server/views/projects/projects.liquid', { 
-            title: 'Projects',
+            title: 'De Man Met De Hamer - Projecten',
             allData: allData,
             categories: allData.categories
         }));
